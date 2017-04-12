@@ -1,0 +1,108 @@
+/*
+ * This is A MODEL defined during PROBLEM ANALYSIS by using a CUSTOM meta-model / language
+ */     
+System blsAnalysisMsg      
+
+Request  register  : register(ACTORID)
+Dispatch turnLed   : turnLed(X)
+Dispatch click     : clicked
+
+
+Context ctxAnalysisMsgLocal ip [host="localhost" port=8010]  -g cyan  
+//Context ctxButton ip [host="localhost" port=8010]  -g cyan
+//Context ctxLed ip [host="localhost" port=8015]  -g yellow
+
+/*  
+ * Definition of the qabutton
+ * ---------------------------------------------------------------------------
+ * A qabutton is an entity that DOES NOT KNOW the destination. 
+ * It accepts a registration message and then send click
+ * ---------------------------------------------------------------------------
+ */  
+//QActor qabuttonwithmsg context ctxAnalysisMsgLocal   {   
+//	Plan init  normal      
+//		println("button STARTS");
+// 		switchToPlan workWithMessages 
+//   	Plan workWithMessages     	  
+// 		delay time(1000) ;
+//  		println(click);
+//		forward qacontrollerwithmsg -m click : clicked;
+//		delay time(1000) ;
+//  		println(click);
+//		forward qacontrollerwithmsg -m click : clicked ;
+// 		repeatPlan 1  
+//	Plan prologFailure resumeLastPlan   
+//		println("button has failed to solve a Prolog goal" )        
+//}  
+ 
+QActor qabuttonoservablewithmsg context ctxAnalysisMsgLocal   {   
+	Plan init  normal      
+		switchToPlan  waitAnObserver ; 
+ 		switchToPlan workWithMessages 
+ 	Plan waitAnObserver resumeLastPlan 
+ 		println(qabuttonoservablewithmsg(waits));
+ 		receiveTheMsg m(register,MSGTYPE,Sender,Receiver,register(Sender),N ) time(1000000) ;
+ 		printCurrentMessage ;
+		onMsg register : register(Caller)  ->  addRule controller(Caller)  ;
+		replyToCaller -m register : register(done) ;
+  		[ !?controller(Caller) ] println(qabuttonoservablewithmsg(registered,Caller))
+   	Plan workWithMessages     	  
+ 		delay time(1000) ;
+  		println(qabuttonoservablewithmsg(click));
+		[ !? controller(C)] forward C -m click : clicked;
+		delay time(1000) ;
+  		println(qabuttonoservablewithmsg(click));
+		[ !? controller(C)] forward C -m click : clicked ; 
+ 		repeatPlan 1  
+	Plan prologFailure resumeLastPlan   
+		println("button has failed to solve a Prolog goal" )        
+}   
+/*
+ * Definition of the controller
+ */      
+QActor qacontrollerwithmsg context ctxAnalysisMsgLocal   {  
+	Rules{
+		ledState( off ).
+		ledSwitch(on) :-
+			retract( ledState(off) ),!,
+			assert( ledState(on) ).
+			
+		ledSwitch(off) :- 
+			retract( ledState(on) ),!,
+			assert( ledState(off) ).
+	}
+ 	Plan init  normal      
+ 		println( qacontrollerwithmsg(request) ) ;
+ 		demand qabuttonoservablewithmsg -m register:register(qacontrollerwithmsg);
+ 		receiveMsg time(2000000) ;	//reply
+// 		printCurrentMessage ; 
+		println( qacontrollerwithmsg(connected) ) ;
+ 		forward qaledwithmsg -m turnLed:turnLed(off);
+   		switchToPlan workWithMessages 
+  	Plan workWithMessages     	
+//		println("controller WAITS FOR A click message");
+ 		receiveMsg time(2000000) ;	//click
+// 		receiveTheMsg m(click,dispatch,Sender,controller,clicked,N ) time(300000) ;
+// 		printCurrentMessage ;	  
+      	[ !? ledSwitch(S)]  forward qaledwithmsg -m turnLed:turnLed(S);
+  		repeatPlan 0
+	Plan prologFailure resumeLastPlan   
+		println("qacontrollerwithmsg has failed to solve a Prolog goal" )      
+  }	
+
+/*
+ * Definition of the led
+ */
+QActor qaledwithmsg context ctxAnalysisMsgLocal   {     
+ 	Plan init  normal          
+ 		println("qaledwithmsg STARTS");  
+  		switchToPlan work  
+ 	Plan work     	               
+//  		println("led WAITS FOR A COMMAND");
+		receiveMsg time(300000); //after 300 secs end the timeout 
+//		printCurrentMessage ;      
+  		onMsg turnLed : turnLed(V)  ->  println(led(V)) ;   
+  		repeatPlan 0
+	Plan prologFailure resumeLastPlan   
+		println("qaledwithmsg has failed to solve a Prolog goal" )      
+}

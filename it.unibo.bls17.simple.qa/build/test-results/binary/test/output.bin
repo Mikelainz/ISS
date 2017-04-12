@@ -1,0 +1,25 @@
+c	*** QActorUtils evlpa_ctxblssimple2017 created it.unibo.qactors.platform.EventLoopActor@4e66ed8f
+]	*** QActorUtils buttongui017 created it.unibo.buttongui017.MsgHandle_Buttongui017@15713ae8
+X	*** QActorUtils buttongui017_ctrl created it.unibo.buttongui017.Buttongui017@5c7844a5
+*** addPanel 0
+D	*** ActorUtils terminateTheQActor buttongui017_ctrl testing=false
+\	*** QActorUtils ledsimple017 created it.unibo.ledsimple017.MsgHandle_Ledsimple017@e17d5cb
+*** addPanel 1
+X	*** QActorUtils ledsimple017_ctrl created it.unibo.ledsimple017.Ledsimple017@2a65c529
+^	*** QActorUtils ctxblssimple2017 created it.unibo.qactors.akka.SystemCreationActor@13606d59
+7====== setUp  it.unibo.qactors.QActorContext@4df91c44
+!====== execTest ===============
+		execTest ls=false
+,			||| btn WILL EMIT event:click after 500
+ 			||| btn EMITTED event:click
+		execTest ls=true
+,			||| btn WILL EMIT event:click after 500
+ 			||| btn EMITTED event:click
+G	*** SystemCreationActor onReceive terminate(buttongui017_ctrl,false)
+>		*** SystemCreationActor terminates1:buttongui017_ctrl  1/4
+9		*** SystemCreationActor terminates1:buttongui017  2/4
+		execTest ls=false
+,			||| btn WILL EMIT event:click after 500
+ 			||| btn EMITTED event:click
+		execTest ls=true
+;====== terminate  it.unibo.qactors.QActorContext@4df91c44

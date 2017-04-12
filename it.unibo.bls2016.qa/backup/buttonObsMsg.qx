@@ -1,0 +1,62 @@
+/*
+ * buttonObsMsg.qa
+ * This is A MODEL written in the qa CUSTOM meta-model/language
+ */     
+System   buttonObsMsg 
+Event    clicked : clicked(V)   //emitted by the Button (implementation) device
+Dispatch button  : button(X)  	//sent by the button actor to some destination
+
+Context ctxButtonObsMsg ip [host="192.168.43.41" port=8010]   -httpserver  
+EventHandler evh for clicked -print ;
+
+Context ctxRemoteButtonObsMsg ip [host="192.168.43.229" port=8030]  -g cyan -httpserver  
+EventHandler evh for clicked -print ;
+  
+QActor buttonobsmsg context ctxButtonObsMsg {     
+	Rules{
+/*
+Behavior configuration rules. NO configuration fact set => the buttonTheory calls entryAsObserver
+ */
+ 		actorPerceivesEvents. 	//the actor works as an event-based machine
+ 		//sendMessageImmediately.   //the message is sent by the buttonTheory
+ /* 
+This fact allows the buttonTheory to known the button receiver and the details on the message to be sent
+ */
+ 		templateMsgToSend( buttontester,dispatch,button,button(V) ).	
+	}
+ 	Plan init  normal              
+  		println("buttonobsmsg STARTS" ) ;
+ 		switchToPlan configure    ;
+ 		[!? actorPerceivesEvents] switchToPlan senseButtonEvents;
+ 		println("buttonobsmsg ENDS" )
+ 	Plan configure resumeLastPlan 
+  		solve consult("buttonTheory.pl") time(0)  onFailSwitchTo prologFailure ; 
+ 		solve createButton( "click", clicked, clicked(V) ) time(0)  onFailSwitchTo prologFailure   	
+ 	Plan senseButtonEvents
+ 		println("buttonobsmsg WAITS for an event" );
+ 		sense time(300000) clicked -> continue;
+ 		onEvent  clicked : clicked(V) -> forward buttontester -m button : button(V) ;
+  		repeatPlan 0
+ 	//switchToPlan entryAsObserver can be called by the button POJO observer   
+ 	Plan entryAsObserver   
+ 		println("buttonobsmsg entryAsObserver" );    	                   
+   		[ ?? buttonValue(V)]  forward buttontester -m button : button(V) 
+  	Plan prologFailure resumeLastPlan   
+		println("buttonobsmsg has failed to solve a Prolog goal" )      
+}
+ 
+/*
+ * A actor that receives the messages sent from the button   
+ */
+QActor buttontester context ctxRemoteButtonObsMsg   {  
+  	Plan init normal   
+  		println("buttontester WAITS" );    	
+  		receiveTheMsg m( button , dispatch, SENDER, buttontester, button(V) , N )  time(300000);   
+ 		[ !? tout(X,Y) ] switchToPlan toutExpired ;
+ 		onMsg button : button(V) -> println( buttontester(button(V)) ) ;
+   		repeatPlan 0	
+   	Plan toutExpired    
+		[ ?? tout(X,Y) ] println( timeout(X,Y)  )   
+}
+
+ 

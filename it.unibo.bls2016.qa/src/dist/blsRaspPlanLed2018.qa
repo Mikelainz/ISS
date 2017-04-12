@@ -1,0 +1,36 @@
+/*
+ * blsRaspPlanLed2017.qa
+ */     
+System blsRaspPlanLed2017      
+Event local_click  : clicked
+
+Context ctxBlsRaspPlanLed ip [host="localhost" port=8010]  
+/*  
+ * ---------------------------------------------------------------------------
+ * Button  
+ * ---------------------------------------------------------------------------
+ */ 
+QActor buttonplanned context ctxBlsRaspPlanLed   {       
+	Plan init  normal      
+		println("buttonplanned STARTS");
+  		switchToPlan simualate
+ 	Plan simualate
+ 		println("buttonplanned emits");
+	    emit local_click : 	clicked ;
+	    delay time(1000);
+	    repeatPlan 6
+}   
+/*    
+ * ---------------------------------------------------------------------------
+ * Led 
+ * ---------------------------------------------------------------------------
+ */      
+QActor ledplanned context ctxBlsRaspPlanLed   {  
+ 	Plan init  normal      
+ 		println("ledplanned STARTS");  
+ 		loadPlan "./srcMore/it/unibo/led/plans.txt" ;
+ 		runPlan init time(600000) ;
+ 		delay time(10000) ;
+ 		println("ledplanned ENDS")
+}	
+

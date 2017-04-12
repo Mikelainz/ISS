@@ -1,0 +1,23 @@
+/*
+ * blsRasp2016.qa
+ */     
+System blsRaspOop2017      
+Context ctxBlsOOp ip [host="localhost" port=8030]  -g cyan
+ 
+QActor controloop context ctxBlsOOp   {        
+	Plan init  normal      
+		println("controloop  STARTS");
+		switchToPlan sysWithGuiOnPc;
+		//switchToPlan sysOnRasp;		
+ 		delay time(60000);
+ 		println("controloop  ENDS")
+	Plan sysWithGuiOnPc        
+ 		actorOp createGuiButton( 24 ) ;	 
+		actorOp createGuiLed( 25 ) 	;
+		resumeLastPlan     
+	Plan sysOnRasp       
+ 		actorOp createPi4jButton( 24 ) ;	//BCM 24 WPI 5
+		actorOp createPi4jLed( 25 ) ;	    //BCM 25 WPI 6
+		resumeLastPlan
+ 
+}   

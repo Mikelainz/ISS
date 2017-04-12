@@ -1,0 +1,22 @@
+/*
+ * blsRasp2016.qa
+ */     
+System blsRaspButton2017      
+Event local_click  : clicked
+
+Context ctxBlsRaspButton ip [host="localhost" port=8020]  
+EventHandler evh for local_click -print ;
+/*  
+ * ---------------------------------------------------------------------------
+ * Button  
+ * ---------------------------------------------------------------------------
+ */   
+QActor buttongpio context ctxBlsRaspButton   {       
+	Plan init  normal      
+		println("buttongpio STARTS");
+		actorOp createPi4jButton( 24 ) ;	//BCM 24 WPI 5
+		delay time(600000) ;
+		println("buttongpio ENDS")
+ }   
+
+

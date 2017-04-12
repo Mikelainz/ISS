@@ -1,0 +1,35 @@
+/*
+ * buttonEvent.qa
+ * This is A MODEL written in the qa CUSTOM meta-model/language
+ */     
+System   buttonMsg     
+Event    clicked : clicked(V)   //emitted by the Button (implementation) device
+
+//Context ctxBlsController ip [host="localhost" port=8050]   -standalone 
+
+Context ctxButtonEvent ip [host="192.168.43.229" port=8090]  -g green     
+EventHandler evh for clicked -print ;
+   
+QActor buttonevent context ctxButtonEvent { 
+	//The configuration rules must be set in the buttonTheory    
+	//actorPerceivesEvents or sendMessageImmediately
+  	Plan init  normal              
+  		println("buttonevent STARTS" ) ;
+ 		switchToPlan configure    ;
+ 		[!? actorPerceivesEvents] switchToPlan senseButtonEvents;
+ 		println("buttonevent ENDS" )
+ 	Plan configure resumeLastPlan 
+  		solve consult("buttonTheory.pl") time(0)  onFailSwitchTo prologFailure ; 
+ 		solve createButton( "click", clicked, clicked(V) ) time(0)  onFailSwitchTo prologFailure   	
+ 	Plan senseButtonEvents 
+ 		println("buttonevent WAITS for an event" );
+ 		sense time(600000) clicked -> continue;
+ 		onEvent  clicked : clicked(V) -> println( senseButtonEvents(V) ) ;
+  		repeatPlan 0
+ 	//switchToPlan entryAsObserver can be called by the button POJO observer   
+ 	Plan entryAsObserver   
+ 		println("buttonevent entryAsObserver" );    	                   
+   		[ ?? buttonValue(V)]  println( buttonValue(V) ) 
+  	Plan prologFailure resumeLastPlan   
+		println("buttonevent has failed to solve a Prolog goal" )      
+}

@@ -1,0 +1,24 @@
+/*
+ * blsRasp2016.qa
+ */     
+System blsRaspOop2017      
+ 
+Context ctxBlsRaspOOp ip [host="localhost" port=8030]  
+ 
+/*  
+ * ---------------------------------------------------------------------------
+ * Button  
+ * ---------------------------------------------------------------------------
+ */  
+QActor controloop context ctxBlsRaspOOp   {       
+	Plan init  normal      
+		println("buttongpio STARTS");
+		actorOp createPi4jButton( 24 ) ;	//BCM 24 WPI 5
+		actorOp createPi4jLed( 25 ) ;	   //BCM 25 WPI 6
+		delay time(60000);
+ 		println("buttongpio ENDS")
+ }   
+
+ 
+ 	
+

@@ -1,0 +1,51 @@
+/*
+ * blsRasp2016.qa
+ */     
+System buttonLed2016        
+Event local_click  : clicked
+Event click   	   : clicked 
+
+Context ctxBlsRasp ip [host="localhost" port=8010]  
+/*  
+ * ---------------------------------------------------------------------------
+ * A button modeled as an actor that emits an event
+ * ---------------------------------------------------------------------------
+ */ 
+QActor button context ctxBlsRasp   {       
+	Plan init  normal      
+		println("button STARTS");
+		solve consult("./blsRaspTheory.pl") time(0)  onFailSwitchTo prologFailure ; 
+ 		solve createPi4jButton( 24, local_click, clicked ) time(0)  onFailSwitchTo prologFailure   ;
+  		switchToPlan simualate
+   	Plan prologFailure resumeLastPlan   
+		println("button has failed to solve a Prolog goal" )    
+ 	Plan simualate
+	    emit local_click : 	clicked ;
+	    delay time(150);
+	    repeatPlan 4
+}   
+/*  
+ * ---------------------------------------------------------------------------
+ * A led with GUI that reacts to events
+ * ---------------------------------------------------------------------------
+ */      
+QActor led context ctxBlsRasp   {  
+ 	Plan init  normal      
+ 		println("led STARTS");
+		solve consult("./blsRaspTheory.pl") time(0)   ;
+ 		solve createPi4jLed( 25) time(0)  onFailSwitchTo prologFailure  ;
+ 		switchToPlan work
+	Plan work  
+  		println( led(waits, local_clicked));  
+ 		/* (1) */ sense time(600000) local_click ->  continue ; 
+ 		printCurrentEvent;
+   		/* (2) */ solve ledSwitch time(0)  onFailSwitchTo prologFailure  ;
+     	repeatPlan 0
+  	Plan prologFailure resumeLastPlan   
+		println("led has failed to solve a Prolog goal" )        	
+ }	
+ 
+
+/* 
+ * http://www.ibm.com/developerworks/cloud/library/cl-raspberrypi-iot-remote-monitoring-app/index.html
+ * */

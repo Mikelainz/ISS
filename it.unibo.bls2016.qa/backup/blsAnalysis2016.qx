@@ -1,0 +1,76 @@
+/*
+ * This is A MODEL defined during problem analysis 
+ * by using the CUSTOM meta-model / language qa
+ */     
+System blsAnalysis2016        
+
+Dispatch turnLed : turnLed(X)
+Dispatch click   : clicked
+
+Context ctxAnalysisLocal ip [host="localhost" port=8010]  -g cyan  
+//Context ctxButton ip [host="localhost" port=8010]  -g cyan
+//Context ctxLed ip [host="localhost" port=8015]  -g yellow
+
+/*  
+ * Definition of a button (mock)
+*/
+QActor buttonanalysis context ctxAnalysisLocal   {   
+	Plan init  normal      
+		println("button STARTS");
+ 		switchToPlan workWithMessages 
+   	Plan workWithMessages     	  
+ 		delay time(1000) ;
+  		println(click);
+		forward   controlleranalysis -m click : clicked;
+		delay time(1000) ;
+  		println(click);
+		forward controlleranalysis -m click : clicked ;
+ 		repeatPlan 1  
+	Plan prologFailure resumeLastPlan   
+		println("button has failed to solve a Prolog goal" )        
+	
+}   
+/*
+ * Definition of the controller
+ */      
+QActor controlleranalysis context ctxAnalysisLocal   {  
+	Rules{
+		ledState( off ).
+		ledSwitch(on) :-
+			retract( ledState(off) ),!,
+			assert( ledState(on) ).
+			
+		ledSwitch(off) :-
+			retract( ledState(on) ),!,
+			assert( ledState(off) ).
+	}
+ 	Plan init  normal     
+ 		forward ledanalysis -m turnLed:turnLed(off);
+   		switchToPlan workWithMessages 
+  	Plan workWithMessages     	
+//		println("controller WAITS FOR A click message");
+ 		receiveMsg time(20000) ;	//click
+// 		receiveTheMsg m(click,dispatch,Sender,controller,clicked,N ) time(300000) ;
+// 		printCurrentMessage ;	  
+		[ !? ledSwitch(S)]  forward ledanalysis -m turnLed:turnLed(S);
+  		repeatPlan 0
+	Plan prologFailure resumeLastPlan   
+		println("controller has failed to solve a Prolog goal" )      
+  }	
+
+/*
+ * Definition of the led
+ */
+QActor ledanalysis context ctxAnalysisLocal   {     
+ 	Plan init  normal          
+ 		println("led STARTS");  
+  		switchToPlan work  
+ 	Plan work     	               
+//  	println("led WAITS FOR A COMMAND");
+		receiveMsg time(300000); //after 300 secs end the timeout 
+//		printCurrentMessage ;      
+  		onMsg turnLed : turnLed(V)  ->  println(led(V)) ;   
+  		repeatPlan 0
+	Plan prologFailure resumeLastPlan   
+		println("led has failed to solve a Prolog goal" )      
+}

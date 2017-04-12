@@ -1,0 +1,39 @@
+/*
+ * blsController.qa
+ */     
+System blsController      
+Dispatch turnLed 	: turnLed(X)    //sent to Led
+Event clicked    	: clicked 		//emitted by Button
+/* 
+ * Declaration of the computational nodes
+ */
+Context ctxBlsController ip [host="localhost" port=8050]  -g yellow  
+Context ctxLed ip [host="localhost" port=8010]     -standalone 
+Context ctxButton ip [host="localhost" port=8090]  -standalone 
+
+QActor controller context ctxBlsController   {  
+  	Plan init  normal     
+		println( "controller STARTS" );
+  		switchToPlan work 
+  	Plan work            
+  		println("controller WAITS FOR clicked event");
+ 		sense time(600000) clicked -> continue ;
+ 		[ !? tout(X,Y) ] switchToPlan toutExpired ;
+ 		printCurrentEvent;  
+ 		onEvent  clicked : clicked(high) -> forward ledmsg -m turnLed:turnLed(on) ;
+ 		repeatPlan 0
+ 	Plan prologFailure resumeLastPlan   
+		println("controller has failed to solve a Prolog goal" )      
+ 	Plan toutExpired    
+		[ ?? tout(X,Y) ] println( timeout(X,Y)  )  
+  }	
+  
+ 
+/*
+ * WARNING: do not save after LedMsg
+ * ---------------------------------------------------------------------------
+ */
+QActor ledmsg context ctxLed  {     
+ 	Plan init  normal           
+ 		println( "never here. I am just a place holder" ) 
+}

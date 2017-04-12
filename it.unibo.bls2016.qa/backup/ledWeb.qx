@@ -1,0 +1,22 @@
+/*
+ * ledWeb.qa
+ * A Led that provides a web interface  
+ */     
+System ledWeb       
+Event inputcmd : usercmd(X)
+
+Context ctxWebLed ip [host="localhost" port=8010]   -g cyan -httpserver   
+
+QActor ledonweb context ctxWebLed   {  
+ 	Plan init normal      
+   		println("ledonweb STARTS " ) ;
+   		actorOp createLed  ; //configure
+  		switchToPlan work  				
+   	Plan work 
+  		sense time(3000000) inputcmd -> continue ;
+  		printCurrentEvent ;
+  		onEvent inputcmd : usercmd(executeInput(switch)) -> actorOp switchTheLed ;
+  		repeatPlan 0
+	Plan prologFailure resumeLastPlan   
+		println("Prolog goal failure" )      
+}

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="it.unibo.bls17.simple.qa.TestBlsSimple17_0" tests="1" skipped="0" failures="1" errors="0" timestamp="2017-03-22T17:39:34" hostname="Mike-pc" time="4.533">
+  <properties/>
+  <testcase name="execTest" classname="it.unibo.bls17.simple.qa.TestBlsSimple17_0" time="4.533">
+    <failure message="java.lang.AssertionError: actorTest null" type="java.lang.AssertionError">java.lang.AssertionError: actorTest null
+	at org.junit.Assert.fail(Assert.java:93)
+	at it.unibo.bls17.simple.qa.TestBlsSimple17_0.execTest(TestBlsSimple17_0.java:61)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:274)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:48)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:242)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:240)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:48)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:233)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:303)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:114)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:57)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:66)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:51)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy3.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:109)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:147)
+	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:129)
+	at org.gradle.internal.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:404)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:63)
+	at org.gradle.internal.concurrent.StoppableExecutorImpl$1.run(StoppableExecutorImpl.java:46)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+</failure>
+  </testcase>
+  <system-out><![CDATA[	ACTIVATING ctxblssimple2017 ncores=8 port=8010 webDir=null testing=false
+	*** activateAkkaSystem in progress ...ctxblssimple2017
+	*** QActorUtils evlpa_ctxblssimple2017 created it.unibo.qactors.platform.EventLoopActor@3cd93748
+	*** QActorUtils buttongui017 created it.unibo.buttongui017.MsgHandle_Buttongui017@60995006
+	*** QActorUtils buttongui017_ctrl created it.unibo.buttongui017.Buttongui017@7acb1ff7
+"	buttonsimple017 ENDS"
+	*** ActorUtils terminateTheQActor buttongui017_ctrl testing=false
+	*** QActorUtils ledsimple017 created it.unibo.ledsimple017.MsgHandle_Ledsimple017@69fada0b
+	*** QActorUtils ledsimple017_ctrl created it.unibo.ledsimple017.Ledsimple017@4d53dac2
+"LED WAITS"
+	*** QActorUtils ctxblssimple2017 created it.unibo.qactors.akka.SystemCreationActor@5f6430fc
+====== setUp  it.unibo.qactors.QActorContext@63245b58
+====== execTest ===============
+====== terminate  it.unibo.qactors.QActorContext@63245b58
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,62 @@
+
+/*
+ * System bls0
+Dispatch turn : switch(x)
+
+Context bls0Ctx ip [ host="localhost"  port=8079 ]  -g cyan
+
+QActor qaled context bls0Ctx {
+	Plan init normal
+		println(qaled(starts));
+		switchToPlan work;
+		delay time(10000);
+		println(qaled(ends))
+	Plan work
+		receiveMsg time(30000000);
+		printCurrentMessage;
+		repeatPlan
+}
+
+QActor qacontrol context bls0Ctx {
+	Plan init normal
+		println(qacontrol(starts));
+		actorOp createAButtonWithGui;
+		switchToPlan work;
+		delay time(10000);
+		println(qacontrol(ends))
+	Plan work //in questo caso in nostro bottone è a messaggio
+		receiveMsg time(300000000);
+		forward qaled -m turn : switch(1);
+		repeatPlan
+}
+*/
+System bls0  
+Dispatch turn : switch   
+Event localclick : clicked(N)  //N : natural
+Context bls0Ctx ip [ host="localhost"  port=8079 ]  -g cyan  
+
+QActor qacontrol context bls0Ctx{
+	Plan init normal          
+   		println( qacontrol(starts)  )  ;
+   		actorOp createAButtonWithGui;
+   		switchToPlan work; 
+    	println( qacontrol(ends)  )  
+  	Plan work
+  		sense time(10000) localclick -> continue ;
+   		[ ?? tout(senseevent,W)] endPlan "qacontrol timeout";
+   		printCurrentEvent ;
+    	onEvent localclick : cliked(N) ->
+    					forward qaled -m turn : switch ;
+		repeatPlan
+}
+
+QActor qaled context bls0Ctx {
+	Plan init normal          
+   		println( qaled(starts)  )  ;
+   		switchToPlan work;
+  		println( qaled(ends)  )  
+  	Plan work
+   		receiveMsg time(3000000) ;
+   		printCurrentMessage ;
+   		repeatPlan
+}

@@ -1,0 +1,33 @@
+/*
+ * This is A MODEL, result of problem analysis 
+ * written in the CUSTOM meta-model/language qa
+ */     
+System blsAnalysisSimple2017  //-testing     
+Event    click   : click(X)  
+
+//questo context indica il numero/elementi del nostro sistema
+Context ctxBlsSimple2017 ip [host="localhost" port=8010]  //-g cyan  
+
+/*         
+ * Button        
+*/
+QActor buttongui017 context ctxBlsSimple2017   {   
+	Plan init  normal      
+  		actorOp createButton;	//create a Button POJO 
+  		println("	buttonsimple017 ENDS")
+}   
+/*     
+ * Led
+ */  
+QActor ledsimple017 context ctxBlsSimple2017   {     
+ 	Plan init  normal      
+ 		actorOp createLedGui;	//create a Led POJO 
+ 		switchToPlan work
+ 	Plan work     
+ 		println("LED WAITS");   
+     	sense  time(30000) click -> continue;  
+     	printCurrentEvent ;
+  		[ ?? tout(senseevent,V)] endPlan "	endPlan ledsimple017 for tout" ;
+ 		onEvent click : click(V) ->  actorOp ledSwitch ;	
+  		repeatPlan    
+}

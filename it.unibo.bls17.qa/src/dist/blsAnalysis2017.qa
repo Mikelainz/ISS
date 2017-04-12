@@ -1,0 +1,60 @@
+/*
+ * This is A MODEL, result of problem analysis 
+ * written in the CUSTOM meta-model/language qa
+ */     
+System blsAnalysis2017  // -testing     
+    
+Dispatch turnLed : turnLed(X)
+Event    click   : click(X)  
+
+Context ctxBls2017 ip [host="localhost" port=8010]  -g cyan
+
+/*         
+ * Button    
+*/
+QActor button017 context ctxBls2017   {   
+	Plan init  normal      
+		println("	button017 STARTS");
+ 		switchToPlan control 
+   	Plan control     	  
+ 		delay time(500) ;
+   		emit click : click(1) ;  
+		delay time(500) ;
+   		emit click : click(2) ;
+   		delay time(5000);
+  		println("	button017 ENDS")
+}   
+/*
+ * Controller
+ */      
+QActor controller017 context ctxBls2017   {      
+	Plan init  normal  
+		println("	controller017 STARTS") ;
+		switchToPlan control ;
+		println("	controller017 ENDS")
+  	Plan control     	 
+ 		sense time(2000) click -> continue ;
+   		[ ?? tout(senseevent,V)] endPlan "	tout controller017" ;
+ 		onEvent click : click(V) -> forward led017 -m turnLed:turnLed(V);
+   		repeatPlan 2
+   }	   
+ 
+/* 
+ * Led
+ */
+QActor led017 context ctxBls2017   {       
+ 	Plan init  normal              
+ 		println("	led017 STARTS");  
+  		switchToPlan work ;
+  		println("	led017 ENDS")   
+ 	Plan work     	               
+ 	  	println("	led receiveMsg"); 
+		receiveMsg time(1000);  
+  		[ ?? tout(receivemsg,V)] endPlan "	endPlan led017 for tout in work" ;
+ 		switchToPlan turnTheLed ; 
+  		repeatPlan 2    
+ 	Plan turnTheLed 
+		println("	led turnTheLed");
+		onMsg turnLed : turnLed(V)  ->  println( led(V) ) ;
+ 		resumeLastPlan   	
+}

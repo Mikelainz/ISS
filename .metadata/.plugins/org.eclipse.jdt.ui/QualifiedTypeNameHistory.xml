@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.util.concurrent.Callable"/>
+<fullyQualifiedTypeName name="java.io.PrintWriter"/>
+<fullyQualifiedTypeName name="java.io.OutputStream"/>
+<fullyQualifiedTypeName name="java.io.OutputStreamWriter"/>
+<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
+<fullyQualifiedTypeName name="javax.swing.JComponent"/>
+<fullyQualifiedTypeName name="java.awt.Color"/>
+<fullyQualifiedTypeName name="it.unibo.buttonLed.interfaces.ILed"/>
+<fullyQualifiedTypeName name="it.unibo.buttonLed.interfaces.IButtonListener"/>
+<fullyQualifiedTypeName name="it.unibo.buttonLed.interfaces.IShow"/>
+<fullyQualifiedTypeName name="it.unibo.buttonLed.interfaces.IButton"/>
+<fullyQualifiedTypeName name="java.io.BufferedReader"/>
+<fullyQualifiedTypeName name="java.io.InputStreamReader"/>
+<fullyQualifiedTypeName name="com.pi4j.io.gpio.GpioPinDigitalOutput"/>
+<fullyQualifiedTypeName name="it.unibo.gpio.base.IGpioPi4j"/>
+<fullyQualifiedTypeName name="java.lang.Thread"/>
+<fullyQualifiedTypeName name="it.unibo.qactors.QActorUtils"/>
+<fullyQualifiedTypeName name="it.unibo.myled.LedWithRasp"/>
+<fullyQualifiedTypeName name="it.unibo.qactors.QActorContext"/>
+</qualifiedTypeNameHistroy>

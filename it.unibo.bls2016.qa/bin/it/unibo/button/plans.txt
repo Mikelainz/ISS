@@ -1,0 +1,7 @@
+plan(1,init, sentence(true,move(print,"button STARTS"),'','' ))
+plan(2,init, sentence(true,move( switchplan(simualate) ),'','' ))
+plan(1,simualate, sentence(true,delay( ) ,'','' ))
+plan(2,simualate, sentence(true,move(print,"button emits"),'','' ))
+plan(3,simualate, sentence(true,raise( local_click , clicked )'),'','' ))
+plan(4,simualate, sentence(true,move(repeatplan) ,'','' ))
+plan(5,simualate, sentence(true,move(resumeplan),'','' ))

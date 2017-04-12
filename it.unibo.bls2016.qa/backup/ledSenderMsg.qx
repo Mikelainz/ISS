@@ -1,0 +1,27 @@
+/*
+ * ledSenderMsg.qa
+ * A ledtester for a remote led
+ */     
+System ledSenderMsg       
+
+Dispatch turnLed   : turnLed(X)
+
+Context ctxLedSenderMsg ip [host="192.168.43.229" port=8030] -g cyan  
+Context ctxLedMsg ip [host="192.168.137.2" port=8010]  -standalone   
+
+QActor ledmsg context ctxLedMsg   {   
+	Plan init normal    
+		println("never here: I am a placeholder	")
+}  
+  
+/*
+ * A actor that sends commands to the ledmsg   
+ */
+QActor ledtester context ctxLedSenderMsg   {  
+ 	Plan init normal      
+   		delay time(800) ;
+ 		forward ledmsg -m turnLed : turnLed(on) ;
+ 		delay time(500) ;
+ 		forward ledmsg -m turnLed : turnLed(off) ;
+ 		repeatPlan 2	
+}

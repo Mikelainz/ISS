@@ -1,0 +1,46 @@
+/*
+ * blsGui2016.qa
+ */     
+System blsGui2016     
+Event local_click  : clicked
+Event click   	   : clicked 
+
+Context ctxBlsGui ip [host="localhost" port=8010]  -g cyan
+/*  
+ * ---------------------------------------------------------------------------
+ * A button modeled as an actor that emits an event
+ * ---------------------------------------------------------------------------
+ */ 
+QActor button context ctxBlsGui   {   
+	Plan init  normal      
+		println("button STARTS");
+		solve consult("./blsGuiTheory.pl") time(0)  onFailSwitchTo prologFailure ; 
+ 		solve createGuiButton( local_click,clicked ) time(0)  onFailSwitchTo prologFailure   ;
+ 		switchToPlan simualate
+  	Plan prologFailure resumeLastPlan   
+		println("button has failed to solve a Prolog goal" )        	
+	Plan simualate
+	    emit local_click : 	clicked ;
+	    delay time(150);
+	    repeatPlan 100
+}   
+/*  
+ * ---------------------------------------------------------------------------
+ * A led with GUI that reacts to events
+ * ---------------------------------------------------------------------------
+ */      
+QActor led context ctxBlsGui   {  
+ 	Plan init  normal      
+		solve consult("./blsGuiTheory.pl") time(0)   ;
+ 		solve createGuiLed(led1, 1) time(0)  onFailSwitchTo prologFailure  ;
+		switchToPlan work
+	Plan work  
+// 		println( led(waits, local_clicked));  
+ 		/* (1) */ sense time(600000) local_click ->  continue ; 
+   		/* (2) */ solve ledSwitch time(0)  onFailSwitchTo prologFailure  ;
+     	repeatPlan 0
+  	Plan prologFailure resumeLastPlan   
+		println("led has failed to solve a Prolog goal" )        	
+ }	
+ 
+

@@ -1,0 +1,7 @@
+System helloSystem
+Context  ctxHello ip [ host="localhost" port=8079 ] -g cyan// rappresenta il nodo di esecuzione
+
+QActor qahello context ctxHello {
+	Plan init normal
+		println("Hello world")
+}

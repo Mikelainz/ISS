@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="it.unibo.button017.TestBls17_0" tests="0" skipped="0" failures="0" errors="0" timestamp="1970-01-01T00:00:00" hostname="Mike-pc" time="0.0">
+  <properties/>
+  <system-out><![CDATA[	*** QActorUtils evlpa_ctxbls2017 created it.unibo.qactors.platform.EventLoopActor@f822208
+	*** QActorUtils button017 created it.unibo.button017.MsgHandle_Button017@34b6393c
+	*** QActorUtils button017_ctrl created it.unibo.button017.Button017@55200716
+	*** QActorUtils controller017 created it.unibo.controller017.MsgHandle_Controller017@2d022f55
+	*** QActorUtils controller017_ctrl created it.unibo.controller017.Controller017@34db501f
+	*** QActorUtils led017 created it.unibo.led017.MsgHandle_Led017@207786b9
+	*** QActorUtils led017_ctrl created it.unibo.led017.Led017@5dcb1053
+	*** QActorUtils ctxbls2017 created it.unibo.qactors.akka.SystemCreationActor@55f2bc82
+====== setUp  it.unibo.qactors.QActorContext@588c8ca6
+====== evalTest ===============
+evalTest fib=165580141
+	*** ActorUtils terminateTheQActorSystem testing=false
+	*** QActorUtils terminateTheQActorSystem qa=ctxbls2017
+	*** QActorUtils terminateTheQActorSystem qa=button017
+	*** QActorUtils terminateTheQActorSystem qa=led017_ctrl
+	*** SystemCreationActor onReceive terminate(button017,false)
+		*** SystemCreationActor terminates1:button017  1/6
+	*** ActorUtils terminateTheQActor led017_ctrl testing=false
+	*** QActorUtils terminateTheQActorSystem qa=controller017_ctrl
+	*** SystemCreationActor onReceive terminate(led017_ctrl,false)
+		*** SystemCreationActor terminates1:led017_ctrl  2/6
+		*** SystemCreationActor terminates1:led017  3/6
+	*** ActorUtils terminateTheQActor controller017_ctrl testing=false
+	*** SystemCreationActor onReceive terminate(led017_ctrl,false)
+		*** SystemCreationActor terminates1:led017_ctrl  4/6
+		*** SystemCreationActor terminates1:led017  5/6
+	*** QActorUtils terminateTheQActorSystem qa=led017
+[INFO] [03/17/2017 13:34:26.835] [ctxbls2017-akka.actor.default-dispatcher-7] [akka://ctxbls2017/deadLetters] Message [akka.actor.ActorIdentity] from Actor[akka://ctxbls2017/deadLetters] to Actor[akka://ctxbls2017/deadLetters] was not delivered. [1] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+	*** SystemCreationActor onReceive terminate(controller017_ctrl,false)
+		*** SystemCreationActor terminates1:controller017_ctrl  6/6
+	*** QActorUtils terminateTheQActorSystem qa=controller017
+	*** QActorUtils terminateTheQActorSystem qa=button017_ctrl
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

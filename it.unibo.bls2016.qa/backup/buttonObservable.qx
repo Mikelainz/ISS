@@ -1,0 +1,53 @@
+/*
+ * buttonObservable.qa
+ */     
+System   buttonObservable      
+Event    clicked   : clicked(V)     //emitted by the Button (implementation) device
+Dispatch register  : register(X)  	//sent by an observer  
+
+Context ctxButtonObservable ip [host="192.168.43.41" port=8010]   -httpserver  
+EventHandler evh for clicked -print ;
+
+   
+QActor buttonobservable context ctxButtonObservable {     
+	 Plan init  normal              
+  		println("buttonobservable STARTS" ) ;
+ 		switchToPlan configure    ;
+ 		switchToPlan waitForRegister;
+ 		println("buttonobservable ENDS" )
+ 	Plan configure resumeLastPlan 
+  		solve consult("buttonTheory.pl") time(0)  onFailSwitchTo prologFailure ; 
+ 		solve createButton( "click", clicked, clicked(V) ) time(0)  onFailSwitchTo prologFailure   	
+ 	Plan waitForRegister
+ 		println("buttonobservable WAITS for a registration" );
+   		receiveMsg time(300000); //after 300 secs end the timeout 
+ 		[ !? tout(X,Y) ] switchToPlan toutExpired ;
+//    	onMsg turnLed : turnLed(V)  ->  solve turnTheLed(V) time(0) onFailSwitchTo prologFailure;   
+// 		sense time(300000) clicked -> continue;
+// 		onEvent  clicked : clicked(V) -> forward buttontester -m button : button(V) ;
+  		repeatPlan 0
+ 	//switchToPlan entryAsOobservable can be called by the button POJO oobservable   
+ 	Plan entryAsOobservable   
+ 		println("buttonobservable entryAsOobservable" )   	                   
+//   		[ ?? buttonValue(V)]  forward buttontester -m button : button(V) 
+  	Plan prologFailure resumeLastPlan   
+		println("buttonobservable has failed to solve a Prolog goal" )      
+ 	Plan toutExpired    
+		[ ?? tout(X,Y) ] println( timeout(X,Y)  )  
+}
+ 
+/*
+ * A actor that receives the messages sent from the button   
+ */
+QActor buttontester context ctxButtonObservable   {  
+  	Plan init normal   
+  		println("buttontester WAITS" );    	
+  		receiveTheMsg m( button , dispatch, SENDER, buttontester, button(V) , N )  time(300000);   
+ 		[ !? tout(X,Y) ] switchToPlan toutExpired ;
+// 		onMsg button : button(V) -> println( buttontester(button(V)) ) ;
+   		repeatPlan 0	
+   	Plan toutExpired    
+		[ ?? tout(X,Y) ] println( timeout(X,Y)  )   
+}
+
+ 

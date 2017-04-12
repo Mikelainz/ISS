@@ -1,0 +1,45 @@
+/*
+ * ledMsg.qa
+ * This is A MODEL defined during REQUIREMENT or PROBLEM ANALYSIS 
+ * by using the qa CUSTOM meta-model / language
+ */     
+System ledMsg       
+Dispatch turnLed   : turnLed(X)
+
+//Context ctxBlsController ip [host="localhost" port=8050] -standalone 
+
+Context ctxLedMsg ip [host="localhost" port=8010] -g cyan   
+    
+QActor ledmsg context ctxLedMsg   {     
+ 	Plan init  normal             
+ 		println( ledmsg(starts) );  
+ 		switchToPlan configure ;    
+  		switchToPlan work          
+ 	Plan configure resumeLastPlan
+  		solve consult("ledTheory.pl") time(0)  onFailSwitchTo prologFailure ;
+ 		solve createLed("led",0) time(0)  onFailSwitchTo prologFailure   		
+ 	Plan work       	                     
+  		receiveMsg time(300000); //after 300 secs end the timeout 
+ 		[ !? tout(X,Y) ] switchToPlan toutExpired ;
+ 		printCurrentMessage;
+    	onMsg turnLed : turnLed(V)  ->  solve turnTheLed(V) time(0) onFailSwitchTo prologFailure;   
+//   		onMsg turnLed : turnLed(on)  ->  solve turnOn  time(0) onFailSwitchTo prologFailure;   
+//   		onMsg turnLed : turnLed(off) ->  solve turnOff time(0) onFailSwitchTo prologFailure;   
+  		repeatPlan 0
+	Plan prologFailure resumeLastPlan   
+		println("ledmsg has failed to solve a Prolog goal" )      
+ 	Plan toutExpired    
+		[ ?? tout(X,Y) ] println( timeout(X,Y)  )  
+}
+ 
+/*
+ * A actor that sends commands to the ledmsg   
+ */
+QActor ledtester context ctxLedMsg   {  
+ 	Plan init normal      
+   		delay time(800) ;
+ 		forward ledmsg -m turnLed : turnLed(on) ;
+ 		delay time(500) ;
+ 		forward ledmsg -m turnLed : turnLed(off) ;
+ 		repeatPlan 4	
+}

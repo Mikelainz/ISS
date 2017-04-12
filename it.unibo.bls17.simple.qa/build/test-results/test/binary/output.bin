@@ -1,0 +1,14 @@
+K	ACTIVATING ctxblssimple2017 ncores=8 port=8010 webDir=null testing=false
+9	*** activateAkkaSystem in progress ...ctxblssimple2017
+c	*** QActorUtils evlpa_ctxblssimple2017 created it.unibo.qactors.platform.EventLoopActor@3cd93748
+]	*** QActorUtils buttongui017 created it.unibo.buttongui017.MsgHandle_Buttongui017@60995006
+X	*** QActorUtils buttongui017_ctrl created it.unibo.buttongui017.Buttongui017@7acb1ff7
+"	buttonsimple017 ENDS"
+D	*** ActorUtils terminateTheQActor buttongui017_ctrl testing=false
+]	*** QActorUtils ledsimple017 created it.unibo.ledsimple017.MsgHandle_Ledsimple017@69fada0b
+X	*** QActorUtils ledsimple017_ctrl created it.unibo.ledsimple017.Ledsimple017@4d53dac2
+"LED WAITS"
+^	*** QActorUtils ctxblssimple2017 created it.unibo.qactors.akka.SystemCreationActor@5f6430fc
+7====== setUp  it.unibo.qactors.QActorContext@63245b58
+!====== execTest ===============
+;====== terminate  it.unibo.qactors.QActorContext@63245b58

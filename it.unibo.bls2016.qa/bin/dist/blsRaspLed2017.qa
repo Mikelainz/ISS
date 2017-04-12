@@ -1,0 +1,44 @@
+/*
+ * blsRasp2016.qa
+ */     
+System blsRaspLed2017      
+Event local_click  : clicked
+
+Context ctxBlsRaspLed ip [host="localhost" port=8010]  
+/*  
+ * ---------------------------------------------------------------------------
+ * Button  
+ * ---------------------------------------------------------------------------
+ */  
+QActor button context ctxBlsRaspLed   {       
+	Plan init  normal      
+		println("button STARTS");
+  		switchToPlan simualate
+ 	Plan simualate
+	    delay time(1000); 
+		println("button emits");
+	    emit local_click : 	clicked ;
+	    repeatPlan 6
+}   
+/*     
+ * ---------------------------------------------------------------------------
+ * Led 
+ * ---------------------------------------------------------------------------
+ */      
+QActor led context ctxBlsRaspLed   {  
+ 	Plan init  normal      
+ 		println("led STARTS");
+ 		actorOp createPi4jLed( 25 ) ;	//BCM 25
+ 		switchToPlan work ;
+ 		actorOp ledOff ;
+ 		println("led ENDS")
+	Plan work  
+  		//println( led(waits, local_clicked) );  
+ 		/* (1) */ sense time(2000) local_click ->  continue ; 
+ 		printCurrentEvent;
+ 		//[ !? tout(X,V)]  println( tout(X,V) ) ;
+ 		[ ?? tout(senseevent,Worker)]  endPlan "tout: work ends"  ;
+   		/* (2) */ actorOp ledSwitch ;
+     	repeatPlan 
+}	
+

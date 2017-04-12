@@ -1,0 +1,32 @@
+System bls0  
+Dispatch turn : switch   
+Event local_click : clicked(N)  //N : natural
+Context bls0Ctx ip [ host="localhost"  port=8029 ]  -g cyan  
+
+QActor qacontrol context bls0Ctx{
+	Plan init normal          
+   		println( qacontrol(starts)  )  ;
+   		actorOp createAButtonWithGui;
+   		switchToPlan work; 
+    	println( qacontrol(ends)  )  
+  	Plan work
+  		sense time(10000) local_click -> continue ;
+   		[ ?? tout(senseevent,W)] endPlan "qacontrol timeout";
+   		//printCurrentEvent ;
+    	onEvent local_click : cliked(N) ->
+    					forward qaled -m turn : switch ;
+		repeatPlan
+}
+  
+QActor qaled context bls0Ctx {
+	Plan init normal          
+   		println( qaled(starts)  )  ;
+   		actorOp createLedGui;
+   		switchToPlan work;
+  		println( qaled(ends)  )  
+  	Plan work
+   		receiveMsg time(3000000) ;
+   		//printCurrentMessage ;
+   		onMsg turn : switch -> actorOp ledSwitch; //ledSwitch
+   		repeatPlan
+}
