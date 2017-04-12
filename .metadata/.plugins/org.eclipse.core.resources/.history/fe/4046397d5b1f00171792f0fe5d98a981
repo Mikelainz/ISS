@@ -1,0 +1,62 @@
+System blsDistributed
+Dispatch click:click(x)
+      
+Context ctxButton ip [host="localhost" port=8010]  -g cyan
+Context ctxLed ip [host="localhost" port=8030] -g cyan
+// Context ctxLed ip [host="192.168.137.2" port=8030]   // u can't use GUI  while this is running on RB
+/* there we need to use two different settings in order to have the LED on the RB and the button on PC
+ * [adresses are based on an ethernet connection]
+ * PC conf -> button local and LED remote
+ * Context ctxButton ip [host="localhost" port=8010]  -g cyan
+ * Context ctxLed ip [host="192.168.137.2" port=8030]  -g cyan
+ * RB conf ->
+ * Context ctxButton ip [host="192.168.137.1" port=8010]  -g cyan
+ * Context ctxLed ip [host="localhost" port=8030]
+ * after this we need to compile the build of the gradle file (second line), copy and unzip the zip file on the RB (e just need the led part of the project)
+ * then we can run our project with java -jar name_of_the_prject.jar or the RB and just run on the pc
+ */ 
+ 
+QActor myled context ctxLed   {        
+	Plan init  normal      
+		println("myLed  STARTS");
+		switchToPlan sysWithGuiOnPc;
+//		switchToPlan sysOnRasp;
+		switchToPlan work;		
+ 		delay time(60000);
+ 		println("myLed  ENDS")
+	Plan sysWithGuiOnPc
+		actorOp createGuiLed( 25 ) 	;
+		resumeLastPlan     
+	
+	Plan sysOnRasp
+		actorOp createPi4jLed( 25 ) ;	    //BCM 25 WPI 6
+		resumeLastPlan
+ 
+ 	Plan work 
+ 		receiveMsg time(60000);
+ 		onMsg click :click("button0") -> actorOp startBlink;
+ 		onMsg click :click("button1") -> actorOp stopBlink;
+ 		
+ 		printCurrentMessage;
+// 		actorOp switchLedState;
+ 		repeatPlan
+} 
+ 
+QActor mybutton context ctxButton   {        
+	Plan init  normal      
+		println("myButton  STARTS");
+		switchToPlan sysWithGuiOnPc;
+		//switchToPlan sysOnRasp;		
+ 		delay time(60000);
+ 		println("myButton  ENDS")
+	Plan sysWithGuiOnPc        
+ 		actorOp createGuiButton( 24 , "START" ) ;	
+ 		actorOp createGuiButton( 23 , "STOP" ) ;
+		resumeLastPlan     
+/*
+ * Plan sysOnRasp       
+ 		actorOp createPi4jButton( 24 ) ;	//BCM 24 WPI 5
+		resumeLastPlan
+  */
+ 
+}   

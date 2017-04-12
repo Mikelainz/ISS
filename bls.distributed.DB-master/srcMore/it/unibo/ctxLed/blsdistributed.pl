@@ -2,7 +2,7 @@
 % Context ctxLed  SYSTEM-configuration: file it.unibo.ctxLed.blsDistributed.pl 
 %====================================================================================
 context(ctxbutton, "localhost",  "TCP", "8010" ).  		 
-context(ctxled, "localhost",  "TCP", "8030" ).  		 
+context(ctxled, "192.168.137.2",  "TCP", "8030" ).  		 
 %%% -------------------------------------------
 qactor( myled , ctxled, "it.unibo.myled.MsgHandle_Myled"   ). %%store msgs 
 qactor( myled_ctrl , ctxled, "it.unibo.myled.Myled"   ). %%control-driven 

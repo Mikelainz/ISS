@@ -1,0 +1,7 @@
+plan(1,init, sentence(true,move(print,"myButton  STARTS"),'','' ))
+plan(2,init, sentence(true,move( switchplan(sysWithGuiOnPc) ),'','' ))
+plan(3,init, sentence(true,delay( ) ,'','' ))
+plan(4,init, sentence(true,move(print,"myButton  ENDS"),'','' ))
+plan(1,sysWithGuiOnPc, sentence(true,not here ActionMove,'','' ))
+plan(2,sysWithGuiOnPc, sentence(true,move(resumeplan),'','' ))
+plan(3,sysWithGuiOnPc, sentence(true,move(resumeplan),'','' ))

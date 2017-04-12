@@ -20,8 +20,9 @@ public class Mybutton extends AbstractMybutton{
 		super(actorId, myCtx, outEnvView);
 	}
 	
-	public void createGuiButton(int pinNum, String name){
-		btnGui      = new Button(name);
+	public void createGuiButton(int pinNum, String command){
+		btnGui      = new Button(command);
+		btnGui.setActionCommand(command);
 		btnListener = new ButtonListener(this);
 		btnGui.addActionListener( btnListener );
 		outEnvView.getEnv().addPanel(btnGui);

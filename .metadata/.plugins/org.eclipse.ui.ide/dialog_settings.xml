@@ -9,6 +9,7 @@
 		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
 		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="C:\Users\Mattia\Desktop\WORKSPACE\bls.distributed.DB-master"/>
 			<item value="C:\Users\Mattia\Desktop\WORKSPACE\it.unibo.bls.distributed2"/>
 			<item value="C:\Users\Mattia\Desktop\WORKSPACE\it.unibo.bls2016.qa"/>
 			<item value="C:\Users\Mattia\Desktop\WORKSPACE\it.unibo.bls17.naive"/>

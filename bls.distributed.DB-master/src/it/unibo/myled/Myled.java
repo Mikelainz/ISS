@@ -47,16 +47,33 @@ public class Myled extends AbstractMyled {
 	}
 	
 	public void stopBlink() {
-		myBLC.stop();
-		ledGui.turnOff();
+		myBLC.setFlag(false);
+		//The thread won't die instantly (we don't use stop function [deprecated]) but the led should turn off 
+		//immediately
+		if (!withGui){
+			ledPi4j.turnOff();
+		}
+		else {
+			ledGui.turnOff();
+		}
 	}
+
 	
 	//gestore blink
 	class BlinkLedCommander extends Thread {
-		@Override
+		
+		
+		private boolean flag;
+		public void setFlag(boolean state){
+		 	  this.flag = state;
+		 	  
+		}
+		 
+		 
 		public void run() {
-			while(true) {
-				ledGui.ledSwitch();
+			flag = true;
+			while(flag) {
+				switchLedState();
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
@@ -66,6 +83,7 @@ public class Myled extends AbstractMyled {
 			}
 			
 		}
-	}
+		
 	
+	}
 }

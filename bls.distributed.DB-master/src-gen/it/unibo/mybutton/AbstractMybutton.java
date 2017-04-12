@@ -89,11 +89,11 @@ public abstract class AbstractMybutton extends QActor {
 	    while(true){
 	    	curPlanInExec =  "sysWithGuiOnPc";	//within while since it can be lost by switchlan
 	    	nPlanIter++;
-	    		parg = "actorOp(createGuiButton(24,\"START\"))";
+	    		parg = "actorOp(createGuiButton(24,\"start\"))";
 	    		//aar = solveGoalReactive(parg,3600000,"","");
 	    		//genCheckAar(m.name)»
 	    		QActorUtils.solveGoal(parg,pengine );
-	    		parg = "actorOp(createGuiButton(23,\"STOP\"))";
+	    		parg = "actorOp(createGuiButton(23,\"stop\"))";
 	    		//aar = solveGoalReactive(parg,3600000,"","");
 	    		//genCheckAar(m.name)»
 	    		QActorUtils.solveGoal(parg,pengine );
