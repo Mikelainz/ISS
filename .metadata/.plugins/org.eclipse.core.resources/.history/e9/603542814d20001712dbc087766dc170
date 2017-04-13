@@ -69,7 +69,7 @@ QActor myled context ctxLed   {
 	
  	Plan startBlink // no timeout version
  		actorOp switchLedState;
- 		receiveMsg time(1000);// react event timeoutEvent -> stopBlink; 		
+ 		receiveMsg time(1000); 		
 // 		sense time(100) timeoutEvent -> continue;
 // 		printCurrentEvent;
 //		onEvent timeoutEvent : timeoutEvent -> switchToPlan stopBlink;
