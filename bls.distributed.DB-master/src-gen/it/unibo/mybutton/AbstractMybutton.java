@@ -66,10 +66,7 @@ public abstract class AbstractMybutton extends QActor {
 	    		temporaryStr = "\"myButton  STARTS\"";
 	    		println( temporaryStr );  
 	    		if( ! planUtils.switchToPlan("sysWithGuiOnPc").getGoon() ) break;
-	    		//delay
-	    		aar = delayReactive(60000,"" , "");
-	    		if( aar.getInterrupted() ) curPlanInExec   = "init";
-	    		if( ! aar.getGoon() ) break;
+	    		if( ! planUtils.switchToPlan("work").getGoon() ) break;
 	    		temporaryStr = "\"myButton  ENDS\"";
 	    		println( temporaryStr );  
 	    break;
@@ -103,6 +100,63 @@ public abstract class AbstractMybutton extends QActor {
 	    return returnValue;
 	    }catch(Exception e){
 	       //println( getName() + " plan=sysWithGuiOnPc WARNING:" + e.getMessage() );
+	       QActorContext.terminateQActorSystem(this); 
+	       return false;  
+	    }
+	    }
+	    public boolean sysOnRasp() throws Exception{	//public to allow reflection
+	    try{
+	    	int nPlanIter = 0;
+	    	//curPlanInExec =  "sysOnRasp";
+	    	boolean returnValue = suspendWork;
+	    while(true){
+	    	curPlanInExec =  "sysOnRasp";	//within while since it can be lost by switchlan
+	    	nPlanIter++;
+	    		parg = "actorOp(createPi4jButton(24))";
+	    		//aar = solveGoalReactive(parg,3600000,"","");
+	    		//genCheckAar(m.name)»
+	    		QActorUtils.solveGoal(parg,pengine );
+	    		returnValue = continueWork; //we must restore nPlanIter and curPlanInExec of the 'interrupted' plan
+	    break;
+	    }//while
+	    return returnValue;
+	    }catch(Exception e){
+	       //println( getName() + " plan=sysOnRasp WARNING:" + e.getMessage() );
+	       QActorContext.terminateQActorSystem(this); 
+	       return false;  
+	    }
+	    }
+	    public boolean work() throws Exception{	//public to allow reflection
+	    try{
+	    	int nPlanIter = 0;
+	    	//curPlanInExec =  "work";
+	    	boolean returnValue = suspendWork;
+	    while(true){
+	    	curPlanInExec =  "work";	//within while since it can be lost by switchlan
+	    	nPlanIter++;
+	    		//senseEvent
+	    		timeoutval = 60000;
+	    		aar = planUtils.senseEvents( timeoutval,"timeoutEvent","continue",
+	    		"" , "",ActionExecMode.synch );
+	    		if( ! aar.getGoon() || aar.getTimeRemained() <= 0 ){
+	    			//println("			WARNING: sense timeout");
+	    			addRule("tout(senseevent,"+getName()+")");
+	    		}
+	    		printCurrentEvent(false);
+	    		//onEvent
+	    		if( currentEvent.getEventId().equals("timeoutEvent") ){
+	    		 		String parg="stopBlinkLed";
+	    		 		/* SendDispatch */
+	    		 		parg = updateVars(Term.createTerm("timeoutEvent"),  Term.createTerm("timeoutEvent"), 
+	    		 			    		  					Term.createTerm(currentEvent.getMsg()), parg);
+	    		 		if( parg != null ) sendMsg("stopBlinkLed","myled", QActorContext.dispatch, parg ); 
+	    		 }
+	    		if( planUtils.repeatPlan(nPlanIter,0).getGoon() ) continue;
+	    break;
+	    }//while
+	    return returnValue;
+	    }catch(Exception e){
+	       //println( getName() + " plan=work WARNING:" + e.getMessage() );
 	       QActorContext.terminateQActorSystem(this); 
 	       return false;  
 	    }

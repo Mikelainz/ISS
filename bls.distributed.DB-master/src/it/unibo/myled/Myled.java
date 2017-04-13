@@ -10,7 +10,6 @@ import it.unibo.qactors.QActorContext;
 
 public class Myled extends AbstractMyled { 
 	
-	private BlinkLedCommander myBLC;
 	private   LedWithRasp ledPi4j ;
 
 	private LedWithGui    ledGui ;
@@ -40,50 +39,15 @@ public class Myled extends AbstractMyled {
 		}
 	}
 	
-	public void startBlink() {
-		myBLC = new BlinkLedCommander();
-		myBLC.start();
-		
-	}
-	
-	public void stopBlink() {
-		myBLC.setFlag(false);
-		//The thread won't die instantly (we don't use stop function [deprecated]) but the led should turn off 
-		//immediately
+	public void turnOff(){
 		if (!withGui){
 			ledPi4j.turnOff();
+			System.out.println("LED is " + (ledPi4j.isOn()?"ON":"OFF"));
 		}
 		else {
 			ledGui.turnOff();
 		}
 	}
-
-	
-	//gestore blink
-	class BlinkLedCommander extends Thread {
-		
-		
-		private boolean flag;
-		public void setFlag(boolean state){
-		 	  this.flag = state;
-		 	  
-		}
-		 
-		 
-		public void run() {
-			flag = true;
-			while(flag) {
-				switchLedState();
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			
-		}
 		
 	
-	}
 }

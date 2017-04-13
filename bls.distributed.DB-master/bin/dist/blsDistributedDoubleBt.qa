@@ -1,8 +1,8 @@
 System blsDistributed
 Dispatch click:click(x)
       
-Context ctxButton ip [host="localhost" port=8010]  -g cyan
-Context ctxLed ip [host="localhost" port=8030] -g cyan
+Context ctxButton ip [host="192.168.137.1" port=8010]  -g cyan
+Context ctxLed ip [host="localhost" port=8030] //-g cyan
 // Context ctxLed ip [host="192.168.137.2" port=8030]   // u can't use GUI  while this is running on RB
 /* there we need to use two different settings in order to have the LED on the RB and the button on PC
  * [adresses are based on an ethernet connection]
@@ -19,11 +19,12 @@ Context ctxLed ip [host="localhost" port=8030] -g cyan
 QActor myled context ctxLed   {        
 	Plan init  normal      
 		println("myLed  STARTS");
-		switchToPlan sysWithGuiOnPc;
-//		switchToPlan sysOnRasp;
+//		switchToPlan sysWithGuiOnPc;
+		switchToPlan sysOnRasp;
 		switchToPlan work;		
  		delay time(60000);
  		println("myLed  ENDS")
+ 		
 	Plan sysWithGuiOnPc
 		actorOp createGuiLed( 25 ) 	;
 		resumeLastPlan     
@@ -34,8 +35,8 @@ QActor myled context ctxLed   {
  
  	Plan work 
  		receiveMsg time(60000);
- 		onMsg click :click("button0") -> actorOp startBlink;
- 		onMsg click :click("button1") -> actorOp stopBlink;
+ 		onMsg click :click("start") -> actorOp startBlink;
+ 		onMsg click :click("stop") -> actorOp stopBlink;
  		
  		printCurrentMessage;
 // 		actorOp switchLedState;
@@ -50,8 +51,8 @@ QActor mybutton context ctxButton   {
  		delay time(60000);
  		println("myButton  ENDS")
 	Plan sysWithGuiOnPc        
- 		actorOp createGuiButton( 24 , "START" ) ;	
- 		actorOp createGuiButton( 23 , "STOP" ) ;
+ 		actorOp createGuiButton( 24 , "start" ) ;	
+ 		actorOp createGuiButton( 23 , "stop" ) ;
 		resumeLastPlan     
 /*
  * Plan sysOnRasp       

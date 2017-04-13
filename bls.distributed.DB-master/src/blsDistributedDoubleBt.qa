@@ -1,5 +1,9 @@
 System blsDistributed
-Dispatch click:click(x)      
+
+Dispatch startBlinkLed : startBlinkLed(BLINKINTERVAL)    
+Dispatch stopBlinkLed : stopBlinkLed
+Event timeoutEvent : timeoutEvent
+     
 Context ctxButton ip [host="localhost" port=8010]  -g cyan
 Context ctxLed ip [host="192.168.137.2" port=8030] //-g cyan
 // Context ctxLed ip [host="192.168.137.2" port=8030]   // u can't use GUI  while this is running on RB
@@ -14,6 +18,30 @@ Context ctxLed ip [host="192.168.137.2" port=8030] //-g cyan
  * after this we need to compile the build of the gradle file (second line), copy and unzip the zip file on the RB (e just need the led part of the project)
  * then we can run our project with java -jar name_of_the_prject.jar or the RB and just run on the pc
  */ 
+ 
+QActor timer context ctxButton {
+	Plan init normal
+		println("timer INITIALIZED");
+ 		switchToPlan work 	
+	
+	Plan work
+ 		receiveMsg time(60000);
+ 		printCurrentMessage;
+ 		onMsg startBlinkLed : startBlinkLed(BLINKINTERVAL)   -> switchToPlan startTo;
+ 		repeatPlan
+ 	
+ 	Plan startTo
+ //		sensible in case of more presses of start button
+ 		receiveMsg time(5000);
+ 		onMsg startBlinkLed : startBlinkLed(BLINKINTERVAL)   -> switchToPlan startTo;
+ 		onMsg stopBlinkLed : stopBlinkLed  -> switchToPlan work;
+ 		printCurrentMessage;
+ 		emit timeoutEvent : timeoutEvent;
+ //		message version of timeout	
+ //		forward myled -m stopBlinkLed : stopBlinkLed;
+ 		switchToPlan work
+ 		
+ }
  
 QActor myled context ctxLed   {        
 	Plan init  normal      
@@ -34,29 +62,49 @@ QActor myled context ctxLed   {
  
  	Plan work 
  		receiveMsg time(60000);
- 		onMsg click :click("start") -> actorOp startBlink;
- 		onMsg click :click("stop") -> actorOp stopBlink;
- 		
+ 		onMsg startBlinkLed : startBlinkLed(BLINKINTERVAL)   -> switchToPlan startBlink;
+ 		onMsg stopBlinkLed : stopBlinkLed  -> switchToPlan stopBlink;	
  		printCurrentMessage;
-// 		actorOp switchLedState;
  		repeatPlan
+	
+ 	Plan startBlink // no timeout version
+ 		actorOp switchLedState;
+ 		receiveMsg time(1000); 		
+// 		sense time(100) timeoutEvent -> continue;
+// 		printCurrentEvent;
+//		onEvent timeoutEvent : timeoutEvent -> switchToPlan stopBlink;
+// 		what happens when we re-click start button in this routine? Does it have to restart or not?
+// 		onMsg startBlinkLed : startBlinkLed(BLINKINTERVAL)   -> switchToPlan startBlink;
+ 		onMsg stopBlinkLed : stopBlinkLed  -> switchToPlan stopBlink;	
+ 		repeatPlan
+ 		
+ 	Plan stopBlink
+ 		actorOp turnOff;
+ 		switchToPlan work
 } 
  
 QActor mybutton context ctxButton   {        
 	Plan init  normal      
 		println("myButton  STARTS");
 		switchToPlan sysWithGuiOnPc;
-		//switchToPlan sysOnRasp;		
- 		delay time(60000);
+//		switchToPlan sysOnRasp;		
+// 		delay time(60000);
+		switchToPlan work;
  		println("myButton  ENDS")
+ 		
 	Plan sysWithGuiOnPc        
  		actorOp createGuiButton( 24 , "start" ) ;	
  		actorOp createGuiButton( 23 , "stop" ) ;
 		resumeLastPlan     
-/*
- * Plan sysOnRasp       
+
+  	Plan sysOnRasp       
  		actorOp createPi4jButton( 24 ) ;	//BCM 24 WPI 5
 		resumeLastPlan
-  */
+  
+  	Plan work
+  		sense time(60000) timeoutEvent -> continue;
+ 		printCurrentEvent;
+ 		onEvent timeoutEvent : timeoutEvent -> forward myled -m stopBlinkLed : stopBlinkLed;
+ 		repeatPlan
  
 }   

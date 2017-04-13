@@ -11,7 +11,7 @@ import it.unibo.is.interfaces.IOutputEnvView;
 import it.unibo.qactors.QActorContext;
 public class Mybutton extends AbstractMybutton{ 
 	
-	
+	private static final int BLINKINTERVAL = 1000;
 	private ButtonListener btnListener ;  
 	private Button btnGui ;
 	
@@ -41,7 +41,12 @@ public class Mybutton extends AbstractMybutton{
 		
 	public void controlLogic(String cmd){
 		try {
-			sendMsg("click", "myled", QActorContext.dispatch,"click(" + cmd + ")");
+			if (cmd.equalsIgnoreCase("start")){
+				sendMsg("startBlinkLed", "myled", QActorContext.dispatch,"startBlinkLed(" + BLINKINTERVAL + ")");
+				sendMsg("startBlinkLed", "timer", QActorContext.dispatch,"startBlinkLed(" + BLINKINTERVAL + ")");
+			}
+			else if (cmd.equalsIgnoreCase("stop"))
+				sendMsg("stopBlinkLed", "myled", QActorContext.dispatch,"stopBlinkLed");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

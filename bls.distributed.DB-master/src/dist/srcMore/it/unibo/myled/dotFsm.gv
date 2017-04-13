@@ -19,5 +19,12 @@ digraph finite_state_machine {
   	init -> sysOnRasp [ label = ""];
   	init -> work [ label = ""];
   	
-  	work -> work [ label = "click(x)/"];
+  	work -> work [ label = ""];
+  	work -> startBlink [ label = "startBlinkLed(BLINKINTERVAL)/"];
+  	work -> stopBlink [ label = "stopBlinkLed/"];
+  	
+  	startBlink -> startBlink [ label = ""];
+  	startBlink -> stopBlink [ label = "stopBlinkLed/"];
+  	
+  	stopBlink -> work [ label = ""];
 }
