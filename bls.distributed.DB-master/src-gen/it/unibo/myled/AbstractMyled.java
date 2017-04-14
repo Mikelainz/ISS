@@ -65,7 +65,7 @@ public abstract class AbstractMyled extends QActor {
 	    	nPlanIter++;
 	    		temporaryStr = "\"myLed  STARTS\"";
 	    		println( temporaryStr );  
-	    		if( ! planUtils.switchToPlan("sysOnRasp").getGoon() ) break;
+	    		if( ! planUtils.switchToPlan("sysWithGuiOnPc").getGoon() ) break;
 	    		if( ! planUtils.switchToPlan("work").getGoon() ) break;
 	    		//delay
 	    		aar = delayReactive(60000,"" , "");
@@ -134,31 +134,35 @@ public abstract class AbstractMyled extends QActor {
 	    while(true){
 	    	curPlanInExec =  "work";	//within while since it can be lost by switchlan
 	    	nPlanIter++;
-	    		//ReceiveMsg
-	    		 		aar = planUtils.receiveAMsg(mysupport,60000, "" , "" ); 	//could block
-	    			    if( ! aar.getGoon() || aar.getTimeRemained() <= 0 ){
-	    			    	//println("	WARNING: receivemsg timeout " + aar.getTimeRemained());
-	    			    	addRule("tout(receivemsg,"+getName()+")");
-	    			    }
-	    		//onMsg
-	    		if( currentMessage.msgId().equals("startBlinkLed") ){
-	    			String parg = "";
-	    			/* SwitchPlan */
-	    			parg =  updateVars(  Term.createTerm("startBlinkLed(BLINKINTERVAL)"), Term.createTerm("startBlinkLed(BLINKINTERVAL)"), 
-	    				    		  					Term.createTerm(currentMessage.msgContent()), parg);
-	    				if( parg != null ){
-	    					 if( ! planUtils.switchToPlan("startBlink").getGoon() ) break; 
-	    				}//else println("guard  fails");  //parg is null when there is no guard (onEvent)
-	    		}//onMsg
-	    		if( currentMessage.msgId().equals("stopBlinkLed") ){
-	    			String parg = "";
-	    			/* SwitchPlan */
-	    			parg =  updateVars(  Term.createTerm("stopBlinkLed"), Term.createTerm("stopBlinkLed"), 
-	    				    		  					Term.createTerm(currentMessage.msgContent()), parg);
-	    				if( parg != null ){
-	    					 if( ! planUtils.switchToPlan("stopBlink").getGoon() ) break; 
-	    				}//else println("guard  fails");  //parg is null when there is no guard (onEvent)
-	    		}printCurrentMessage(false);
+	    		//senseEvent
+	    		timeoutval = 60000;
+	    		aar = planUtils.senseEvents( timeoutval,"buttonEvent","continue",
+	    		"" , "",ActionExecMode.synch );
+	    		if( ! aar.getGoon() || aar.getTimeRemained() <= 0 ){
+	    			//println("			WARNING: sense timeout");
+	    			addRule("tout(senseevent,"+getName()+")");
+	    		}
+	    		//onEvent
+	    		if( currentEvent.getEventId().equals("buttonEvent") ){
+	    		 		String parg = "";
+	    		 		/* SwitchPlan */
+	    		 		parg =  updateVars(  Term.createTerm("startBlinkLed(BLINKINTERVAL)"), Term.createTerm("startBlinkLed(BLINKINTERVAL)"), 
+	    		 			    		  					Term.createTerm(currentEvent.getMsg()), parg);
+	    		 			if( parg != null ){
+	    		 				 if( ! planUtils.switchToPlan("startBlink").getGoon() ) break; 
+	    		 			}//else println("guard  fails");  //parg is null when there is no guard (onEvent)
+	    		 }
+	    		//onEvent
+	    		if( currentEvent.getEventId().equals("buttonEvent") ){
+	    		 		String parg = "";
+	    		 		/* SwitchPlan */
+	    		 		parg =  updateVars(  Term.createTerm("startBlinkLed(BLINKINTERVAL)"), Term.createTerm("stopBlinkLed"), 
+	    		 			    		  					Term.createTerm(currentEvent.getMsg()), parg);
+	    		 			if( parg != null ){
+	    		 				 if( ! planUtils.switchToPlan("stopBlink").getGoon() ) break; 
+	    		 			}//else println("guard  fails");  //parg is null when there is no guard (onEvent)
+	    		 }
+	    		printCurrentMessage(false);
 	    		if( planUtils.repeatPlan(nPlanIter,0).getGoon() ) continue;
 	    break;
 	    }//while
@@ -181,22 +185,25 @@ public abstract class AbstractMyled extends QActor {
 	    		//aar = solveGoalReactive(parg,3600000,"","");
 	    		//genCheckAar(m.name)»
 	    		QActorUtils.solveGoal(parg,pengine );
-	    		//ReceiveMsg
-	    		 		aar = planUtils.receiveAMsg(mysupport,1000, "" , "" ); 	//could block
-	    			    if( ! aar.getGoon() || aar.getTimeRemained() <= 0 ){
-	    			    	//println("	WARNING: receivemsg timeout " + aar.getTimeRemained());
-	    			    	addRule("tout(receivemsg,"+getName()+")");
-	    			    }
-	    		//onMsg
-	    		if( currentMessage.msgId().equals("stopBlinkLed") ){
-	    			String parg = "";
-	    			/* SwitchPlan */
-	    			parg =  updateVars(  Term.createTerm("stopBlinkLed"), Term.createTerm("stopBlinkLed"), 
-	    				    		  					Term.createTerm(currentMessage.msgContent()), parg);
-	    				if( parg != null ){
-	    					 if( ! planUtils.switchToPlan("stopBlink").getGoon() ) break; 
-	    				}//else println("guard  fails");  //parg is null when there is no guard (onEvent)
-	    		}if( planUtils.repeatPlan(nPlanIter,0).getGoon() ) continue;
+	    		//senseEvent
+	    		timeoutval = 1000;
+	    		aar = planUtils.senseEvents( timeoutval,"buttonEvent","continue",
+	    		"" , "",ActionExecMode.synch );
+	    		if( ! aar.getGoon() || aar.getTimeRemained() <= 0 ){
+	    			//println("			WARNING: sense timeout");
+	    			addRule("tout(senseevent,"+getName()+")");
+	    		}
+	    		//onEvent
+	    		if( currentEvent.getEventId().equals("buttonEvent") ){
+	    		 		String parg = "";
+	    		 		/* SwitchPlan */
+	    		 		parg =  updateVars(  Term.createTerm("startBlinkLed(BLINKINTERVAL)"), Term.createTerm("stopBlinkLed"), 
+	    		 			    		  					Term.createTerm(currentEvent.getMsg()), parg);
+	    		 			if( parg != null ){
+	    		 				 if( ! planUtils.switchToPlan("stopBlink").getGoon() ) break; 
+	    		 			}//else println("guard  fails");  //parg is null when there is no guard (onEvent)
+	    		 }
+	    		if( planUtils.repeatPlan(nPlanIter,0).getGoon() ) continue;
 	    break;
 	    }//while
 	    return returnValue;

@@ -42,11 +42,11 @@ public class Mybutton extends AbstractMybutton{
 	public void controlLogic(String cmd){
 		try {
 			if (cmd.equalsIgnoreCase("start")){
-				sendMsg("startBlinkLed", "myled", QActorContext.dispatch,"startBlinkLed(" + BLINKINTERVAL + ")");
-				sendMsg("startBlinkLed", "timer", QActorContext.dispatch,"startBlinkLed(" + BLINKINTERVAL + ")");
+				emit("buttonEvent","startBlinkLed(" + BLINKINTERVAL + ")");
 			}
-			else if (cmd.equalsIgnoreCase("stop"))
-				sendMsg("stopBlinkLed", "myled", QActorContext.dispatch,"stopBlinkLed");
+			else if (cmd.equalsIgnoreCase("stop")){
+				emit("buttonEvent","stopBlinkLed");
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -32,9 +32,18 @@
 		<item value="9" key="DIALOG_X_ORIGIN"/>
 		<item value="9" key="DIALOG_Y_ORIGIN"/>
 	</section>
+	<section name="GitCommitMessageComponent">
+		<list key="C:\Users\Mattia\Desktop\WORKSPACE\.git">
+			<item value="false"/>
+			<item value="Mikelainz &lt;mikelainz93@gmail.com&gt;"/>
+			<item value="DB plus timer"/>
+			<item value="Mikelainz &lt;mikelainz93@gmail.com&gt;"/>
+			<item value="a50baa431125d0ed25c3501a7f11b0cd859e1043"/>
+		</list>
+	</section>
 	<section name="org.eclipse.egit.ui.internal.staging.StagingView">
 		<item value="500,500" key="STAGING_SASH_FORM_WEIGHT"/>
-		<item value="false" key="sortItemState"/>
+		<item value="true" key="sortItemState"/>
 		<item value="500,500" key="HORIZONTAL_SASH_FORM_WEIGHT"/>
 	</section>
 </section>

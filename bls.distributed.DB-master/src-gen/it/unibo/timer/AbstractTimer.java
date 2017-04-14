@@ -83,23 +83,26 @@ public abstract class AbstractTimer extends QActor {
 	    while(true){
 	    	curPlanInExec =  "work";	//within while since it can be lost by switchlan
 	    	nPlanIter++;
-	    		//ReceiveMsg
-	    		 		aar = planUtils.receiveAMsg(mysupport,60000, "" , "" ); 	//could block
-	    			    if( ! aar.getGoon() || aar.getTimeRemained() <= 0 ){
-	    			    	//println("	WARNING: receivemsg timeout " + aar.getTimeRemained());
-	    			    	addRule("tout(receivemsg,"+getName()+")");
-	    			    }
-	    		printCurrentMessage(false);
-	    		//onMsg
-	    		if( currentMessage.msgId().equals("startBlinkLed") ){
-	    			String parg = "";
-	    			/* SwitchPlan */
-	    			parg =  updateVars(  Term.createTerm("startBlinkLed(BLINKINTERVAL)"), Term.createTerm("startBlinkLed(BLINKINTERVAL)"), 
-	    				    		  					Term.createTerm(currentMessage.msgContent()), parg);
-	    				if( parg != null ){
-	    					 if( ! planUtils.switchToPlan("startTo").getGoon() ) break; 
-	    				}//else println("guard  fails");  //parg is null when there is no guard (onEvent)
-	    		}if( planUtils.repeatPlan(nPlanIter,0).getGoon() ) continue;
+	    		//senseEvent
+	    		timeoutval = 60000;
+	    		aar = planUtils.senseEvents( timeoutval,"buttonEvent","continue",
+	    		"" , "",ActionExecMode.synch );
+	    		if( ! aar.getGoon() || aar.getTimeRemained() <= 0 ){
+	    			//println("			WARNING: sense timeout");
+	    			addRule("tout(senseevent,"+getName()+")");
+	    		}
+	    		printCurrentEvent(false);
+	    		//onEvent
+	    		if( currentEvent.getEventId().equals("buttonEvent") ){
+	    		 		String parg = "";
+	    		 		/* SwitchPlan */
+	    		 		parg =  updateVars(  Term.createTerm("startBlinkLed(BLINKINTERVAL)"), Term.createTerm("startBlinkLed(BLINKINTERVAL)"), 
+	    		 			    		  					Term.createTerm(currentEvent.getMsg()), parg);
+	    		 			if( parg != null ){
+	    		 				 if( ! planUtils.switchToPlan("startTo").getGoon() ) break; 
+	    		 			}//else println("guard  fails");  //parg is null when there is no guard (onEvent)
+	    		 }
+	    		if( planUtils.repeatPlan(nPlanIter,0).getGoon() ) continue;
 	    break;
 	    }//while
 	    return returnValue;
@@ -117,31 +120,35 @@ public abstract class AbstractTimer extends QActor {
 	    while(true){
 	    	curPlanInExec =  "startTo";	//within while since it can be lost by switchlan
 	    	nPlanIter++;
-	    		//ReceiveMsg
-	    		 		aar = planUtils.receiveAMsg(mysupport,5000, "" , "" ); 	//could block
-	    			    if( ! aar.getGoon() || aar.getTimeRemained() <= 0 ){
-	    			    	//println("	WARNING: receivemsg timeout " + aar.getTimeRemained());
-	    			    	addRule("tout(receivemsg,"+getName()+")");
-	    			    }
-	    		//onMsg
-	    		if( currentMessage.msgId().equals("startBlinkLed") ){
-	    			String parg = "";
-	    			/* SwitchPlan */
-	    			parg =  updateVars(  Term.createTerm("startBlinkLed(BLINKINTERVAL)"), Term.createTerm("startBlinkLed(BLINKINTERVAL)"), 
-	    				    		  					Term.createTerm(currentMessage.msgContent()), parg);
-	    				if( parg != null ){
-	    					 if( ! planUtils.switchToPlan("startTo").getGoon() ) break; 
-	    				}//else println("guard  fails");  //parg is null when there is no guard (onEvent)
-	    		}//onMsg
-	    		if( currentMessage.msgId().equals("stopBlinkLed") ){
-	    			String parg = "";
-	    			/* SwitchPlan */
-	    			parg =  updateVars(  Term.createTerm("stopBlinkLed"), Term.createTerm("stopBlinkLed"), 
-	    				    		  					Term.createTerm(currentMessage.msgContent()), parg);
-	    				if( parg != null ){
-	    					 if( ! planUtils.switchToPlan("work").getGoon() ) break; 
-	    				}//else println("guard  fails");  //parg is null when there is no guard (onEvent)
-	    		}printCurrentMessage(false);
+	    		//senseEvent
+	    		timeoutval = 5000;
+	    		aar = planUtils.senseEvents( timeoutval,"buttonEvent","continue",
+	    		"" , "",ActionExecMode.synch );
+	    		if( ! aar.getGoon() || aar.getTimeRemained() <= 0 ){
+	    			//println("			WARNING: sense timeout");
+	    			addRule("tout(senseevent,"+getName()+")");
+	    		}
+	    		//onEvent
+	    		if( currentEvent.getEventId().equals("buttonEvent") ){
+	    		 		String parg = "";
+	    		 		/* SwitchPlan */
+	    		 		parg =  updateVars(  Term.createTerm("startBlinkLed(BLINKINTERVAL)"), Term.createTerm("startBlinkLed(BLINKINTERVAL)"), 
+	    		 			    		  					Term.createTerm(currentEvent.getMsg()), parg);
+	    		 			if( parg != null ){
+	    		 				 if( ! planUtils.switchToPlan("startTo").getGoon() ) break; 
+	    		 			}//else println("guard  fails");  //parg is null when there is no guard (onEvent)
+	    		 }
+	    		//onEvent
+	    		if( currentEvent.getEventId().equals("buttonEvent") ){
+	    		 		String parg = "";
+	    		 		/* SwitchPlan */
+	    		 		parg =  updateVars(  Term.createTerm("startBlinkLed(BLINKINTERVAL)"), Term.createTerm("stopBlinkLed"), 
+	    		 			    		  					Term.createTerm(currentEvent.getMsg()), parg);
+	    		 			if( parg != null ){
+	    		 				 if( ! planUtils.switchToPlan("work").getGoon() ) break; 
+	    		 			}//else println("guard  fails");  //parg is null when there is no guard (onEvent)
+	    		 }
+	    		printCurrentEvent(false);
 	    		temporaryStr = QActorUtils.unifyMsgContent(pengine, "timeoutEvent","timeoutEvent", guardVars ).toString();
 	    		emit( "timeoutEvent", temporaryStr );
 	    		if( ! planUtils.switchToPlan("work").getGoon() ) break;

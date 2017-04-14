@@ -146,10 +146,10 @@ public abstract class AbstractMybutton extends QActor {
 	    		//onEvent
 	    		if( currentEvent.getEventId().equals("timeoutEvent") ){
 	    		 		String parg="stopBlinkLed";
-	    		 		/* SendDispatch */
+	    		 		/* RaiseEvent */
 	    		 		parg = updateVars(Term.createTerm("timeoutEvent"),  Term.createTerm("timeoutEvent"), 
 	    		 			    		  					Term.createTerm(currentEvent.getMsg()), parg);
-	    		 		if( parg != null ) sendMsg("stopBlinkLed","myled", QActorContext.dispatch, parg ); 
+	    		 		if( parg != null ) emit( "buttonEvent", parg );
 	    		 }
 	    		if( planUtils.repeatPlan(nPlanIter,0).getGoon() ) continue;
 	    break;

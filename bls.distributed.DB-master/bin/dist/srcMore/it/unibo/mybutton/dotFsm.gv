@@ -17,4 +17,7 @@ digraph finite_state_machine {
   	
   	
   	init -> sysWithGuiOnPc [ label = ""];
+  	init -> work [ label = ""];
+  	
+  	work -> work [ label = "timeoutEvent/"];
 }
