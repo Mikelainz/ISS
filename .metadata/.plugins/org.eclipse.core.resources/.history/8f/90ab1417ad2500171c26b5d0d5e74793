@@ -1,0 +1,6 @@
+buttonPress = function() {
+	var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", "http://192.168.0.108:1337", false );//false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}

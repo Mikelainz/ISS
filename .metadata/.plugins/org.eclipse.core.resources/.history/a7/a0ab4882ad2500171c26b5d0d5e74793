@@ -1,0 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+	<META http-equiv = "Content-Type" content = "text/html; charset=ISO-8859-1">
+	<title>BLSGui</title>
+	<!-- THE ORDER MATTERS -->
+	<!-- src="./JavascriptHttpRequest.js" -->
+    <script type="text/javascript" >
+    	buttonPress = function() {
+			var xmlHttp = new XMLHttpRequest();
+    		xmlHttp.open( "GET", "http://192.168.137.2:1337", false );//false for synchronous request
+    		xmlHttp.send( null );
+    		return xmlHttp.responseText;
+		}	
+    </script>
+  </head>
+  
+  <body>
+  	<button onclick="buttonPress();">B1</button>
+  </body>
+  
+</html>
