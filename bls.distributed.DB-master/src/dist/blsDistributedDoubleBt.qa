@@ -1,7 +1,6 @@
 System blsDistributed
-
-Dispatch startBlinkLed : startBlinkLed(BLINKINTERVAL)    
-Dispatch stopBlinkLed : stopBlinkLed
+Event buttonEvent : startBlinkLed(BLINKINTERVAL)    
+Event buttonEvent : stopBlinkLed
 Event timeoutEvent : timeoutEvent
      
 Context ctxButton ip [host="192.168.137.1" port=8010]  -g cyan
@@ -25,17 +24,17 @@ QActor timer context ctxButton {
  		switchToPlan work 	
 	
 	Plan work
- 		receiveMsg time(60000);
- 		printCurrentMessage;
- 		onMsg startBlinkLed : startBlinkLed(BLINKINTERVAL)   -> switchToPlan startTo;
+ 		sense time(60000) buttonEvent -> continue;
+ 		printCurrentEvent;
+ 		onEvent buttonEvent : startBlinkLed(BLINKINTERVAL)   -> switchToPlan startTo;
  		repeatPlan
  	
  	Plan startTo
  //		sensible in case of more presses of start button
- 		receiveMsg time(5000);
- 		onMsg startBlinkLed : startBlinkLed(BLINKINTERVAL)   -> switchToPlan startTo;
- 		onMsg stopBlinkLed : stopBlinkLed  -> switchToPlan work;
- 		printCurrentMessage;
+ 		sense time(5000) buttonEvent -> continue;
+ 		onEvent buttonEvent : startBlinkLed(BLINKINTERVAL)   -> switchToPlan startTo;
+ 		onEvent buttonEvent : stopBlinkLed  -> switchToPlan work;
+ 		printCurrentEvent;
  		emit timeoutEvent : timeoutEvent;
  //		message version of timeout	
  //		forward myled -m stopBlinkLed : stopBlinkLed;
@@ -61,26 +60,26 @@ QActor myled context ctxLed   {
 		resumeLastPlan
  
  	Plan work 
- 		receiveMsg time(60000);
- 		onMsg startBlinkLed : startBlinkLed(BLINKINTERVAL)   -> switchToPlan startBlink;
- 		onMsg stopBlinkLed : stopBlinkLed  -> switchToPlan stopBlink;	
+ 		sense time(60000) buttonEvent -> continue;
+ 		onEvent buttonEvent : startBlinkLed(BLINKINTERVAL)   -> switchToPlan startBlink;
+ 		onEvent buttonEvent : stopBlinkLed  -> switchToPlan stopBlink;	
  		printCurrentMessage;
  		repeatPlan
 	
  	Plan startBlink // no timeout version
  		actorOp switchLedState;
- 		receiveMsg time(1000); 		
-// 		sense time(100) timeoutEvent -> continue;
+ 		sense time(1000) buttonEvent /*, timeoutEvent */ -> continue; 		
 // 		printCurrentEvent;
 //		onEvent timeoutEvent : timeoutEvent -> switchToPlan stopBlink;
 // 		what happens when we re-click start button in this routine? Does it have to restart or not?
-// 		onMsg startBlinkLed : startBlinkLed(BLINKINTERVAL)   -> switchToPlan startBlink;
- 		onMsg stopBlinkLed : stopBlinkLed  -> switchToPlan stopBlink;	
+// 		onEvent buttonEvent : startBlinkLed(BLINKINTERVAL)   -> switchToPlan startBlink;
+ 		onEvent buttonEvent : stopBlinkLed  -> switchToPlan stopBlink;	
  		repeatPlan
  		
  	Plan stopBlink
  		actorOp turnOff;
  		switchToPlan work
+ 		
 } 
  
 QActor mybutton context ctxButton   {        
@@ -104,7 +103,7 @@ QActor mybutton context ctxButton   {
   	Plan work
   		sense time(60000) timeoutEvent -> continue;
  		printCurrentEvent;
- 		onEvent timeoutEvent : timeoutEvent -> forward myled -m stopBlinkLed : stopBlinkLed;
+ 		onEvent timeoutEvent : timeoutEvent -> emit buttonEvent : stopBlinkLed;
  		repeatPlan
  
 }   

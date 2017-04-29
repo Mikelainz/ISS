@@ -1,0 +1,21 @@
+package it.unibo.mybutton;
+
+public class ButtonWithRasp implements IButton{
+
+	private DeviceButtonPi4JAdHoc buttonPi4j;
+	
+	public ButtonWithRasp(){
+		try {
+			DeviceButtonPi4JAdHoc buttonPi4j  = new DeviceButtonPi4JAdHoc(  outEnvView , pinNum);
+			buttonPi4j.addObserver(this);
+		} catch (Exception e) {
+ 			e.printStackTrace();
+		}
+	}
+	
+	public void pressed() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

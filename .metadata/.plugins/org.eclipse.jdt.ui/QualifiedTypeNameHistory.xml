@@ -19,4 +19,8 @@
 <fullyQualifiedTypeName name="it.unibo.qactors.QActorUtils"/>
 <fullyQualifiedTypeName name="it.unibo.myled.LedWithRasp"/>
 <fullyQualifiedTypeName name="it.unibo.qactors.QActorContext"/>
+<fullyQualifiedTypeName name="java.awt.Panel"/>
+<fullyQualifiedTypeName name="it.unibo.gpio.GpioOnPi4j"/>
+<fullyQualifiedTypeName name="java.util.Observer"/>
+<fullyQualifiedTypeName name="it.unibo.mybutton.ButtonWithRasp"/>
 </qualifiedTypeNameHistroy>

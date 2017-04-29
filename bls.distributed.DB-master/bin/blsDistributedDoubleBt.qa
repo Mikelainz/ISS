@@ -1,11 +1,10 @@
 System blsDistributed
-
 Event buttonEvent : startBlinkLed(BLINKINTERVAL)    
 Event buttonEvent : stopBlinkLed
 Event timeoutEvent : timeoutEvent
      
 Context ctxButton ip [host="localhost" port=8010]  -g cyan
-Context ctxLed ip [host="localhost" port=8030] -g cyan
+Context ctxLed ip [host="192.168.137.2" port=8030] //-g cyan
 // Context ctxLed ip [host="192.168.137.2" port=8030]   // u can't use GUI  while this is running on RB
 /* there we need to use two different settings in order to have the LED on the RB and the button on PC
  * [adresses are based on an ethernet connection]
@@ -46,8 +45,8 @@ QActor timer context ctxButton {
 QActor myled context ctxLed   {        
 	Plan init  normal      
 		println("myLed  STARTS");
-		switchToPlan sysWithGuiOnPc;
-//		switchToPlan sysOnRasp;
+//		switchToPlan sysWithGuiOnPc;
+		switchToPlan sysOnRasp;
 		switchToPlan work;		
  		delay time(60000);
  		println("myLed  ENDS")
@@ -98,7 +97,7 @@ QActor mybutton context ctxButton   {
 		resumeLastPlan     
 
   	Plan sysOnRasp       
- 		actorOp createPi4jButton( 24 ) ;	//BCM 24 WPI 5
+ 		actorOp createPi4jButton( 24 , "start") ;	//BCM 24 WPI 5
 		resumeLastPlan
   
   	Plan work

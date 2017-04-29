@@ -1,5 +1,5 @@
 plan(1,init, sentence(true,move(print,"myLed  STARTS"),'','' ))
-plan(2,init, sentence(true,move( switchplan(sysWithGuiOnPc) ),'','' ))
+plan(2,init, sentence(true,move( switchplan(sysOnRasp) ),'','' ))
 plan(3,init, sentence(true,move( switchplan(work) ),'','' ))
 plan(4,init, sentence(true,delay( ) ,'','' ))
 plan(5,init, sentence(true,move(print,"myLed  ENDS"),'','' ))

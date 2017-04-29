@@ -21,10 +21,10 @@ digraph finite_state_machine {
   	
   	work -> work [ label = ""];
   	work -> startBlink [ label = "startBlinkLed(BLINKINTERVAL)/"];
-  	work -> stopBlink [ label = "stopBlinkLed/"];
+  	work -> stopBlink [ label = "startBlinkLed(BLINKINTERVAL)/"];
   	
   	startBlink -> startBlink [ label = ""];
-  	startBlink -> stopBlink [ label = "stopBlinkLed/"];
+  	startBlink -> stopBlink [ label = "startBlinkLed(BLINKINTERVAL)/"];
   	
   	stopBlink -> work [ label = ""];
 }

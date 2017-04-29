@@ -2,7 +2,7 @@
 % Context ctxButton  SYSTEM-configuration: file it.unibo.ctxButton.blsDistributed.pl 
 %====================================================================================
 context(ctxbutton, "localhost",  "TCP", "8010" ).  		 
-context(ctxled, "localhost",  "TCP", "8030" ).  		 
+context(ctxled, "192.168.137.2",  "TCP", "8030" ).  		 
 %%% -------------------------------------------
 qactor( timer , ctxbutton, "it.unibo.timer.MsgHandle_Timer"   ). %%store msgs 
 qactor( timer_ctrl , ctxbutton, "it.unibo.timer.Timer"   ). %%control-driven 

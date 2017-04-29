@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;DeviceButtonPi4JAdHoc.java&apos; to &apos;bls.distributed.DB-master/src/it.unibo.mybutton&apos;&#x0D;&#x0A;- Original project: &apos;it.unibo.bls2016.qa&apos;&#x0D;&#x0A;- Destination element: &apos;bls.distributed.DB-master/src/it.unibo.mybutton&apos;&#x0D;&#x0A;- Original element: &apos;it.unibo.bls.raspberry.components.adhoc.DeviceButtonPi4JAdHoc.java&apos;" description="Copy compilation unit" destination="=bls.distributed.DB-master/src&lt;it.unibo.mybutton" element1="/src&lt;it.unibo.bls.raspberry.components.adhoc{DeviceButtonPi4JAdHoc.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1493454627633" units="1" version="1.0"/>
+</session>

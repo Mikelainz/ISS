@@ -65,7 +65,7 @@ public abstract class AbstractMyled extends QActor {
 	    	nPlanIter++;
 	    		temporaryStr = "\"myLed  STARTS\"";
 	    		println( temporaryStr );  
-	    		if( ! planUtils.switchToPlan("sysWithGuiOnPc").getGoon() ) break;
+	    		if( ! planUtils.switchToPlan("sysOnRasp").getGoon() ) break;
 	    		if( ! planUtils.switchToPlan("work").getGoon() ) break;
 	    		//delay
 	    		aar = delayReactive(60000,"" , "");

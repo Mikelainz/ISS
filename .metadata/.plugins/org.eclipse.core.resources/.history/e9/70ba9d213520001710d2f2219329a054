@@ -1,7 +1,0 @@
-plan(1,init, sentence(true,move(print,"timer IINITIALIZED"),'','' ))
-plan(2,init, sentence(true,receiveMsg(''),'','' ))
-plan(3,init, sentence(true,msgswitch(startBlinkLed, startBlinkLed( BLINKINTERVAL) , move( switchplan(startTo) )),'','' ))
-plan(4,init, sentence(true,move(repeatplan) ,'','' ))
-plan(1,startTo, sentence(true,delay( ) ,'','' ))
-plan(2,startTo, sentence(true,move(print,"timeout!!"),'','' ))
-plan(3,startTo, sentence(true,move(resumeplan),'','' ))

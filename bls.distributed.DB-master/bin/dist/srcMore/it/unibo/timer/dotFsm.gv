@@ -23,5 +23,5 @@ digraph finite_state_machine {
   	
   	startTo -> work [ label = ""];
   	startTo -> startTo [ label = "startBlinkLed(BLINKINTERVAL)/"];
-  	startTo -> work [ label = "stopBlinkLed/"];
+  	startTo -> work [ label = "startBlinkLed(BLINKINTERVAL)/"];
 }

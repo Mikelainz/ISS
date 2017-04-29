@@ -16,7 +16,7 @@ digraph finite_state_machine {
   	iniziale -> init [label = ""];
   	
   	
-  	init -> sysWithGuiOnPc [ label = ""];
+  	init -> sysOnRasp [ label = ""];
   	init -> work [ label = ""];
   	
   	work -> work [ label = ""];
