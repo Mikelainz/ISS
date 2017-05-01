@@ -1,0 +1,10 @@
+package it.unibo.flashled;
+
+public interface ILed {
+	
+	void turnOn();
+	void turnOff();
+	void ledSwitch();
+	boolean isOn();
+
+}

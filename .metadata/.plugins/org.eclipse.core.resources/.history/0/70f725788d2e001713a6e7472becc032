@@ -1,0 +1,160 @@
+System gameStep0
+
+Event buttonEvent:buttonEvent(X)
+Event controlEvent:controlEvent(X)
+
+Dispatch controlMessage:controlMessage(X)
+Dispatch ledMessage:ledMessage(X)
+
+Context ctxButton ip [host="localhost" port=8010]  -g cyan
+Context ctxControl ip [host="localhost" port=8020] -g green
+Context ctxLed ip [host="localhost" port=8030] -g yellow
+
+QActor mycontrol context ctxControl {
+	
+	Plan init normal
+		println (mycontrol(starts));
+		switchToPlan work
+		
+	Plan work
+ 		sense time(60000) buttonEvent -> continue;
+ 		printCurrentEvent;
+ 		onEvent buttonEvent:buttonEvent(X) -> switchToPlan startingGame;
+ 		repeatPlan
+ 		
+ 	Plan startingGame
+ 		forward flashled -m controlMessage : controlMessage("stopFlash"); //say to the flashled to stop the blink
+ 		actorOp resetScore;
+ 		switchToPlan pattern
+ 		
+ 	Plan pattern
+ 		forward myled -m controlMessage : controlMessage("startPattern"); 
+ 		delay time(5000) react event buttonEvent -> gameOver;
+ 		forward myled -m controlMessage : controlMessage("stopPattern"); 
+ 		switchToPlan game
+ 		
+ 	Plan game
+ 		println("game");
+ 		actorOp saveStartTime;
+ 		sense time(5000) buttonEvent -> continue;
+ 		onEvent buttonEvent : buttonEvent(24) -> actorOp updateScore;//atm just add 1 point
+ 		[ !? tout(R,W) ]  switchToPlan gameOver;
+ 		switchToPlan pattern
+ 		
+ 	Plan gameOver
+ 		forward flashled -m controlMessage : controlMessage("gameOver");
+ 		forward myled -m controlMessage : controlMessage("gameOver");
+ 		actorOp printScore;
+ 		println (mycontrol(stops));
+ 		delay time(5000)
+ 		//maybe restart?
+ 	
+	
+}
+
+QActor mybutton context ctxButton {
+	
+	Plan init normal
+		println(qabutton(starts));
+ 		switchToPlan sysOnPc;
+// 		switchToPlan sysOnRasp;
+  		delay time(60000);
+ 		println(qabutton(ends))
+ 	
+ 	Plan sysOnPc
+ 		actorOp createGuiButton(24, "button1");
+		resumeLastPlan
+		
+	Plan sysOnRasp
+		actorOp createPi4jButton( 24 , "button1");
+		resumeLastPlan
+		
+}
+
+QActor flashled context ctxLed{
+	
+	Plan init  normal      
+		println("flashled(starts)");
+		switchToPlan sysWithGuiOnPc;
+//		switchToPlan sysOnRasp;
+		switchToPlan preGame
+		
+ 		
+	Plan sysWithGuiOnPc
+		actorOp createGuiLed( 25 ) 	;
+		resumeLastPlan     
+
+	Plan sysOnRasp
+		actorOp createPi4jLed( 25 ) ;
+		resumeLastPlan
+		
+	Plan preGame
+		receiveMsg time(500);
+		//flashled_ctrl currentMessage=msg(controlMessage,dispatch,mycontrol_ctrl,flashled,controlMessage(stopFlash),2)
+		onMsg controlMessage:controlMessage("stopFlash") -> printCurrentMessage;
+		onMsg controlMessage:controlMessage("stopFlash") -> switchToPlan game;
+		actorOp switchLedState;
+		repeatPlan
+		
+	Plan game
+		actorOp turnOff;
+		receiveMsg time(60000);
+		[ ??tout(R,W)] switchToPlan gameOver; 
+		onMsg controlMessage:controlMessage("gameOver") -> switchToPlan gameOver;
+//considering the fact that the message is not an error and that the game is not longer than 60 seconds
+//reaching this point assure that we received the correct message, so that we can avoid to use another plan
+		actorOp turnOn;
+		delay time(250);
+		actorOp turnOff;
+		repeatPlan
+		
+	Plan gameOver
+ 		println("flashled(ends)");
+ 		delay time(5000)
+	
+}
+
+QActor myled context ctxLed {
+
+	Plan init normal          
+  		println(qaled(starts));
+  		switchToPlan sysOnPc;
+ //		switchToPlan sysOnRasp;
+  		switchToPlan work
+ 		
+ 	Plan sysOnPc
+ 		actorOp createGuiLed(25);
+		resumeLastPlan
+	
+	Plan sysOnRasp
+		actorOp createPi4jLed(25);
+		resumeLastPlan
+		
+ 	Plan work
+ 		receiveMsg time(60000);
+ 		onMsg controlMessage : controlMessage("startPattern") -> switchToPlan pattern;
+ 		onMsg controlMessage : controlMessage("gameOver") -> switchToPlan gameOver;
+ 		repeatPlan
+ 		
+ 	Plan pattern
+ 		actorOp switchLedState;
+ 		receiveMsg time(500);
+ 		onMsg controlMessage : controlMessage("stopPattern") -> switchToPlan game;
+ 		onMsg controlMessage : controlMessage("gameOver") -> switchToPlan gameOver;
+ 		repeatPlan
+ 		
+ 	Plan game
+ 		actorOp turnOn;
+ 		switchToPlan work
+ 		
+ 	Plan gameOver
+ 		actorOp turnOff;
+ 		println(qaled(ends));
+ 		delay time(5000)
+ 		
+}
+
+
+
+
+

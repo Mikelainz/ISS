@@ -1,8 +1,8 @@
 %====================================================================================
 % Context ctxLed  SYSTEM-configuration: file it.unibo.ctxLed.blsStep0.pl 
 %====================================================================================
-context(ctxbutton, "192.168.137.2",  "TCP", "8010" ).  		 
-context(ctxled, "localhost",  "TCP", "8030" ).  		 
+context(ctxbutton, "localhost",  "TCP", "8010" ).  		 
+context(ctxled, "192.168.137.1",  "TCP", "8030" ).  		 
 %%% -------------------------------------------
 qactor( mybutton , ctxbutton, "it.unibo.mybutton.MsgHandle_Mybutton"   ). %%store msgs 
 qactor( mybutton_ctrl , ctxbutton, "it.unibo.mybutton.Mybutton"   ). %%control-driven 
