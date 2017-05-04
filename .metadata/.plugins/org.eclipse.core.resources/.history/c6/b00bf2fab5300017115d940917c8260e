@@ -1,0 +1,80 @@
+System blsStep0
+Event buttonEvent:buttonEvent(X)
+
+Context ctxButton ip [host="192.168.137.2" port=8010]  //-g cyan
+Context ctxLed ip [host="localhost" port=8030] -g yellow
+
+QActor mybutton context ctxButton {
+	
+	Plan init normal
+		println(qabutton(starts));
+// 		switchToPlan sysOnPc;
+ 		switchToPlan sysOnRasp;
+  		delay time(60000);
+ 		println(qabutton(ends))
+ 	
+ 	Plan sysOnPc
+ 		actorOp createGuiButton(24, "press");
+		resumeLastPlan
+		
+	Plan sysOnRasp
+		actorOp createPi4jButton( 24 , "press");
+		resumeLastPlan
+		
+}
+
+QActor iotbutton context ctxButton {
+	
+	Plan init normal
+		println(iotbutton(starts));
+		switchToPlan work;
+  		delay time(60000);
+ 		println(iotbutton(ends))
+ 	
+ 	Plan work
+ 		sense time(60000) buttonEvent -> continue;
+ 		onEvent buttonEvent:buttonEvent(X) -> actorOp pubblishMessageOnMQTTServer;
+ 		repeatPlan
+}
+
+QActor myled context ctxLed {
+
+	Plan init normal          
+  		println(qaled(starts));
+  		switchToPlan sysOnPc;
+  		//switchToPlan sysOnRasp;
+  		switchToPlan work;
+  		delay time(60000);
+ 		println(qaled(ends))
+ 		
+ 	Plan sysOnPc
+ 		actorOp createGuiLed(25);
+		resumeLastPlan
+	
+	Plan sysOnRasp
+		actorOp createPi4jLed(25);
+		resumeLastPlan
+		
+ 	Plan work
+ 		sense time(60000) buttonEvent -> continue;
+ 		printCurrentEvent;
+ 		onEvent buttonEvent:buttonEvent(X) -> actorOp switchLedState;
+ 		repeatPlan
+}
+
+QActor iotled context ctxLed {
+
+	Plan init normal          
+  		println(iotled(starts));
+  		actorOp subscribeOnMQTTServer;
+  		switchToPlan work;
+  		delay time(60000);
+ 		println(iotled(ends))
+ 	
+ 	Plan work
+ 		actorOp receiveMessageFromMQTTServer
+ 		//Testare che il messaggio sia dell'iotbutton e in caso positivo emetto
+ 		//"localmente" l'evento buttonEvent che viene percepito dal myled
+ }
+ 
+ 

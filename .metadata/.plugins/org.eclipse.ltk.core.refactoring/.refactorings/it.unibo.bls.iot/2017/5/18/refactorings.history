@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;it.unibo.bls.iot/src/blsStep0ButtonRasp.qa&apos; to &apos;blsIOT.qa&apos;" description="Rename resource &apos;blsStep0ButtonRasp.qa&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/blsStep0ButtonRasp.qa" name="blsIOT.qa" stamp="1493893063953" updateReferences="true"/>
+</session>

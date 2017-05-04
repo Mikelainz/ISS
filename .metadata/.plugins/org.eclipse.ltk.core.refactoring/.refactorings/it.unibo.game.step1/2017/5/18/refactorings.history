@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;it.unibo.game.step1/src/gameStep0.qa&apos; to &apos;gameStep1.qa&apos;" description="Rename resource &apos;gameStep0.qa&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/gameStep0.qa" name="gameStep1.qa" stamp="1493895019680" updateReferences="true"/>
+</session>

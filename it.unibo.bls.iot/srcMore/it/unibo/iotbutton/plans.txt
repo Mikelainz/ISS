@@ -1,0 +1,8 @@
+plan(1,init, sentence(true,move(print,iotbutton( starts)),'','' ))
+plan(2,init, sentence(true,move( switchplan(work) ),'','' ))
+plan(3,init, sentence(true,delay( ) ,'','' ))
+plan(4,init, sentence(true,move(print,iotbutton( ends)),'','' ))
+plan(1,work, sentence(true,senseEvent([buttonEvent],[continue],'','' ))
+plan(2,work, sentence(true,eventswitch(buttonEvent, »buttonEvent( X), not here ActionMove ),'','' ))
+plan(3,work, sentence(true,move(repeatplan) ,'','' ))
+plan(4,work, sentence(true,move(resumeplan),'','' ))
