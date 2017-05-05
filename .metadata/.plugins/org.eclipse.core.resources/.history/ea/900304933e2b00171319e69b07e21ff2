@@ -1,5 +1,0 @@
-package it.unibo.myled;
-
-public interface ILed {
-
-}

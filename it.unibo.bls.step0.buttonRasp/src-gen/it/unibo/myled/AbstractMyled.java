@@ -59,7 +59,7 @@ public abstract class AbstractMyled extends QActor {
 	    try{
 	    	int nPlanIter = 0;
 	    	//curPlanInExec =  "init";
-	    	boolean returnValue = suspendWork;
+	    	boolean returnValue = suspendWork;		//MARCHH2017
 	    while(true){
 	    	curPlanInExec =  "init";	//within while since it can be lost by switchlan
 	    	nPlanIter++;
@@ -86,15 +86,21 @@ public abstract class AbstractMyled extends QActor {
 	    try{
 	    	int nPlanIter = 0;
 	    	//curPlanInExec =  "sysOnPc";
-	    	boolean returnValue = suspendWork;
+	    	boolean returnValue = suspendWork;		//MARCHH2017
 	    while(true){
 	    	curPlanInExec =  "sysOnPc";	//within while since it can be lost by switchlan
 	    	nPlanIter++;
 	    		parg = "actorOp(createGuiLed(25))";
-	    		//aar = solveGoalReactive(parg,3600000,"","");
-	    		//genCheckAar(m.name)»
-	    		QActorUtils.solveGoal(parg,pengine );
-	    		returnValue = continueWork; //we must restore nPlanIter and curPlanInExec of the 'interrupted' plan
+	    		aar = solveGoalReactive(parg,3600000,"","");
+	    		//println(getName() + " plan " + curPlanInExec  +  " interrupted=" + aar.getInterrupted() + " action goon="+aar.getGoon());
+	    		if( aar.getInterrupted() ){
+	    			curPlanInExec   = "sysOnPc";
+	    			if( aar.getTimeRemained() <= 0 ) addRule("tout(actorOp,"+getName()+")");
+	    			if( ! aar.getGoon() ) break;
+	    		} 			
+	    		//QActorUtils.solveGoal(parg,pengine );
+	    		//we should restore nPlanIter and curPlanInExec of the 'interrupted' plan ???
+	    		returnValue = continueWork;
 	    break;
 	    }//while
 	    return returnValue;
@@ -108,15 +114,21 @@ public abstract class AbstractMyled extends QActor {
 	    try{
 	    	int nPlanIter = 0;
 	    	//curPlanInExec =  "sysOnRasp";
-	    	boolean returnValue = suspendWork;
+	    	boolean returnValue = suspendWork;		//MARCHH2017
 	    while(true){
 	    	curPlanInExec =  "sysOnRasp";	//within while since it can be lost by switchlan
 	    	nPlanIter++;
 	    		parg = "actorOp(createPi4jLed(25))";
-	    		//aar = solveGoalReactive(parg,3600000,"","");
-	    		//genCheckAar(m.name)»
-	    		QActorUtils.solveGoal(parg,pengine );
-	    		returnValue = continueWork; //we must restore nPlanIter and curPlanInExec of the 'interrupted' plan
+	    		aar = solveGoalReactive(parg,3600000,"","");
+	    		//println(getName() + " plan " + curPlanInExec  +  " interrupted=" + aar.getInterrupted() + " action goon="+aar.getGoon());
+	    		if( aar.getInterrupted() ){
+	    			curPlanInExec   = "sysOnRasp";
+	    			if( aar.getTimeRemained() <= 0 ) addRule("tout(actorOp,"+getName()+")");
+	    			if( ! aar.getGoon() ) break;
+	    		} 			
+	    		//QActorUtils.solveGoal(parg,pengine );
+	    		//we should restore nPlanIter and curPlanInExec of the 'interrupted' plan ???
+	    		returnValue = continueWork;
 	    break;
 	    }//while
 	    return returnValue;
@@ -130,13 +142,12 @@ public abstract class AbstractMyled extends QActor {
 	    try{
 	    	int nPlanIter = 0;
 	    	//curPlanInExec =  "work";
-	    	boolean returnValue = suspendWork;
+	    	boolean returnValue = suspendWork;		//MARCHH2017
 	    while(true){
 	    	curPlanInExec =  "work";	//within while since it can be lost by switchlan
 	    	nPlanIter++;
 	    		//senseEvent
-	    		timeoutval = 60000;
-	    		aar = planUtils.senseEvents( timeoutval,"buttonEvent","continue",
+	    		aar = planUtils.senseEvents( 60000,"buttonEvent","continue",
 	    		"" , "",ActionExecMode.synch );
 	    		if( ! aar.getGoon() || aar.getTimeRemained() <= 0 ){
 	    			//println("			WARNING: sense timeout");
@@ -154,6 +165,7 @@ public abstract class AbstractMyled extends QActor {
 	    		 			//println(getName() + " plan " + curPlanInExec  +  " interrupted=" + aar.getInterrupted() + " action goon="+aar.getGoon());
 	    		 			if( aar.getInterrupted() ){
 	    		 				curPlanInExec   = "work";
+	    		 				if( aar.getTimeRemained() <= 0 ) addRule("tout(actorOp,"+getName()+")");
 	    		 				if( ! aar.getGoon() ) break;
 	    		 			} 			
 	    		 		}

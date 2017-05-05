@@ -15,6 +15,5 @@ public static QActorContext initTheContext() throws Exception{
 }
 public static void main(String[] args) throws Exception{
 	QActorContext ctx = initTheContext();
-   		//if( ctx.getEnv() == null){ ctx.terminateQActorSystem(); }
 } 	
 }

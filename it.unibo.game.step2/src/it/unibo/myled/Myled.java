@@ -7,42 +7,62 @@ package it.unibo.myled;
 import it.unibo.myled.LedWithGui;
 
 import java.awt.Panel;
+import java.util.ArrayList;
+import java.util.List;
 
 import it.unibo.is.interfaces.IOutputEnvView;
 import it.unibo.qactors.QActorContext;
 
 public class Myled extends AbstractMyled { 
 	
-	private  ILed led;
+	private List<ILed> ledList;
+	private boolean direction;
+	private int currentOn;
 	
 	public Myled(String actorId, QActorContext myCtx, IOutputEnvView outEnvView )  throws Exception{
 		super(actorId, myCtx, outEnvView);
+		ledList = new ArrayList<ILed>();
+		direction=true;
+		currentOn=-1;
 	}
 	
 	public void createGuiLed(int pinNum ){
-		led = new LedWithGui();		
+		ILed led = new LedWithGui();		
 		outEnvView.getEnv().addPanel((Panel)led);
+		ledList.add(led);
 	}
 	
 	public void createPi4jLed(int pinNum ){
-		led = new LedWithRasp(pinNum);
+		ILed led = new LedWithRasp(pinNum);
+		ledList.add(led);
 	}
 	
-	public void switchLedState(){
-		led.ledSwitch();
-		//System.out.println("LED is " + (led.isOn()?"ON":"OFF"));
-		
+	public void changeLedOn(){
+		if (currentOn != -1) ledList.get(currentOn).turnOff();
+		if (currentOn < ledList.size()-1 && currentOn != 0){
+			if (direction) currentOn++;
+			else currentOn--;
+		}
+		else if (currentOn == 0){
+				direction = true;
+				currentOn++;
+		}
+		else if (currentOn == ledList.size()-1){
+			direction = false;
+			currentOn--;
+		}
+		ledList.get(currentOn).turnOn();
 	}
 	
-	public void turnOn(){
-		led.turnOn();
-		//System.out.println("LED is " + (led.isOn()?"ON":"OFF"));
+	public void turnOnCurrent(){
+		ledList.get(currentOn).turnOn();
 	}
 	
-	public void turnOff(){
-		led.turnOff();
-		//System.out.println("LED is " + (led.isOn()?"ON":"OFF"));
+	public void turnOffAll(){
+		for (ILed l : ledList){
+			l.turnOff();
+		}
+		currentOn= -1;
 	}
-		
 	
 }
