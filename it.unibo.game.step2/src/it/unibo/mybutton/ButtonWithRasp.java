@@ -27,7 +27,7 @@ public class ButtonWithRasp implements IButton, Observer{
 	}
 	
 	public void pressed() {
-		myButton.emit("buttonEvent","buttonEvent(" + this.pinNum + ")");
+		myButton.emit("buttonEvent","buttonEvent(" + this.command + ")");
 	}
 
 	@Override

@@ -25,6 +25,10 @@ digraph finite_state_machine {
   	
   	pattern -> game [ label = ""];
   	
-  	game -> gameOver [ label = "buttonEvent(X)/"];
-  	game -> pattern [ label = "buttonEvent(X)/"];
+  	game -> rightAnswer [ label = "ledMessage(X)/buttonEvent(X)/"];
+  	game -> gameOver [ label = "ledMessage(X)/buttonEvent(X)/"];
+  	
+  	rightAnswer -> pattern [ label = ""];
+  	
+  	gameOver -> work [ label = ""];
 }

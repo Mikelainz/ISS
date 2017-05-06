@@ -54,15 +54,28 @@ public class Myled extends AbstractMyled {
 		ledList.get(currentOn).turnOn();
 	}
 	
-	public void turnOnCurrent(){
-		ledList.get(currentOn).turnOn();
+	public int getCurrentOn(){
+		return currentOn;
+	}
+	
+	public void resetCurrentOn(){
+		currentOn= -1;
+		direction=true;
 	}
 	
 	public void turnOffAll(){
 		for (ILed l : ledList){
 			l.turnOff();
 		}
-		currentOn= -1;
+		this.resetCurrentOn();
+	}
+	
+	public void turnOnCurrentLed(){
+		ledList.get(currentOn).turnOn();
+	}
+	
+	public void turnOffCurrentLed(){
+		ledList.get(currentOn).turnOff();
 	}
 	
 }

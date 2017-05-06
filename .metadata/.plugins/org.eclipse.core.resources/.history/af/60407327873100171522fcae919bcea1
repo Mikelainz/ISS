@@ -1,2 +1,0 @@
-plan(1,init, sentence(true,not here ActionMove,'','' ))
-plan(2,init, sentence(true,move(print,"	buttonsimple017 ENDS"),'','' ))

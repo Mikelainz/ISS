@@ -28,4 +28,6 @@ digraph finite_state_machine {
   	pattern -> gameOver [ label = "controlMessage(X)/"];
   	
   	game -> work [ label = ""];
+  	
+  	gameOver -> work [ label = ""];
 }

@@ -26,7 +26,7 @@ public class ButtonWithGui extends Button implements ActionListener, IButton {
 	}
  	
 	public void pressed(){
-		myButton.emit("buttonEvent","buttonEvent(" + this.pinNum + ")");
+		myButton.emit("buttonEvent","buttonEvent(" + this.command + ")");
 	}
 	
 	@Override
