@@ -32,7 +32,6 @@ INDEX VERSION 1.129+C:\Users\Mattia\Desktop\WORKSPACE\.metadata\.plugins\org.ecl
 3726721386.index
 31114670.index
 2038260535.index
-4245810226.index
 2565308834.index
 2412161681.index
 1199826107.index

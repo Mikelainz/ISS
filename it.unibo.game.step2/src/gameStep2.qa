@@ -6,9 +6,9 @@ Event controlEvent:controlEvent(X)
 Dispatch controlMessage:controlMessage(X)
 Dispatch ledMessage:ledMessage(X)
 
-Context ctxButton ip [host="192.168.137.2" port=8010]  //-g cyan
+Context ctxButton ip [host="localhost" port=8010]  -g  cyan
 Context ctxControl ip [host="localhost" port=8020] -g green
-Context ctxLed ip [host="192.168.137.2" port=8030] //-g yellow
+Context ctxLed ip [host="localhost" port=8030] -g yellow
 
 QActor mycontrol context ctxControl {
 	
@@ -43,11 +43,13 @@ QActor mycontrol context ctxControl {
  		
  	Plan game
  		println("game");
- 		receiveMsg time(50);
+ 		receiveMsg time(100);
+ 		printCurrentMessage;
  		onMsg ledMessage:ledMessage(CurrentOn) -> addRule ledOn(CurrentOn);
  		actorOp saveStartTime;
  		actorOp halveDTthreshold;
  		[ ?? actorOpDone(OP, DTthreshold) ] sense time(DTthreshold) buttonEvent -> continue;
+ 		printCurrentEvent;
  		onEvent buttonEvent : buttonEvent(ButtonPressed) -> addRule buttonPressed(ButtonPressed);
  		[ !? testOk(B,L) ] switchToPlan rightAnswer;
  		[ ?? tout(R,W) ]  println("timed out"); // we need to consume tout but can't just make continue
@@ -76,8 +78,8 @@ QActor mybutton context ctxButton {
 	
 	Plan init normal
 		println(qabutton(starts));
-// 		switchToPlan sysOnPc;
- 		switchToPlan sysOnRasp;
+ 		switchToPlan sysOnPc;
+// 		switchToPlan sysOnRasp;
   		delay time(6000000);
  		println(qabutton(ends))
  	
@@ -99,8 +101,8 @@ QActor flashled context ctxLed{
 	
 	Plan init  normal      
 		println("flashled(starts)");
-//		switchToPlan sysWithGuiOnPc;
-		switchToPlan sysOnRasp;
+		switchToPlan sysWithGuiOnPc;
+//		switchToPlan sysOnRasp;
 		switchToPlan preGame
 		
  		
@@ -144,8 +146,8 @@ QActor myled context ctxLed {
 
 	Plan init normal          
   		println(qaled(starts));
-// 		switchToPlan sysOnPc;
-		switchToPlan sysOnRasp;
+ 		switchToPlan sysOnPc;
+//		switchToPlan sysOnRasp;
   		switchToPlan work
  		
  	Plan sysOnPc

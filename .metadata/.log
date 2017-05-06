@@ -9457,3 +9457,301 @@ java.lang.IllegalArgumentException: Unhandled parameter types: [null, null]
 
 !ENTRY org.eclipse.jface.text 2 0 2017-05-06 12:21:49.587
 !MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.round'
+
+!ENTRY org.apache.log4j 4 0 2017-05-06 17:57:33.922
+!MESSAGE org.eclipse.xtext.validation.CompositeEValidator  - Error executing EValidator
+
+!STACK 0
+java.lang.IllegalArgumentException: Unhandled parameter types: [null, null]
+	at it.unibo.xtext.validation.QactorValidator.reactNotImplemented(QactorValidator.java:385)
+	at it.unibo.xtext.validation.QactorValidator.reactNotImplemented(QactorValidator.java:327)
+	at sun.reflect.GeneratedMethodAccessor46.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.xtext.validation.AbstractDeclarativeValidator$MethodWrapper.invoke(AbstractDeclarativeValidator.java:118)
+	at org.eclipse.xtext.validation.AbstractDeclarativeValidator.internalValidate(AbstractDeclarativeValidator.java:312)
+	at org.eclipse.xtext.validation.AbstractInjectableValidator.validate(AbstractInjectableValidator.java:71)
+	at org.eclipse.xtext.validation.CompositeEValidator.validate(CompositeEValidator.java:151)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidate(Diagnostician.java:171)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:158)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidateContents(Diagnostician.java:185)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.doValidateContents(CancelableDiagnostician.java:70)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:161)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidateContents(Diagnostician.java:181)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.doValidateContents(CancelableDiagnostician.java:70)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:161)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidateContents(Diagnostician.java:185)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.doValidateContents(CancelableDiagnostician.java:70)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:161)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidateContents(Diagnostician.java:181)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.doValidateContents(CancelableDiagnostician.java:70)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:161)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:120)
+	at org.eclipse.xtext.validation.ResourceValidatorImpl.validate(ResourceValidatorImpl.java:146)
+	at org.eclipse.xtext.validation.ResourceValidatorImpl.validate(ResourceValidatorImpl.java:124)
+	at org.eclipse.xtext.validation.ResourceValidatorImpl.validate(ResourceValidatorImpl.java:90)
+	at org.eclipse.xtext.ui.editor.validation.ValidationJob$1.exec(ValidationJob.java:91)
+	at org.eclipse.xtext.ui.editor.validation.ValidationJob$1.exec(ValidationJob.java:1)
+	at org.eclipse.xtext.util.concurrent.CancelableUnitOfWork.exec(CancelableUnitOfWork.java:26)
+	at org.eclipse.xtext.resource.OutdatedStateManager.exec(OutdatedStateManager.java:91)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:520)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:492)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:133)
+	at org.eclipse.xtext.ui.editor.validation.ValidationJob.createIssues(ValidationJob.java:86)
+	at org.eclipse.xtext.ui.editor.validation.ValidationJob.run(ValidationJob.java:67)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+!ENTRY org.apache.log4j 4 0 2017-05-06 17:57:41.304
+!MESSAGE org.eclipse.xtext.validation.CompositeEValidator  - Error executing EValidator
+
+!STACK 0
+java.lang.IllegalArgumentException: Unhandled parameter types: [null, null]
+	at it.unibo.xtext.validation.QactorValidator.reactNotImplemented(QactorValidator.java:385)
+	at it.unibo.xtext.validation.QactorValidator.reactNotImplemented(QactorValidator.java:327)
+	at sun.reflect.GeneratedMethodAccessor46.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.xtext.validation.AbstractDeclarativeValidator$MethodWrapper.invoke(AbstractDeclarativeValidator.java:118)
+	at org.eclipse.xtext.validation.AbstractDeclarativeValidator.internalValidate(AbstractDeclarativeValidator.java:312)
+	at org.eclipse.xtext.validation.AbstractInjectableValidator.validate(AbstractInjectableValidator.java:71)
+	at org.eclipse.xtext.validation.CompositeEValidator.validate(CompositeEValidator.java:151)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidate(Diagnostician.java:171)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:158)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidateContents(Diagnostician.java:185)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.doValidateContents(CancelableDiagnostician.java:70)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:161)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidateContents(Diagnostician.java:181)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.doValidateContents(CancelableDiagnostician.java:70)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:161)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidateContents(Diagnostician.java:185)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.doValidateContents(CancelableDiagnostician.java:70)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:161)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidateContents(Diagnostician.java:181)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.doValidateContents(CancelableDiagnostician.java:70)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:161)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:120)
+	at org.eclipse.xtext.validation.ResourceValidatorImpl.validate(ResourceValidatorImpl.java:146)
+	at org.eclipse.xtext.validation.ResourceValidatorImpl.validate(ResourceValidatorImpl.java:124)
+	at org.eclipse.xtext.validation.ResourceValidatorImpl.validate(ResourceValidatorImpl.java:90)
+	at org.eclipse.xtext.ui.editor.validation.ValidationJob$1.exec(ValidationJob.java:91)
+	at org.eclipse.xtext.ui.editor.validation.ValidationJob$1.exec(ValidationJob.java:1)
+	at org.eclipse.xtext.util.concurrent.CancelableUnitOfWork.exec(CancelableUnitOfWork.java:26)
+	at org.eclipse.xtext.resource.OutdatedStateManager.exec(OutdatedStateManager.java:91)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:520)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:492)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:133)
+	at org.eclipse.xtext.ui.editor.validation.ValidationJob.createIssues(ValidationJob.java:86)
+	at org.eclipse.xtext.ui.editor.validation.ValidationJob.run(ValidationJob.java:67)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SESSION 2017-05-06 17:59:29.906 -----------------------------------------------
+eclipse.buildId=4.6.2.M20161124-1400
+java.version=1.8.0_121
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=it_IT
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.jface 2 0 2017-05-06 17:59:44.542
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2017-05-06 17:59:44.542
+!MESSAGE A conflict occurred for ALT+CTRL+H:
+Binding(ALT+CTRL+H,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.edit.text.java.open.call.hierarchy,Open Call Hierarchy,
+		Open a call hierarchy on the selected element,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@7ae57c9,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+H,
+	ParameterizedCommand(Command(org.eclipse.xtext.xbase.ui.hierarchy.OpenCallHierarchy,Open Call Hierarchy,
+		Open a call hierarchy on the selected element,
+		Category(org.eclipse.core.commands.categories.autogenerated,Uncategorized,Commands that were either auto-generated or have no category,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@7008055,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.xtext.ui.XtextEditorScope,,,system)
+Binding(ALT+CTRL+H,
+	ParameterizedCommand(Command(org.eclipse.xtext.ui.editor.OpenCallHierarchy,Open Call Hierarchy,
+		Open call hierarchy for the selected element,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@201a976f,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.xtext.ui.XtextEditorScope,,,system)
+
+!ENTRY org.eclipse.egit.ui 2 0 2017-05-06 17:59:45.506
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Mattia'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+!SESSION 2017-05-06 18:01:48.037 -----------------------------------------------
+eclipse.buildId=4.6.2.M20161124-1400
+java.version=1.8.0_121
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=it_IT
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.egit.ui 2 0 2017-05-06 18:02:06.209
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Mattia'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.jface 2 0 2017-05-06 18:02:44.406
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2017-05-06 18:02:44.407
+!MESSAGE A conflict occurred for ALT+CTRL+H:
+Binding(ALT+CTRL+H,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.edit.text.java.open.call.hierarchy,Open Call Hierarchy,
+		Open a call hierarchy on the selected element,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@5d1b7a57,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+H,
+	ParameterizedCommand(Command(org.eclipse.xtext.xbase.ui.hierarchy.OpenCallHierarchy,Open Call Hierarchy,
+		Open a call hierarchy on the selected element,
+		Category(org.eclipse.core.commands.categories.autogenerated,Uncategorized,Commands that were either auto-generated or have no category,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@3b38395,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.xtext.ui.XtextEditorScope,,,system)
+Binding(ALT+CTRL+H,
+	ParameterizedCommand(Command(org.eclipse.xtext.ui.editor.OpenCallHierarchy,Open Call Hierarchy,
+		Open call hierarchy for the selected element,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@113b0382,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.xtext.ui.XtextEditorScope,,,system)
+
+!ENTRY org.apache.log4j 4 0 2017-05-06 18:13:17.777
+!MESSAGE org.eclipse.xtext.validation.CompositeEValidator  - Error executing EValidator
+
+!STACK 0
+java.lang.IllegalArgumentException: Unhandled parameter types: [it.unibo.xtext.qactor.impl.PlanActionImpl@5f534e32, null]
+	at it.unibo.xtext.validation.QactorValidator.actionTme(QactorValidator.java:350)
+	at it.unibo.xtext.validation.QactorValidator.actionTme(QactorValidator.java:185)
+	at sun.reflect.GeneratedMethodAccessor40.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.xtext.validation.AbstractDeclarativeValidator$MethodWrapper.invoke(AbstractDeclarativeValidator.java:118)
+	at org.eclipse.xtext.validation.AbstractDeclarativeValidator.internalValidate(AbstractDeclarativeValidator.java:312)
+	at org.eclipse.xtext.validation.AbstractInjectableValidator.validate(AbstractInjectableValidator.java:71)
+	at org.eclipse.xtext.validation.CompositeEValidator.validate(CompositeEValidator.java:151)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidate(Diagnostician.java:171)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:158)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidateContents(Diagnostician.java:185)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.doValidateContents(CancelableDiagnostician.java:70)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:161)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidateContents(Diagnostician.java:185)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.doValidateContents(CancelableDiagnostician.java:70)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:161)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidateContents(Diagnostician.java:185)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.doValidateContents(CancelableDiagnostician.java:70)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:161)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidateContents(Diagnostician.java:181)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.doValidateContents(CancelableDiagnostician.java:70)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:161)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:120)
+	at org.eclipse.xtext.validation.ResourceValidatorImpl.validate(ResourceValidatorImpl.java:146)
+	at org.eclipse.xtext.validation.ResourceValidatorImpl.validate(ResourceValidatorImpl.java:124)
+	at org.eclipse.xtext.validation.ResourceValidatorImpl.validate(ResourceValidatorImpl.java:90)
+	at org.eclipse.xtext.ui.editor.validation.ValidationJob$1.exec(ValidationJob.java:91)
+	at org.eclipse.xtext.ui.editor.validation.ValidationJob$1.exec(ValidationJob.java:1)
+	at org.eclipse.xtext.util.concurrent.CancelableUnitOfWork.exec(CancelableUnitOfWork.java:26)
+	at org.eclipse.xtext.resource.OutdatedStateManager.exec(OutdatedStateManager.java:91)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:520)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:492)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:133)
+	at org.eclipse.xtext.ui.editor.validation.ValidationJob.createIssues(ValidationJob.java:86)
+	at org.eclipse.xtext.ui.editor.validation.ValidationJob.run(ValidationJob.java:67)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+!ENTRY org.apache.log4j 4 0 2017-05-06 18:13:38.070
+!MESSAGE org.eclipse.xtext.validation.CompositeEValidator  - Error executing EValidator
+
+!STACK 0
+java.lang.IllegalArgumentException: Unhandled parameter types: [it.unibo.xtext.qactor.impl.PlanActionImpl@30062620, null]
+	at it.unibo.xtext.validation.QactorValidator.actionTme(QactorValidator.java:350)
+	at it.unibo.xtext.validation.QactorValidator.actionTme(QactorValidator.java:185)
+	at sun.reflect.GeneratedMethodAccessor40.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.xtext.validation.AbstractDeclarativeValidator$MethodWrapper.invoke(AbstractDeclarativeValidator.java:118)
+	at org.eclipse.xtext.validation.AbstractDeclarativeValidator.internalValidate(AbstractDeclarativeValidator.java:312)
+	at org.eclipse.xtext.validation.AbstractInjectableValidator.validate(AbstractInjectableValidator.java:71)
+	at org.eclipse.xtext.validation.CompositeEValidator.validate(CompositeEValidator.java:151)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidate(Diagnostician.java:171)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:158)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidateContents(Diagnostician.java:185)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.doValidateContents(CancelableDiagnostician.java:70)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:161)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidateContents(Diagnostician.java:185)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.doValidateContents(CancelableDiagnostician.java:70)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:161)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidateContents(Diagnostician.java:185)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.doValidateContents(CancelableDiagnostician.java:70)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:161)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.doValidateContents(Diagnostician.java:181)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.doValidateContents(CancelableDiagnostician.java:70)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:161)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:137)
+	at org.eclipse.xtext.validation.CancelableDiagnostician.validate(CancelableDiagnostician.java:39)
+	at org.eclipse.emf.ecore.util.Diagnostician.validate(Diagnostician.java:120)
+	at org.eclipse.xtext.validation.ResourceValidatorImpl.validate(ResourceValidatorImpl.java:146)
+	at org.eclipse.xtext.validation.ResourceValidatorImpl.validate(ResourceValidatorImpl.java:124)
+	at org.eclipse.xtext.validation.ResourceValidatorImpl.validate(ResourceValidatorImpl.java:90)
+	at org.eclipse.xtext.ui.editor.validation.ValidationJob$1.exec(ValidationJob.java:91)
+	at org.eclipse.xtext.ui.editor.validation.ValidationJob$1.exec(ValidationJob.java:1)
+	at org.eclipse.xtext.util.concurrent.CancelableUnitOfWork.exec(CancelableUnitOfWork.java:26)
+	at org.eclipse.xtext.resource.OutdatedStateManager.exec(OutdatedStateManager.java:91)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.internalReadOnly(XtextDocument.java:520)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument$XtextDocumentLocker.readOnly(XtextDocument.java:492)
+	at org.eclipse.xtext.ui.editor.model.XtextDocument.readOnly(XtextDocument.java:133)
+	at org.eclipse.xtext.ui.editor.validation.ValidationJob.createIssues(ValidationJob.java:86)
+	at org.eclipse.xtext.ui.editor.validation.ValidationJob.run(ValidationJob.java:67)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)

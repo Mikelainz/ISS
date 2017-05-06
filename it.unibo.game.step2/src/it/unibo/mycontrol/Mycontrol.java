@@ -43,7 +43,8 @@ public class Mycontrol extends AbstractMycontrol {
 	}
 	
 	public long halveDTthreshold() {
-		this.DTthreshold = this.DTthreshold / 2;
+		this.DTthreshold = this.DTthreshold / 3;
+		this.DTthreshold = this.DTthreshold * 2;
 		return this.DTthreshold;			
 	}
 }

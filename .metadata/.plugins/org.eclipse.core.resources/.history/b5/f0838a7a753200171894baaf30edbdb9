@@ -1,0 +1,8 @@
+plan(1,init, sentence(true,move(print,qabutton( starts)),'','' ))
+plan(2,init, sentence(true,move( switchplan(sysOnRasp) ),'','' ))
+plan(3,init, sentence(true,delay( 60000) ,'','' ))
+plan(4,init, sentence(true,move(print,qabutton( ends)),'','' ))
+plan(1,sysOnPc, sentence(true,move(actorOp,createGuiButton( 24,"button1"),0,""),'','' ))
+plan(2,sysOnPc, sentence(true,move(resumeplan),'','' ))
+plan(1,sysOnRasp, sentence(true,move(actorOp,createPi4jButton( 24,"button1"),0,""),'','' ))
+plan(2,sysOnRasp, sentence(true,move(resumeplan),'','' ))

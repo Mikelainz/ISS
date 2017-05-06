@@ -123,7 +123,7 @@ public abstract class AbstractMybutton extends QActor {
 	    while(true){
 	    	curPlanInExec =  "sysOnRasp";	//within while since it can be lost by switchlan
 	    	nPlanIter++;
-	    		parg = "actorOp(createPi4jButton(24))";
+	    		parg = "actorOp(createPi4jButton(24,\"start\"))";
 	    		aar = solveGoalReactive(parg,3600000,"","");
 	    		//println(getName() + " plan " + curPlanInExec  +  " interrupted=" + aar.getInterrupted() + " action goon="+aar.getGoon());
 	    		if( aar.getInterrupted() ){
