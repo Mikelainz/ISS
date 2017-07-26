@@ -1,0 +1,3 @@
+plan(0,pnormal,sentence(true,move(playsound,'./audio/music_interlude20.wav',12000,endplay),'',''))
+plan(1,pnormal,sentence(true,move(playsound,'./audio/computer_process_info4.wav',4000,endplay),'',''))
+plan(2,pnormal,sentence(true,move(playsound,'./audio/music_dramatic20.wav',20000,''),alarm,handleAlarm))

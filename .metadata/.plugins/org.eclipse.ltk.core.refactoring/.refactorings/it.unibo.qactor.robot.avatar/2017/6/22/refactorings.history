@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;uniboNano.baseddr&apos; to &apos;it.unibo.qactor.robot.rover/src&apos;&#x0D;&#x0A;- Original project: &apos;it.unibo.qactor.robot.avatar&apos;&#x0D;&#x0A;- Destination element: &apos;it.unibo.qactor.robot.rover/src&apos;&#x0D;&#x0A;- Original element: &apos;uniboNano.baseddr&apos;" description="Copy file" destination="=it.unibo.qactor.robot.rover/src" element1="src/uniboNano.baseddr" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1496316859283" units="0" version="1.0"/>
+</session>

@@ -1,0 +1,90 @@
+RobotSystem rover       
+/*           
+ * ==============================================================
+ * rover
+ * FEATURE : A  Robot that reacts to usercmd command events
+ * TO NOTE :    
+ * ==============================================================
+ */                             
+//Event inputcmd          : usercmd(X)				//(RUN button)
+Event usercmd           : usercmd(robotgui(CMD)) 	//(FORWARD button) CMD w(low)
+Event sonarDetect 		: sonarDetect(X)			//From (virtual robot) sonar
+Event alarm             : alarm(X)					//(FIRE button)
+Event endplay           : endplay     
+               
+Context  ctxRover  ip [ host="localhost"  port=8070 ]    -httpserver  
+//EventHandler evh for  endmove , obstacle -print ;  
+ 
+Robot wall_e QActor rover context ctxRover  {                               
+   	Plan init normal                                                       
+  		println("rover STARTS"  )  ;       
+  		/*
+  		 * WARNING: ActorActions.json must contain the actor name (rover)
+  		 */
+  		actorOp workWithUnity("192.168.137.1") ; //localhost prima	//connects to port 6000 192.168.43.229
+ 	  		actorOp createSimulatedActor;
+   			switchToPlan someMove ;  
+//  		actorOp createSimulatedActor("robot", "Prefabs/CustomActor");
+    		switchToPlan handlecommands;  
+		delay time(6000000)       ;
+   		println("rover ENDS" )                      
+/*      
+ * Move the robot around (proactive part or just to see that it works)
+ */    
+   	Plan someMove resumeLastPlan
+   		println("rover robotForward " )  ;
+//   		robotForward speed(90) time(1000)   
+//   			react event sonarDetect ->  handleobstacle 
+//   				  or event alarm    ->  handleAlarm
+// 				  or event usercmd  ->  controlToUser ;
+   		println("rover robotRight " )  ;
+    	robotRight speed(80) time(100)  
+    			react event sonarDetect ->  handleobstacle 
+   				or event alarm    	    ->  handleAlarm
+ 				or event usercmd        ->  controlToUser  ;
+    	repeatPlan 1  
+	Plan controlToUser 
+		println("rover controlToUser");    
+ 		switchToPlan execRobotCommand  ;
+		switchToPlan handlecommands
+  	 
+/*
+ *  Wait from commands sent by an user via the Web-page. Es. move('W',50,1,0)
+ */	  
+	Plan handlecommands  
+		println("rover waits for user commands");    
+/*R2   */ 	sense time(100000) usercmd -> execRobotCommand 
+/*R2.1 */		react event sonarDetect -> handleobstacle  or event  alarm ->  handleAlarm ;
+		repeatPlan 	
+
+	/*
+	 * BUTTON (Forward, Backward, etc) 	: usercmd("w(low)")
+	 */
+	Plan execRobotCommand resumeLastPlan    
+		printCurrentEvent ;	
+  		//execCmdGui is defined in RobotActor, CmdUilInterpreter 
+   		onEvent usercmd :  usercmd( CMD ) ->  
+   			actorOp execCmdGui(CMD) 
+   				react event sonarDetect ->  handleobstacle 
+   				or event alarm          ->  handleAlarm 
+				or event usercmd        ->  handleUserCommand
+
+	/*
+	 * The (virtual) sonar has emitted sonarDetect
+	 */
+	Plan handleobstacle resumeLastPlan 
+		sound time(2000) file("./audio/tada2.wav") answerEv endplay ;  //asynch action
+		robotBackward speed(90) time(1000)   //back
+				//react event  alarm ->  handleAlarm  or event usercmd ->  cmdDriven  
+   	/*
+ 	 * The user has pressed the ALARM button 
+ 	 */   
+	Plan handleAlarm resumeLastPlan 
+		println("ALARM");  
+ 		sound time(3000) file("./audio/computer_complex3.wav") answerEv endPlay  ; // 
+ 		robotStop speed(10) time(0)     
+	
+	Plan handleUserCommand resumeLastPlan
+		robotStop speed(10) time(0)
+} 	
+ 

@@ -1,0 +1,55 @@
+RobotSystem roverPlan       
+/*         
+ * ==============================================================
+ * roverplanned
+ * FEATURE : A  Robot that reacts to usercmd command events
+ * TO NOTE :    
+ * ==============================================================
+ */                             
+//Event inputcmd          : usercmd(X)				//(RUN button)
+Event usercmd           : usercmd(robotgui(CMD)) 	//(FORWARD button) CMD w(low)
+Event sonarDetect 		: sonarDetect(X)			//From (virtual robot) sonar
+Event alarm             : alarm(X)					//(FIRE button)
+Event endplay           : endplay     
+               
+Context  ctxRoverPlan  ip [ host="localhost"  port=8070 ]   -httpserver  
+//EventHandler evh for  endmove , obstacle -print ;  
+ 
+Robot mocksimple QActor roverplanned context ctxRoverPlan  {                            
+   	Plan init normal                                                       
+  		println("roverplanned STARTS"  )  ;     
+  		/*
+  		 * WARNING: ActorActions.json must contain the actor name (roverplanned)
+  		 */
+  		actorOp workWithUnity("192.168.1.3") ; 	//connects to port 6000
+// 		switchToPlan someMove ;   
+//  		switchToPlan handlecommands;     
+		loadPlan "./srcMore/it/unibo/rover/plans.txt" ;
+		runPlan someMove time(9000) ;
+  		println("roverplanned ENDS" )     
+  	/*
+  	 * 
+  	 */
+  	 Plan controlToUser 
+		println("roverplanned controlToUser. At the moment I stop for a while ...");    
+		robotStop speed(10) time(20000)  
+		 	                  
+	/*
+	 * The (virtual) sonar has emitted sonarDetect
+	 */
+	Plan handleobstacle resumeLastPlan 
+		sound time(2000) file("./audio/tada2.wav") answerEv endplay ;  //asynch action
+		robotBackward speed(20) time(1000)   //back
+				//react event  alarm ->  handleAlarm  or event usercmd ->  cmdDriven  
+   	/*
+ 	 * The user has pressed the ALARM button 
+ 	 */   
+	Plan handleAlarm resumeLastPlan 
+		println("ALARM");  
+ 		sound time(3000) file("./audio/computer_complex3.wav") answerEv endPlay  ; // 
+ 		robotStop speed(10) time(0)     
+	
+	Plan handleUserCommand resumeLastPlan
+		robotStop speed(10) time(0)
+} 	
+ 

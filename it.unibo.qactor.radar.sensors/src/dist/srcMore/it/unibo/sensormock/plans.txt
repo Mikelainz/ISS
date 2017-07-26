@@ -1,0 +1,4 @@
+plan(1,init, sentence( p( D,A),move(print,p( D,A)),'','' ))
+plan(2,init, sentence(-  p( D,A) ,raise( obstacle , p( D,A) )'),'','' ))
+plan(3,init, sentence(true,delay( 1000) ,'','' ))
+plan(4,init, sentence(true,repeatplan(it.unibo.xtext.qactor.impl.VarOrIntImpl@317bc4b (const: 29)) ,'','' ))

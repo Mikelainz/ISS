@@ -1,6 +1,0 @@
-plan(1,init, sentence(true,move(print,"button STARTS"),'','' ))
-plan(2,init, sentence(true,move( switchplan(simualate) ),'','' ))
-plan(1,simualate, sentence(true,delay( 1000) ,'','' ))
-plan(2,simualate, sentence(true,move(print,"button emits"),'','' ))
-plan(3,simualate, sentence(true,raise( local_click , clicked )'),'','' ))
-plan(4,simualate, sentence(true,repeatplan(it.unibo.xtext.qactor.impl.VarOrIntImpl@7237a729 (const: 6)) ,'','' ))

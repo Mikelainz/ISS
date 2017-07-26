@@ -1,0 +1,92 @@
+RobotSystem avatar 
+/* 
+ * ==============================================================
+ * avatar
+ * FEATURE : A Robot is a QActor that can execute remote commands
+ * TO NOTE :    
+ * ==============================================================
+ */    
+Event usercmd : usercmd(X)   
+
+Context  ctxAvatar  ip [ host="192.168.43.230"  port=8077 ] -httpserver  	//bbb
+
+/*
+ * usercmdhandler reacts to the event usercmd by executing the command
+ */
+EventHandler usercmdhandler for usercmd  -print { memo currentEvent for avatar }; 
+
+//QActor joystck context ctxAvatar  -i {
+//	Rules{    
+//		repeat(on).                     
+//	}             
+//	Plan init normal  
+//		println("+++ joystick receiving ..." )  ;   
+//		receiveMsg time(600000) ;
+//		printCurrentMessage -memo ;
+//		[ !? repeat(on) ]  repeatPlan 0 //0 means forever
+//}   
+     
+Robot nano0 QActor avatar context ctxAvatar   {          
+	Rules{     
+		repeat(on).      
+		exec(javafast).
+		exec(javaslow).  
+		exec(prolog).
+ 	}        
+//	Action execUserCmd maxtime(5000) arg usercmd(_) ;
+//	Action execCurrentUserCmd maxtime(5000)  ;    
+  	Plan init normal            
+ 		println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"  )  ;
+ 		println("A robot performs the command move sent by the user via http GUI"  )  ;
+ 		println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"  )  ;
+		switchToPlan doWork;
+ 		println("ENDS" )    
+ 	Plan doWork
+  		[ ?? exec(javafast) ] switchToPlan  doWorkInJava   ;
+  		[ ?? exec(javaslow) ] switchToPlan  doWorkInJavaSlowly   ;
+		[ ?? exec(prolog) ]   switchToPlan  doWorkViaProlog   ;
+		[ not !? exec(prolog) ] switchToPlan  doWorkInJava   ;
+//		[ !? repeat(on) ] repeatPlan 0 //0 means forever 
+		repeatPlan 4
+ 	Plan doWorkInJava    resumeLastPlan 
+		println("wait for user command (execute the cmd in Java quite fast)" ) ; 
+		/*
+		 * The main plan waits for a usercmd by leaving to the handler
+		 * the task of executing the command 
+		 *
+		 */    
+//		[ !! usercmd ]  println("command arrived" ) ;  
+ 		sense time(600000) usercmd -> continue ;  	
+ 		/*
+ 		 * The command has been already executed by the handler
+ 		 * We can perform here some other work since the handler
+ 		 * stored the current event in the WorldTheory of for avatar
+  		 */
+ 		[ ?? stored(usercmd,X) ] println( otheractions(X) ) ;
+   		repeatPlan 4
+   	Plan doWorkInJavaSlowly resumeLastPlan
+  		println("wait for user command (execute the cmd in Java more slowly)" ) ; 
+ 		sense time(600000) usercmd -> continue ;  	
+		printCurrentEvent -memo;
+ 		//memoCurrentEvent ;
+// 		[ ?? msg(usercmd, _ , EMITTER, none , X, T) ] execute execUserCmd with X ;
+// 		execute execCurrentUserCmd ;
+   		repeatPlan 4
+   		
+ 	Plan doWorkViaProlog   resumeLastPlan 
+		println("wait for user command (work via Prolog)" ) ;      
+		sense time(600000) usercmd -> continue ;  //the command is executed by the handler
+ 		printCurrentEvent -memo;
+//		memoCurrentEvent ;
+		/*  
+		 * The action execUserCmd can be omitted by delegating the execution to the Prolog engine
+		 */		
+   		[ ?? msg(usercmd, _ , EMITTER, none , X, T)  ] solve execActor( execCmdGui( X ) ) time(0) ;
+   		repeatPlan 4
+	Plan prologFailure resumeLastPlan            
+		println("Prolog goal FAILURE" )     
+	Plan testExtension resumeLastPlan    
+		println("testExtension" ) ;         
+		solve execActor( xxx( 'info' ) ) time(0)     
+		  
+}     

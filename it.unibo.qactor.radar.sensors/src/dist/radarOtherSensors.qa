@@ -1,0 +1,32 @@
+/* 
+ * ==============================================================
+ * radarOtherSensors.qa
+ * ==============================================================
+ */   
+System radarOtherSensors   
+Event obstacle    : p( Distance, Angle  )  
+  
+Context  ctxRadar    ip [ host="localhost"  port=8080 ]  -standalone  	//192.168.251.1
+Context  ctxOtherSensors  ip [ host="localhost"  port=8039 ]            //192.168.251.114
+
+/*
+ * -----------------------------------------
+ * SENSOR SIMULATOR
+ * -----------------------------------------
+ */ 
+QActor sensormock context ctxOtherSensors  {    
+Rules{
+	//onRaspberry.  
+//running at fixed distance  
+		p(75,0). p(75,20). p(75,40). p(75,60). p(75,80). p(75,100). p(75,120). p(75,140). p(75,160). p(75,180).
+//incoming  
+		p(80,0). p(70,20). p(65,40). p(60,60). p(55,80). p(50,100). p(45,120). p(40,140). p(35,160). p(30,180).
+//outcoming  / incoming 
+		p(40,0). p(45,20). p(50,40). p(55,60). p(50,80). p(45,100). p(40,120). p(35,140).p(30,160). p(25,180).
+	}	
+ 	Plan init normal          
+  	 	[ !? p(D, A) ] println(p(D, A)) else endPlan  "bye"; 
+		[ ?? p(D, A) ] emit obstacle : p(D,A) ;
+		delay time(1000) ;
+		repeatPlan 29	 	 
+}      

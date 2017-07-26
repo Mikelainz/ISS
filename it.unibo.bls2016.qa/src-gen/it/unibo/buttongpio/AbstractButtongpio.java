@@ -65,19 +65,23 @@ public abstract class AbstractButtongpio extends QActor {
 	    	nPlanIter++;
 	    		temporaryStr = "\"buttongpio STARTS\"";
 	    		println( temporaryStr );  
-	    		parg = "actorOp(createPi4jButton(24))";
-	    		aar = solveGoalReactive(parg,3600000,"","");
+	    		//parg = "actorOp(createPi4jButton(24))"; //JUNE2017
+	    		parg = "createPi4jButton(24)";
+	    		//ex solveGoalReactive JUNE2017
+	    		aar = actorOpExecuteReactive(parg,3600000,"","");
 	    		//println(getName() + " plan " + curPlanInExec  +  " interrupted=" + aar.getInterrupted() + " action goon="+aar.getGoon());
 	    		if( aar.getInterrupted() ){
 	    			curPlanInExec   = "init";
 	    			if( aar.getTimeRemained() <= 0 ) addRule("tout(actorOp,"+getName()+")");
 	    			if( ! aar.getGoon() ) break;
 	    		} 			
-	    		//QActorUtils.solveGoal(parg,pengine );
-	    		//delay
-	    		aar = delayReactive(600000,"" , "");
-	    		if( aar.getInterrupted() ) curPlanInExec   = "init";
-	    		if( ! aar.getGoon() ) break;
+	    		else{
+	    		//Store actorOpDone with the result
+	    		 	String gg = "storeActorOpResult( X, Y )".replace("X", parg).replace("Y",aar.getResult() );
+	    		 	//System.out.println("actorOpExecute gg=" + gg );
+	    			 	 	pengine.solve(gg+".");			
+	    		}
+	    		
 	    		temporaryStr = "\"buttongpio ENDS\"";
 	    		println( temporaryStr );  
 	    break;

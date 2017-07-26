@@ -121,15 +121,23 @@ public abstract class AbstractMycontrol extends QActor {
 	    	nPlanIter++;
 	    		temporaryStr = QActorUtils.unifyMsgContent(pengine,"controlMessage(X)","controlMessage(\"stopFlash\")", guardVars ).toString();
 	    		sendMsg("controlMessage","flashled", QActorContext.dispatch, temporaryStr ); 
-	    		parg = "actorOp(resetScore)";
-	    		aar = solveGoalReactive(parg,3600000,"","");
+	    		//parg = "actorOp(resetScore)"; //JUNE2017
+	    		parg = "resetScore";
+	    		//ex solveGoalReactive JUNE2017
+	    		aar = actorOpExecuteReactive(parg,3600000,"","");
 	    		//println(getName() + " plan " + curPlanInExec  +  " interrupted=" + aar.getInterrupted() + " action goon="+aar.getGoon());
 	    		if( aar.getInterrupted() ){
 	    			curPlanInExec   = "startingGame";
 	    			if( aar.getTimeRemained() <= 0 ) addRule("tout(actorOp,"+getName()+")");
 	    			if( ! aar.getGoon() ) break;
 	    		} 			
-	    		//QActorUtils.solveGoal(parg,pengine );
+	    		else{
+	    		//Store actorOpDone with the result
+	    		 	String gg = "storeActorOpResult( X, Y )".replace("X", parg).replace("Y",aar.getResult() );
+	    		 	//System.out.println("actorOpExecute gg=" + gg );
+	    			 	 	pengine.solve(gg+".");			
+	    		}
+	    		
 	    		if( ! planUtils.switchToPlan("pattern").getGoon() ) break;
 	    break;
 	    }//while
@@ -176,15 +184,23 @@ public abstract class AbstractMycontrol extends QActor {
 	    	nPlanIter++;
 	    		temporaryStr = "\"game\"";
 	    		println( temporaryStr );  
-	    		parg = "actorOp(saveStartTime)";
-	    		aar = solveGoalReactive(parg,3600000,"","");
+	    		//parg = "actorOp(saveStartTime)"; //JUNE2017
+	    		parg = "saveStartTime";
+	    		//ex solveGoalReactive JUNE2017
+	    		aar = actorOpExecuteReactive(parg,3600000,"","");
 	    		//println(getName() + " plan " + curPlanInExec  +  " interrupted=" + aar.getInterrupted() + " action goon="+aar.getGoon());
 	    		if( aar.getInterrupted() ){
 	    			curPlanInExec   = "game";
 	    			if( aar.getTimeRemained() <= 0 ) addRule("tout(actorOp,"+getName()+")");
 	    			if( ! aar.getGoon() ) break;
 	    		} 			
-	    		//QActorUtils.solveGoal(parg,pengine );
+	    		else{
+	    		//Store actorOpDone with the result
+	    		 	String gg = "storeActorOpResult( X, Y )".replace("X", parg).replace("Y",aar.getResult() );
+	    		 	//System.out.println("actorOpExecute gg=" + gg );
+	    			 	 	pengine.solve(gg+".");			
+	    		}
+	    		
 	    		//senseEvent
 	    		aar = planUtils.senseEvents( 5000,"buttonEvent","continue",
 	    		"" , "",ActionExecMode.synch );
@@ -246,15 +262,23 @@ public abstract class AbstractMycontrol extends QActor {
 	    		sendMsg("controlMessage","flashled", QActorContext.dispatch, temporaryStr ); 
 	    		temporaryStr = QActorUtils.unifyMsgContent(pengine,"controlMessage(X)","controlMessage(\"gameOver\")", guardVars ).toString();
 	    		sendMsg("controlMessage","myled", QActorContext.dispatch, temporaryStr ); 
-	    		parg = "actorOp(printScore)";
-	    		aar = solveGoalReactive(parg,3600000,"","");
+	    		//parg = "actorOp(printScore)"; //JUNE2017
+	    		parg = "printScore";
+	    		//ex solveGoalReactive JUNE2017
+	    		aar = actorOpExecuteReactive(parg,3600000,"","");
 	    		//println(getName() + " plan " + curPlanInExec  +  " interrupted=" + aar.getInterrupted() + " action goon="+aar.getGoon());
 	    		if( aar.getInterrupted() ){
 	    			curPlanInExec   = "gameOver";
 	    			if( aar.getTimeRemained() <= 0 ) addRule("tout(actorOp,"+getName()+")");
 	    			if( ! aar.getGoon() ) break;
 	    		} 			
-	    		//QActorUtils.solveGoal(parg,pengine );
+	    		else{
+	    		//Store actorOpDone with the result
+	    		 	String gg = "storeActorOpResult( X, Y )".replace("X", parg).replace("Y",aar.getResult() );
+	    		 	//System.out.println("actorOpExecute gg=" + gg );
+	    			 	 	pengine.solve(gg+".");			
+	    		}
+	    		
 	    		if( (guardVars = QActorUtils.evalTheGuard(this, " ??actorOpDone(OP,FinalScore)" )) != null ){
 	    		temporaryStr = "finalScore(FinalScore)";
 	    		temporaryStr = QActorUtils.substituteVars(guardVars,temporaryStr);

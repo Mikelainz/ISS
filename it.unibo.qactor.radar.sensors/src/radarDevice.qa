@@ -1,0 +1,112 @@
+/* 
+ * ==============================================================
+ * radarDevice.qa
+ * ==============================================================
+ */   
+System radarDevice  
+Event obstacle    : p( Distance, Angle  )  
+
+Dispatch pos      : p( Angle  )     
+Dispatch distance : d( Distance  ) 
+Dispatch polar    : p( Distance, Angle  ) 
+ 
+Context  ctxRadarGui      ip [ host="192.168.251.1"  port=8080 ]  -standalone  	//192.168.251.1
+Context  ctxRadarDevice   ip [ host="192.168.251.104"  port=8037 ]                //192.168.251.104
+
+QActor radardevice context ctxRadarDevice  {  	/*( R1 )*/
+ 	 Plan init normal      
+ 	 	switchToPlan  exploreTheSpace   
+ 	 Plan exploreTheSpace				/*( R3 )*/
+ 	 	//qastepper and qasonar provide the distance and the angle
+  	 	receiveMsg time ( 300000 )  ; 
+  	 	printCurrentMessage ;     
+ 	 	onMsg pos      : p(X) -> actorOp storeDirectionData(X) ; //storeSensorData( "pos", X ) ; 
+ 	 	onMsg distance : d(X) -> actorOp storeDistanceData(X) ; //storeSensorData( "distance", X ) ; //switchToPlan handleSonarData ;
+ 		switchToPlan emitTheData ;
+ 		repeatPlan 
+ 	Plan emitTheData resumeLastPlan
+ 	 	actorOp fuseSensorData ;		/*( R4 )*/
+ 		[ !? actorOpDone(OP,R)] println( datafused(R) );
+  		[ ?? actorOpDone(OP,p(D,A))]  emit obstacle : p(D,A) 	/*( R5 )*/	
+ }
+   
+      
+QActor qastepper context ctxRadarDevice  {  /*( R3 )*/
+Rules{
+	onRaspberry. 
+	data( 1, stepper, p(0) ).    data(2, stepper, p(0) ).     data( 3, stepper, p(0) ).
+	data( 4, stepper, p(0) ).   data(5, stepper, p(0) ).   data( 6, stepper, p(0) ).
+	data( 7, stepper, p(90) ).  data(8, stepper, p(90) ).  data( 9, stepper, p(90) ).
+	data( 10, stepper, p(90) ).  data( 11, stepper, p(90) ).  data( 12, stepper, p(90) ).
+	data( 13, stepper, p(180) ). data( 14, stepper, p(180) ). data( 15, stepper, p(180) ).
+	data( 16, stepper, p(180) ). data( 17, stepper, p(180) ). data( 18, stepper, p(180) ).
+ }   
+  	 Plan init normal   
+  	 	println("STEPPER STARTS "  ) ;
+  	 	switchToPlan doSimulation ;
+   	 	[ !? onRaspberry] switchToPlan activatePython ;
+   	 	println("STEPPER ENDS"   ) 
+     Plan activatePython 
+   	 	actorOp startStepperPyhton ;
+   	 	switchToPlan  handlePythonMessages 
+  	 Plan handlePythonMessages 
+  	 	println("STEPPER handlePythonMessages"  ) ;
+  	 	receiveMsg time(60000000);
+  	 	printCurrentMessage ;
+  	 	onMsg pos  : p(X) -> forward radardevice -m pos : p(X)  ; 
+    	repeatPlan
+ 	 Plan doSimulation resumeLastPlan
+ 	 	delay time(1000) ;  
+//  	 	[ !? data(N, stepper, X) ] println(stepper(N , X ) );
+  	 	[ ?? data(N, stepper, X) ] forward radardevice -m pos : X  ;
+ 	 	repeatPlan 17      	 
+}   
+                                            
+QActor qasonar context ctxRadarDevice  { 	/*( R3 , R4 )*/
+Rules{  
+	onRaspberry.   
+	data( 1, distance, d(16) ). data( 2, distance, d(32) ). data( 3, distance, d(50) ). 
+	data( 4, distance, d(60) ). data( 5, distance, d(70) ). data( 6, distance, d(80) ).
+	data( 7, distance, d(16) ). data( 8, distance, d(32) ). data( 9, distance, d(50) ). 
+	data( 10, distance, d(60) ). data( 11, distance, d(70) ). data( 12, distance, d(80) ).
+	data( 13, distance, d(16) ). data( 14, distance, d(32) ). data( 15, distance, d(50) ).
+	data( 16, distance, d(60) ). data( 17, distance, d(70) ). data( 18, distance, d(80) ).
+}	      
+  	 Plan init normal            
+  	 	println("	sonar STARTS SIMULATION"  ) ;
+  	 	switchToPlan doSimulation ;
+ 		[ !? onRaspberry] switchToPlan activateSonar ;
+  	 	println("	sonar ENDS"   )        
+ 	 Plan activateSonar  
+ 	 	actorOp startSonarC ;	
+ 	 	switchToPlan  handleSonarCOutput 
+ 	 Plan handleSonarCOutput     
+  	 	actorOp getDistanceFromSonar ;
+  	 	[ !? actorOpDone(OP,data( N, distance, d(VALUE) ))] println( data( N, distance, d(VALUE) ) ) else println("NON UNIFIED");
+  	 	[ ?? actorOpDone(OP,data( N, distance, d(VALUE) ))] forward radardevice -m distance : d(VALUE) ;
+ 		delay time( 500) ;
+    	repeatPlan
+ 	 	
+ 	 Plan doSimulation  resumeLastPlan 
+ 	 	delay time(1000) ;
+//  	 	[ !? data(N, distance, X) ] println( sonardistance( N , X ) ) ;
+  	 	[ ?? data(N, distance, X) ] forward radardevice -m distance : X ;
+  	 	repeatPlan 17  
+}                  
+/*
+ * EXPERIMENT
+
+QActor clientbth context ctxRadarDevice  {
+  	 Plan init normal               
+  	 	println("	clientbth STARTS"  ) ; 
+  	 	actorOp startClientBth("radarbth") ; 
+  	 	switchToPlan doSend ;
+  	 	actorOp closeConn ;
+  	 	println("	clientbth ENDS"  )    
+  	 Plan doSend resumeLastPlan
+   	 	println("	clientbth sendBth"  ) ;
+  	 	actorOp sendBth("hello via bth 1") ;
+   	 	println("	clientbth sendBth"  ) ;
+  	 	actorOp sendBth("hello via bth 2")  		
+}
+ */   

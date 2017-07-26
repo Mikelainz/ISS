@@ -1,0 +1,21 @@
+RobotSystem appl0
+
+Context ctxappl0 ip[host="localhost"port=8010] -g cyan  
+
+Robot mocksimple QActor voyager context ctxappl0 {
+	
+	Plan initi normal
+		println("voyager STARTS");
+		switchToPlan doWork;
+		println("voyager ENDS")
+		
+		
+	Plan doWork
+		println("voyager doWork");
+		robotForward speed(70) time(3000);
+		robotLeft speed(0) time(500);
+		robotForward speed(70) time(2000);
+		robotRight speed(0) time(500);
+		robotForward speed(70) time(2000)
+		
+}

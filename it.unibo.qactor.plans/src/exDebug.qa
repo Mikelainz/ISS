@@ -1,0 +1,69 @@
+System exDebug   
+Event alarm : alarm(X)
+Event stop  : stop  
+
+Dispatch info : info(X)
+Context  ctxExDebug  ip [ host="localhost"  port=8037 ]  -g cyan    -httpserver
+    
+QActor qadebug context ctxExDebug     {    
+Rules{
+	v(1).   
+	v(2).     
+}       
+  	Plan main normal   
+ 		println("qadebug STARTS "   )  ; 
+ 		solve fibo(5,V) time(0) onFailSwitchTo p2;   
+ 		[ !? goalResult(R)] println( result(R)  ) ;
+//   		forward qadebug -m info : info(a) ; 
+// 		switchToPlan work ;    
+// 		switchToPlan test ;    
+// 		println("qadebug delay "   )  ;
+// 		delay time(5000) ;        
+ 		println("qadebug ENDS "   )       
+ 	Plan test  resumeLastPlan                
+ 		 solve v(X) time(0) ;       
+		 [ !? goalResult(R)] println( result(R)  )   ;
+ 		 actorOp a(1) ;  
+ 		[ !? actorOpDone( OP,R ) ] println( done(OP,R) ) ;  
+   		 actorOp b(21)  ; 
+// 		[ ?? goalResult( R2 ) ] println( goalresult( R2 ) ); 
+  		[ !? actorOpDone( OP,R1 ) ] println( done(OP,R1) ) ;
+   		[ !? actorOpResult( R ) ] println( result_b( R) ) ;   
+  		 actorOp c(1)   ; 
+  		[ !? actorOpDone( OP,R ) ] println( done(OP,R) ) ;
+  		[ !? actorOpResult(  R ) ] println( result_c( R) ) ;  
+  		 actorOp d(1)   ;    
+    	[ !? actorOpDone( OP,R ) ] println( done(OP,R) ) ;
+  		[ !? actorOpResult(  R ) ] println( result_d( R) ) ;  
+ 		 actorOp c(3)   ;   
+  		[ !? actorOpDone( OP,R ) ] println( done(OP,R) ) ;
+  		[ !? actorOpResult(  R ) ] println( result_c( R) ) 
+// 	Plan workevent  resumeLastPlan 
+// 		sense time(2000) alarm -> continue ;
+// 		printCurrentEvent ; 
+// 		onEvent alarm : alarm(X) -> solve fibo(41,V) time(2000) react event stop -> p1 ;
+// 		onMsg info : info(X) -> solve fibo(41,V) time(2000) react event stop -> p1 ;
+// 		[ ?? goalResult( fib(X,Y) )] println(fib(X,Y) )
+	Plan work  resumeLastPlan        
+//		receiveMsg time(1000) ;            
+		  println("qadebug work "   )  ;    
+//		 receiveMsg time(100) -m info sender qadebug content info(b) ;
+//		 receiveTheMsg m( info,dispatch,ANY,R,X,N) time(100);
+		 receiveTheMsg m( ANY,dispatch,S,R,info(X),N) time(100);
+		 [ ?? tout(X,Y) ] println(tout(X,Y)) ;
+		 printCurrentMessage 
+ //		 [!? v(X) ] switchToPlan p1 ;   
+//		 [!? v(2) ] switchToPlan p2
+//	Plan p1 resumeLastPlan
+//		println("p1 "   )
+	Plan p2 resumeLastPlan 
+		println("p2 is working"   )
+}      
+//QActor qadebugenitter context ctxExDebug     {  
+//	Plan main normal
+//		delay time(800) ;
+//		emit alarm : alarm(a) ;
+//		delay time(600) ;
+//		emit stop : stop
+//}
+ 

@@ -1,0 +1,111 @@
+ /*        
+ * ==============================================================
+ * radargui.qa       
+ * ==============================================================
+ */        
+System radargui              
+Event inputcmd       : usercmd(executeInput(CMD)) 
+Event sonar          : p( Distance, Angle  ) 
+Event alarm          : alarm( obstacle, p( Distance, Angle  ) )
+Event local_radar    : radargui( STATE )  //STATE = ready|off
+Dispatch polar       : p( Distance, Angle  )          
+
+Context  ctxRadar    ip [ host="localhost"  port=8033 ]   //192.168.251.1    
+EventHandler evh for sonar -print{  //event => dispatch
+	forwardEvent radargui -m polar  
+};  
+ 
+/*
+ * The radar GUI accepts data  
+ * 	1) from a user console (event inputcmd)
+ *  2) from a qactor that sends a polar dispatch
+ *  3) as a subscriber of a mqtt server on topic "unibo/mqtt/radar"
+ * The radar GUI emits the event local_radar:radargui(ready) when ready
+ */   
+QActor radargui context ctxRadar  {	  	
+Rules{
+	mqttServer("tcp://m2m.eclipse.org:1883").
+	topic("unibo/mqtt/radar").
+
+	config( MQTTSERV, TOPIC ):-    
+		mqttServer(MQTTSERV),topic(TOPIC).
+
+	checknear( D,A ) :- eval( lt, D, 40 ), !, assert( obstacle(D,A) ).
+	checknear( D,A ).
+}  
+	Plan init normal         
+		println("RADAR init the GUI ... ") ;     
+		actorOp activateGui ;   
+  	//1) connect to the MQTT server
+		[!? config( MQTTSERV,TOPIC )] actorOp connectAndSubscribe( "radargui", MQTTSERV, TOPIC ) ;
+		emit local_radar : radargui( ready );
+		switchToPlan doWorkMsgs      
+	Plan doWorkMsgs 
+		receiveMsg time ( 86400000 )  ; //one day
+		printCurrentMessage ;
+		switchToPlan checkObstacle;
+   		onMsg polar : p(D,A) -> actorOp sendDataToGui( D,A ) ;  
+ 		repeatPlan  
+ 	Plan checkObstacle resumeLastPlan
+ 		onMsg polar : p(D,A) -> demo checknear(D,A);
+ 		[ ?? obstacle(D,A)  ] emit alarm : alarm( obstacle, p( D,A) )
+}
+/*
+ * ----------------------------------------------------
+ * Introduced for testing (user commands) when -httpserver
+ * ----------------------------------------------------
+ */
+QActor usercmdhandler context ctxRadar{	 
+	Plan init normal        
+ 		sense time(86400000) inputcmd , alarm -> handleInput , handleAlarm ;
+ 		repeatPlan
+  	Plan handleInput resumeLastPlan
+ 	//the user should insert from the web gui data such as p(80,30)
+ 		onEvent inputcmd : usercmd(executeInput(p(D,A))) ->
+ 			forward radargui -m polar : p(D,A) 
+ 	Plan handleAlarm resumeLastPlan
+ 		println("alarm")
+// 		sound time(2000) file('./audio/tada2.wav')
+}
+
+/*
+ * ----------------------------------------------------
+ * testing:
+ * Simulation of a data publisher
+ * ----------------------------------------------------
+ */
+QActor testermqtt  context ctxRadar {	 
+Rules{
+	mqttServer("tcp://m2m.eclipse.org:1883").
+	topic("unibo/mqtt/radar").
+
+	config( MQTTSERV, TOPIC ):-  //none is for TREPLY
+		mqttServer(MQTTSERV),topic(TOPIC).
+
+	p(80,0).
+	p(80,30).
+	p(80,60).
+	p(80,90).
+	p(80,120).
+	p(80,150).
+	p(80,180).
+	
+	dataToPublish( TOPIC, p(D,A) ) :-
+		topic( TOPIC ), retract( p(D,A) ).
+}
+	Plan init normal        
+		println("testermqtt STARTS ") ;     
+  	//1) connect to the MQTT server
+		[!? config( MQTTSERV,TOPIC )] 
+			actorOp connectToSend( "tester", MQTTSERV, TOPIC ) ;
+		//wait for the radar ready
+		sense time(600000) local_radar -> continue ;
+		onEvent local_radar : radargui( ready ) -> switchToPlan dotest ;
+		println("testermqtt ENDS ")    
+ 	Plan dotest resumeLastPlan 		
+		delay time(1000) ;
+ 	//2) publish data
+ 		[ !? dataToPublish(T,D) ] 
+ 			actorOp sendMsgMqtt(T,"polar","tester", D) else endPlan "testDone";
+ 		repeatPlan
+}

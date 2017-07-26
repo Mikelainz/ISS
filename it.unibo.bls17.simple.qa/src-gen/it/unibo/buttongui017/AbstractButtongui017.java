@@ -63,15 +63,23 @@ public abstract class AbstractButtongui017 extends QActor {
 	    while(true){
 	    	curPlanInExec =  "init";	//within while since it can be lost by switchlan
 	    	nPlanIter++;
-	    		parg = "actorOp(createButton)";
-	    		aar = solveGoalReactive(parg,3600000,"","");
+	    		//parg = "actorOp(createButton)"; //JUNE2017
+	    		parg = "createButton";
+	    		//ex solveGoalReactive JUNE2017
+	    		aar = actorOpExecuteReactive(parg,3600000,"","");
 	    		//println(getName() + " plan " + curPlanInExec  +  " interrupted=" + aar.getInterrupted() + " action goon="+aar.getGoon());
 	    		if( aar.getInterrupted() ){
 	    			curPlanInExec   = "init";
 	    			if( aar.getTimeRemained() <= 0 ) addRule("tout(actorOp,"+getName()+")");
 	    			if( ! aar.getGoon() ) break;
 	    		} 			
-	    		//QActorUtils.solveGoal(parg,pengine );
+	    		else{
+	    		//Store actorOpDone with the result
+	    		 	String gg = "storeActorOpResult( X, Y )".replace("X", parg).replace("Y",aar.getResult() );
+	    		 	//System.out.println("actorOpExecute gg=" + gg );
+	    			 	 	pengine.solve(gg+".");			
+	    		}
+	    		
 	    		temporaryStr = "\"	buttonsimple017 ENDS\"";
 	    		println( temporaryStr );  
 	    break;

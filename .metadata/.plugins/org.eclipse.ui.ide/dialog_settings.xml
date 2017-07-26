@@ -9,6 +9,12 @@
 		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
 		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="C:\Users\Mattia\Desktop\WORKSPACE\it.unibo.qactor.plans"/>
+			<item value="C:\Users\Mattia\Desktop\WORKSPACE\it.unibo.qactor.robot.rover"/>
+			<item value="C:\Users\Mattia\Desktop\WORKSPACE\it.unibo.qactor.robot.rover.control"/>
+			<item value="C:\Users\Mattia\Desktop\WORKSPACE\it.unibo.qactor.radar.sensors"/>
+			<item value="C:\Users\Mattia\Desktop\WORKSPACE\it.unibo.qactor.robot.avatar"/>
+			<item value="C:\Users\Mattia\Desktop\WORKSPACE\it.unibo.qactor.radar"/>
 			<item value="C:\Users\Mattia\Desktop\WORKSPACE\bls.distributed.DB-master"/>
 			<item value="C:\Users\Mattia\Desktop\WORKSPACE\it.unibo.bls.distributed2"/>
 			<item value="C:\Users\Mattia\Desktop\WORKSPACE\it.unibo.bls2016.qa"/>

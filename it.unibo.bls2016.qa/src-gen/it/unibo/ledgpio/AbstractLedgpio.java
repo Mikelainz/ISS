@@ -65,25 +65,41 @@ public abstract class AbstractLedgpio extends QActor {
 	    	nPlanIter++;
 	    		temporaryStr = "\"ledgpio STARTS\"";
 	    		println( temporaryStr );  
-	    		parg = "actorOp(createPi4jLed(25))";
-	    		aar = solveGoalReactive(parg,3600000,"","");
+	    		//parg = "actorOp(createPi4jLed(25))"; //JUNE2017
+	    		parg = "createPi4jLed(25)";
+	    		//ex solveGoalReactive JUNE2017
+	    		aar = actorOpExecuteReactive(parg,3600000,"","");
 	    		//println(getName() + " plan " + curPlanInExec  +  " interrupted=" + aar.getInterrupted() + " action goon="+aar.getGoon());
 	    		if( aar.getInterrupted() ){
 	    			curPlanInExec   = "init";
 	    			if( aar.getTimeRemained() <= 0 ) addRule("tout(actorOp,"+getName()+")");
 	    			if( ! aar.getGoon() ) break;
 	    		} 			
-	    		//QActorUtils.solveGoal(parg,pengine );
+	    		else{
+	    		//Store actorOpDone with the result
+	    		 	String gg = "storeActorOpResult( X, Y )".replace("X", parg).replace("Y",aar.getResult() );
+	    		 	//System.out.println("actorOpExecute gg=" + gg );
+	    			 	 	pengine.solve(gg+".");			
+	    		}
+	    		
 	    		if( ! planUtils.switchToPlan("work").getGoon() ) break;
-	    		parg = "actorOp(ledOff)";
-	    		aar = solveGoalReactive(parg,3600000,"","");
+	    		//parg = "actorOp(ledOff)"; //JUNE2017
+	    		parg = "ledOff";
+	    		//ex solveGoalReactive JUNE2017
+	    		aar = actorOpExecuteReactive(parg,3600000,"","");
 	    		//println(getName() + " plan " + curPlanInExec  +  " interrupted=" + aar.getInterrupted() + " action goon="+aar.getGoon());
 	    		if( aar.getInterrupted() ){
 	    			curPlanInExec   = "init";
 	    			if( aar.getTimeRemained() <= 0 ) addRule("tout(actorOp,"+getName()+")");
 	    			if( ! aar.getGoon() ) break;
 	    		} 			
-	    		//QActorUtils.solveGoal(parg,pengine );
+	    		else{
+	    		//Store actorOpDone with the result
+	    		 	String gg = "storeActorOpResult( X, Y )".replace("X", parg).replace("Y",aar.getResult() );
+	    		 	//System.out.println("actorOpExecute gg=" + gg );
+	    			 	 	pengine.solve(gg+".");			
+	    		}
+	    		
 	    		temporaryStr = "\"ledgpio ENDS\"";
 	    		println( temporaryStr );  
 	    break;
@@ -117,15 +133,23 @@ public abstract class AbstractLedgpio extends QActor {
 	    		returnValue = continueWork;
 	    		break;
 	    		}
-	    		parg = "actorOp(ledSwitch)";
-	    		aar = solveGoalReactive(parg,3600000,"","");
+	    		//parg = "actorOp(ledSwitch)"; //JUNE2017
+	    		parg = "ledSwitch";
+	    		//ex solveGoalReactive JUNE2017
+	    		aar = actorOpExecuteReactive(parg,3600000,"","");
 	    		//println(getName() + " plan " + curPlanInExec  +  " interrupted=" + aar.getInterrupted() + " action goon="+aar.getGoon());
 	    		if( aar.getInterrupted() ){
 	    			curPlanInExec   = "work";
 	    			if( aar.getTimeRemained() <= 0 ) addRule("tout(actorOp,"+getName()+")");
 	    			if( ! aar.getGoon() ) break;
 	    		} 			
-	    		//QActorUtils.solveGoal(parg,pengine );
+	    		else{
+	    		//Store actorOpDone with the result
+	    		 	String gg = "storeActorOpResult( X, Y )".replace("X", parg).replace("Y",aar.getResult() );
+	    		 	//System.out.println("actorOpExecute gg=" + gg );
+	    			 	 	pengine.solve(gg+".");			
+	    		}
+	    		
 	    		if( planUtils.repeatPlan(nPlanIter,0).getGoon() ) continue;
 	    break;
 	    }//while

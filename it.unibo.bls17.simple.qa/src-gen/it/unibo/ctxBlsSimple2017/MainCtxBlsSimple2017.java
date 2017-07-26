@@ -8,10 +8,6 @@ public class MainCtxBlsSimple2017  {
 //MAIN
 public static QActorContext initTheContext() throws Exception{
 	IOutputEnvView outEnvView = SituatedSysKb.standardOutEnvView;
-	it.unibo.is.interfaces.IBasicEnvAwt env=new it.unibo.baseEnv.basicFrame.EnvFrame( 
-		"Env_ctxBlsSimple2017",java.awt.Color.yellow , java.awt.Color.black );
-	env.init();
-	outEnvView = env.getOutputEnvView();
 	String webDir = null;
 	return QActorContext.initQActorSystem(
 		"ctxblssimple2017", "./srcMore/it/unibo/ctxBlsSimple2017/blsanalysissimple2017.pl", 

@@ -1,0 +1,65 @@
+RobotSystem avatar       
+/*         
+ * ==============================================================
+ * avatar
+ * FEATURE : A Robot is a QActor that can execute remote commands
+ * TO NOTE :    
+ * ==============================================================
+ */                             
+Event usercmd     : usercmd(X)    //from robot GUI;  X=robotgui(CMD) CMD=s(low)
+Event inputcmd    : usercmd(X)    //from input GUI;  X=executeInput( do(G,M) )
+Event alarm       : alarm(X)      //from red button  
+Event obstacle    : obstacle(X)   //from red button and from SensorObserver
+Event sensordata  : sensordata(X) //from SensorObserver
+Event endmove     : endmove       //from a robot move
+           
+Context  ctxAvatar  ip [ host="localhost"  port=8070 ]     -httpserver  	 
+EventHandler evh for  endmove , obstacle -print ;  
+
+ 
+//move( mf,100,0), 1000, endmove                  
+Robot nano0 QActor avatar context ctxAvatar  {                          
+   	Plan init normal                                                     
+  		println("avatar STARTS"  )  ;     		
+ 		demo loadTheory("./talkTheoryAvatar.pl") ;     
+ 		[ ?? goalResult(R)]  println(goalResult(R)) ;
+  		switchToPlan initToMove;  
+  		switchToPlan cmdDriven;    
+ 		println("ENDS" )              
+ 	Plan initToMove  resumeLastPlan   
+ 		//WARNING: THE MOVE CONTINUES (unitl timeout) AFTER A REACTION 
+ 	    robotLeft   speed(70)   time(2000 ) react 
+ 	                        event alarm -> stopTheRobot or event obstacle -> stopTheRobot ;      
+ 	    [ ?? tout(X,Y)] sound time(1500) file("./audio/illogical_most2.wav");
+ 	    robotRight  speed(70)   time(2000 ) react event alarm -> stopTheRobot or event obstacle -> stopTheRobot ;      
+	    [ ?? tout(X,Y)] sound time(1500) file("./audio/illogical_most2.wav") 
+ 	Plan cmdDriven                         
+		println("wait for a command  " ) ;           
+		sense time(600000) usercmd ,  inputcmd -> continue ,  evalInputCmd ;  
+   		[ !? tout(X,Y)] println(tout(X,Y)) ;      
+  		[ ?? tout(600000,Y)] switchToPlan endJob ;     
+  		printCurrentEvent ;
+  		//The robot executes a command given with to a button
+   		onEvent usercmd :  usercmd( CMD ) -> println(evalRobotCmd(CMD) ) ; 
+  		onEvent usercmd :  usercmd( CMD ) ->  actorOp execCmdGui(CMD)  ; 
+  						  //execCmdGui is defined in RobotActor, CmdUilInterpreter
+  		[ !? actorOpDone(OP,R)]  println( actorOpDone(OP,R) ) ;	
+  		repeatPlan
+  	//The robot executes a command written as a string 
+    Plan evalInputCmd   resumeLastPlan   
+   		printCurrentEvent ;
+  		println("evalInputCmd" ) ; 
+  		onEvent inputcmd :  usercmd( CMD ) -> demo CMD   ; 
+  		[ !? result(R)]  println(resultInputCmd(R)) 		
+   	Plan stopTheRobot resumeLastPlan    
+   		println("Stop the robot" )   ;    
+   		sound time(1500) file("./audio/tada2.wav");
+  		robotStop speed(10) time(0)	 
+ 	Plan prologFailure resumeLastPlan            
+		println("Prolog goal FAILURE" )     
+	Plan handleAlarm resumeLastPlan     
+		println("handleAlarm" )       	  
+	Plan endJob     
+		sound time(3000) file("./audio/any_commander3.wav");
+		println("endJob" )       	  
+}     

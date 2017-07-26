@@ -1,0 +1,30 @@
+System qa0
+Event info  : info(X) 
+Event alarm : alarm(X) 
+
+Context  ctxQa0  ip [ host="localhost"  port=8017 ]  //-g green  
+
+QActor alarmgen context ctxQa0     {
+	 Plan main normal     
+ 		println("alarmgen STARTS "   )  ; 
+ 		delay time(1000) ;
+ 		emit  alarm : alarm(fire)
+	
+}
+      
+QActor qa0 context ctxQa0     {          
+  	Plan main normal     
+ 		println("qa0 STARTS "   )  ;  
+// 		sound time(1000) file("./audio/computer_complex3.wav") ;
+// 		solve  fibo(7,V) time(1000) react event alarm -> handleAlarm;
+// 		[ ?? goalResult(R)] println(R);
+// 		demo   fibo(8,V)  react event alarm -> handleAlarm;
+// 		[ ?? goalResult(R)] println(R);
+		sense time(60000) info -> continue react event alarm -> handleAlarm ;
+		printCurrentEvent ;
+		println("qa0 ENDS "   )
+	Plan handleAlarm resumeLastPlan
+		println("qa0 handleAlarm "   ) ;
+		demo   fibo(8,V) ;
+ 		[ ?? goalResult(R)] println( uuuuuu(R) )
+}

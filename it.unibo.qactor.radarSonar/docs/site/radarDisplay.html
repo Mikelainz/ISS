@@ -1,0 +1,178 @@
+<!doctype html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>RADAR</title>
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="./images/android-desktop.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <link rel="apple-touch-icon-precomposed" href="./images/ios-desktop.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="./images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <link rel="shortcut icon" href="./images/favicon.png">
+ 
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-light_blue.min.css">
+    <link rel="stylesheet" href="styles.css">
+ 
+  </head>
+  <body>
+                 <!-- <div w3-include-html="./about.html"></div> -->
+      
+
+<!-- 
+HEADER (in alto)
+ --> 
+     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+     <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600"> <!-- SCRITTA-->
+        <div class="mdl-layout__header-row">
+             <h3>Radar Display</h3>
+         </div>
+        </header>
+  <!--  
+HEADER sinistra alto See http://blog.jonathanargentiero.com/material-design-lite-color-classes-list/
+ --> 
+         
+      <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-50 mdl-color-text--light-blue-200">
+        <header class="demo-drawer-header">
+          <img src="./images/radarMy.jpg" width="150" height="150">
+        </header>
+<!--
+NAVIGATION sinistra item list
+-->
+          
+        <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-200">
+          <a class="mdl-navigation__link" href="index.html#welcome"><i class="mdl-color-text--light-green-A100 material-icons" role="presentation">home</i>Radar System</a>
+          <a class="mdl-navigation__link" href="#radardisplay"><i class="mdl-color-text--light-green-A100 material-icons" role="presentation">inbox</i>Radar Display</a>
+          <a class="mdl-navigation__link" href="#radarqamodel"><i class="mdl-color-text--light-green-A100 material-icons" role="presentation">inbox</i>Model (qa)</a>
+          <a class="mdl-navigation__link" href="#radarusage"><i class="mdl-color-text--light-green-A100 material-icons" role="presentation">inbox</i>Usage(Testing)</a>
+          <a class="mdl-navigation__link" href="#radardeploy"><i class="mdl-color-text--light-green-A100 material-icons" role="presentation">inbox</i>Download</a>
+        </nav>
+      </div>
+         
+<!--
+MAIN PAGE center
+-->
+      <main class="mdl-layout__content mdl-color--grey-100" >
+        <div class="mdl-grid demo-content" id="radardisplay">
+<!--
+ZONA 1
+ -->
+          <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+ <div class="mdl-card__supporting-text mdl-color-text--light-blue-900">
+  <!--   <h4>Radar Display</h4> -->
+The  project <i>it.unibo.qactor.radar</i> defines a <i>Radar Display</i> application that implements a radar display on a PC. 
+     The application shows points in polar coordinates, represented as strings of the form <tt>p(Distance,Angle)</tt>  with <i>0<=Distance<=80</i> and <i>0<=Angle<=180</i>. These poitns can be sent to the application via TCP messages on the port <tt>8033</tt>. The message payload must have the following format:
+<pre><span class="hh">
+msg( polar, dispatch, SENDER, radargui, CONTENT, SEQNUM )
+</pre>
+    
+    The <i>Radar Display</i> is also able :       
+<ol>
+    <li>to react to qa events (see <a href="../../../it.unibo.qactors/report/qactors/qactors2.pdf" target="radarcode"> qactors2.pdf sect. 2.4</a>) of the form <tt id="bb">sonar:p(Distance,Angle)</tt> and to transfrom each event into a <tt>polar</tt> dispatch;</li>   
+    <li>to handle qa event-commands (see <a href="../../../it.unibo.qactors/report/qactors/qactors2.pdf" target="radarcode">qactors2.pdf sect. 4</a>) of the form
+        <tt id="bb">inputcmd:usercmd(executeInput(CMD))</tt>
+        and to transfrom then into a <tt>polar </tt> dispatch;</li>
+    <li>to show a point <tt id="bb">p(Distance, Angle)</tt> on a display and, when the distance is less than a prefixed amount, it is able to emit an <tt>alarm</tt> event of the form
+    <tt id="bb">alarm:alarm(obstacle, p(Distance, Angle))</tt>;
+    </li>
+</ol>             
+             
+            </div>            
+              
+          </div>
+ <!-- 
+ZONA 2
+ -->
+          <div class="demo-graphs mdl-shadow--2dp mdl-color-text--deep-purple-100 mdl-cell mdl-cell--12-col" >
+               <div class="mdl-card__supporting-text mdl-color-text--light-blue-900">
+            The <i>Radar Display</i> works according to the  model reported hereunder.
+            <br/><br/>
+                   The application is composed of two actors: one of them (<tt>radargui</tt>) displays on the GUI
+                   a point received with a <tt>polar</tt> message, while the other (<tt>usercmdhandler </tt>)
+                   'reacts' to remote user commands.
+                   For each received point, a check  is performed (by using the application-sprecific Prolog rule
+                   <tt>checknear/2</tt> to see wether an <tt>alarm </tt> event must be emitted.
+                   
+ <h5 id="radarusage">Radar Display usage (testing)</h5>
+The  project <i>it.unibo.qactor.radar.usage</i> shows different ways of using  the <i>Radar Display</i> applications: 
+                   <ul>
+        <li><a href="../../../it.unibo.qactor.radar.usage/src/it/unibo/javatest/SenderAgent.java" target="radarcode">SenderAgent.java</a></li>
+        <li><a href="../../../it.unibo.qactor.radar.usage/src/it/unibo/js/TcpClientNode.js" target="radarcode">TcpClientNode.js</a></li>
+        <li><a href="../../../it.unibo.qactor.radar.usage/src/radarTester.qa" target="radarcode">radarTester.qa</a></li>
+        <li><a href="../../../it.unibo.qactor.radar.usage/src/radarSourceWebGui.qa" target="radarcode">radarSourceWebGui.qa</a></li>
+                   </ul>
+
+            <h5 id="radardeploy">Distribution</h5>
+                   The application is deployed as ae zip file: <a href="../../build/distributions/it.unibo.ctxRadar.MainCtxRadar-1.0.zip">it.unibo.ctxRadar.MainCtxRadar-1.0.zip</a>. To run it, simply unzip the file and execute:
+                   <pre>
+                   java -jar it.unibo.qactor.radar-1.0.jar
+                   </pre>
+ 
+ <h5 id="radarqamodel">Qa Model</h5>
+See <a href="../../../it.unibo.qactors/report/qactors/qactors2.pdf" target="radarcode">qactors2.pdf sect. 1-3</a>
+            <object width="750" height="400" type="text/plain" data="../../src/radargui.qa" border="1" ></object>
+              </div>
+              
+           </div>
+<!--
+ZONA3 centro destra
+ 
+          <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
+            <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
+              <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
+                <h2 class="mdl-card__title-text">Updates</h2>
+              </div>
+              <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+                aaa
+              </div>
+            </div>
+<!--
+ZONA VIEW
+
+            <div class="demo-separator mdl-cell--1-col"></div>
+            <div class="demo-options mdl-card mdl-color--deep-purple-500 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
+            
+ -->   
+            </div>
+
+     <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+     <script>
+w3IncludeHTML();
+</script>
+                </body>
+</html>

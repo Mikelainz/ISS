@@ -1,0 +1,229 @@
+System roverControl      
+/*         
+ * ==============================================================
+ * console
+ * FEATURE : A  'mind' for a (real) Robot 
+ *           that handles a Unity VirtualRobot 
+ * TO NOTE :    
+ * ==============================================================
+ */      
+ /*
+  * REQUIREMETS
+  * R1) The robot initially performs autonomous work (for 20 secs)
+  * 	R1.1) (optional) while playing a music
+  * 	R1.2) being reactive to obstacles and alarms 
+  * 	R1.3) when an obstacles is found or the alarm is 'fire',
+  * 				 the robot must perform some action and then resume its work
+  * 	R1.4) if the alarm is 'usercontrol' the robot must end its autonomous work and
+  * 			 answer to user commands
+  * 
+  * R2) When the user send a movement command, the robot must 
+  * 	R2.1) execute the command being reactive to obstacles and alarms
+  * 	R2.2) when an obstacles is found or the alarm is 'fire',
+  *              the robot must perform some action and then resume its work
+  *		R2.3) react as soon as possible to another command sent by the user, even if the
+  *           previous one is not terminated 
+  * 
+  * R3) The robot:
+  * 	R3,1) could be a VirtualRobot during development 
+  * 	R3.2) but must be a RealRobot for the final product 
+   */                      
+Event inputcmd          : usercmd(X)				//(RUN button)
+Event usercmd           : usercmd(robotgui(CMD)) 	//(FORWARD button) CMD w(low)
+Event sonarDetect 		: sonarDetect(X)			//From (virtual robot) sonar
+Event alarm             : alarm(X)					//(FIRE button)
+Event endplay           : endplay
+
+/*
+ * The ctxRover is introduced if we want use a Robot (Mock or Real)
+ * The user command events are automatically delivered to the ctxRover that can execute them
+ * The autonomous work is reproduced by the Robot
+ */
+Context  ctxRover  ip [ host="127.0.0.1"  port=8070 ]    -standalone              
+Context  ctxRoverControl  ip [ host="127.0.0.1"  port=8050 ]   -httpserver  	
+EventHandler evh for  endplay , sonarDetect -print ;  
+ 
+/*  
+ * ------------------------------------------------------------
+ * rovermind is the 'proactive' part of the robot 
+ * ------------------------------------------------------------
+ */
+ 
+QActor rovermind context ctxRoverControl  {
+Rules{
+/*
+ * Format of commands 'understood' by unity 
+ * 		move( DIRECTION, SPEED, TIMESEC, ANGLE)
+ * Note that commands specify 'timed' moves
+ */
+ 		move( 'W',15,2,0).
+ 		move( 'D',15,1,90).
+ }                        
+	Plan inist normal 
+ 			println("rovermind STARTS" )  ;           
+  			actorOp workWithUnity("127.0.0.1") ; 	//connects to port 6000 192.168.43.229"
+			switchToPlan someMove ; 	//just to show that it works
+/*R1.1 */	//sound time(20000) file("./audio/music_interlude20.wav") answerEv endPlay  ;  //asynch action 
+/*R1   */ 	switchToPlan explore  ;		
+ 			println("rovermind ENDS" )               
+/*  
+ * 1) Move the virtual robot, just to see that it works
+ */ 
+	Plan someMove resumeLastPlan  
+			[ ?? move( D,S,T,A) ]  actorOp moveVirtualActor( D,S,T,A  ) 
+				react event  alarm ->  reactToAlarm or event sonarDetect -> reactToObstacle  
+		else endPlan "someMove ends" ;
+		repeatPlan
+/*
+ * Interact with the concrete Robot so to do some work
+ */		
+	Plan explore resumeLastPlan
+		emit usercmd : usercmd( robotgui(w(low)) ) ;
+		emit usercmd : usercmd( robotgui(d(low)))  ;
+		
+		//actorOp moveVirtualActor( "W",10,1,0  ) 
+/*R1.2 */	//react event  alarm ->  reactToAlarm or event sonarDetect -> reactToObstacle;
+ 		//actorOp moveVirtualActor( "D",30,1,90  ) 
+/*R1.2 */	//react event alarm ->  reactToAlarm or event sonarDetect -> reactToObstacle ;
+		repeatPlan 8  
+		
+ 	/*
+	 * The virtual sonar has emitted sonarDetect
+	 */
+	Plan reactToObstacle resumeLastPlan  
+			println("reactToObstacle");
+// 			sound time(2000) file("./audio/tada2.wav") answerEv endPlay  ;  //asynch action 
+			emit usercmd : usercmd( robotgui(s(low)) ) ;
+			//TODO: the 'mind' should also react to events that rise form the physical word
+/*R1.3 */	actorOp moveVirtualActor( "S", 30, 1, 0 ) react event  alarm ->  reactToAlarm  //back
+ 	/*
+ 	 * The user has pressed the ALARM button
+ 	 */   
+	Plan reactToAlarm   //DOES NOT RESUME if user takes the control
+			println("reactToAlarm");
+/*R1.3 */	onEvent alarm : alarm(fire) -> sound time(2000) file("./audio/computer_process_info4.wav") answerEv endPlay ;//asynch action 
+/*R1.4 */	onEvent alarm : alarm(usercontrol) -> sound time(3000) file("./audio/any_commander3.wav") answerEv endPlay ;//asynch action 
+/*R1.3 */	onEvent alarm : alarm(fire) -> actorOp moveVirtualActor( "H", 30, 1, 0  ) ; //stop 
+			onEvent alarm : alarm(fire) -> emit usercmd : usercmd( robotgui(h(low)) ) ;
+/*R1.4 */	onEvent alarm : alarm(usercontrol) -> endPlan "usercontrol"  else resumeLastPlan
+ }
+
+/*  
+ * ------------------------------------------------------------
+ * roverconsole is the part of the robot sensible to user commands
+ * (introduced during the PROJECT phase to differentiate the logics)
+ * ------------------------------------------------------------
+ */
+QActor roverconsole context ctxRoverControl  {   
+Rules{
+/*
+ * Initially the robot works in autonomous way
+ */
+	no_usercontrol.
+/*
+ * Mapping from Web-page speed to integer (percentage)
+ */	
+		speedMap( low,    10  ).
+		speedMap( medium, 40  ). 
+		speedMap( high,   90 ).
+/*
+ * Utility to map  a Web-GUI command to a Unity-command (very long time, since we use reactive actions)
+ */		
+		moveMap( w(SPEED), "W", VELOCITY, 0,  4)  :- speedMap(SPEED, VELOCITY).
+		moveMap( a(SPEED), "A", VELOCITY, 30, 0)  :- speedMap(SPEED, VELOCITY).
+		moveMap( d(SPEED), "D", VELOCITY, 30, 0)  :- speedMap(SPEED, VELOCITY).
+		moveMap( s(SPEED), "S", VELOCITY, 0,  4)  :- speedMap(SPEED, VELOCITY).
+		moveMap( h(SPEED), "H", VELOCITY, 0,  0)  :- speedMap(SPEED, VELOCITY).
+	
+	
+	    speedGui( S,low )    :- eval( lt, S, 30 ), !.
+	    speedGui( S,medium ) :- eval( gt, S, 30 ), eval( lt, S, 70 ), !.
+	    speedGui( S,high )   :- eval( gt, S, 70 ), !.
+	    
+		mapToGuiCmd( move("W",S,T,A), robotgui(w(V)) ) :- speedGui( S,V ).
+		mapToGuiCmd( move("A",S,T,A), robotgui(a(V)) ) :- speedGui( S,V ).
+		mapToGuiCmd( move("D",S,T,A), robotgui(d(V)) ) :- speedGui( S,V ).
+		mapToGuiCmd( move("S",S,T,A), robotgui(s(V)) ) :- speedGui( S,V ).
+		mapToGuiCmd( move("H",S,T,A), robotgui(h(V)) ) :- speedGui( S,V ).
+		
+ 		
+/*
+ * Mapping from a Web-GUI command to a Unity-command
+ */
+		cmdToMove( move(  DIRECTION, VELOCITY, TIME, ANGLE ) ):-			
+		//The event msg/5 is memorized by the Plan execRobotCommand executed after a usercmd event
+			retract( msg( usercmd, _, SENDER, none, usercmd(robotgui(CMD)), SEQNUM ) ),
+			moveMap( CMD, DIRECTION, VELOCITY, ANGLE, TIME),
+			output( cmdToMoveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee(  DIRECTION, VELOCITY, TIME, ANGLE ) ). 		  
+			
+		moveToCmd( usercmd( R ) ) :-
+		//The event msg/5 is memorized by the Plan execRobotCommand executed after a inputcmd event
+			retract( msg( inputcmd, _, SENDER, none, usercmd(executeInput(move(D,S,T,A))), SEQNUM ) ),
+			mapToGuiCmd( move(D,S,T,A), R ),
+			output( usercmdddddddddddddddddddddddddddddddddddddd( R ) ). 		  
+}          
+            
+   	Plan init normal                                                        
+  			println("roverconsole STARTS"  )  ;    
+/*R2   */ 	switchToPlan handlecommands ;
+  			println("roverconsole ENDS" )              
+      	
+/*
+ *  Wait from commands sent by an user via the Web-page. Es. move('W',50,1,0)
+ */	  
+	Plan handlecommands  
+		println("roverconsole waits for user commands");    
+		//inputcmd by RUN, usercmd by BUTTONS
+/*R2   */ 	sense time(100000) inputcmd , usercmd -> execInputCommand , execRobotCommand 
+/*R2.1 */		react event sonarDetect -> handleobstacle  or event  alarm ->  handleAlarm ;
+		repeatPlan 	
+		
+	/* 
+	 * RUN move('W',10,2,0)  move('W',30,2,0)
+	 */  
+	Plan execInputCommand resumeLastPlan        
+		[ ?? no_usercontrol ] emit alarm : alarm(usercontrol)	; //terminate the proactive part   
+		//printCurrentEvent ;	
+		memoCurrentEvent    ;	
+  		[ !? moveToCmd(R)] emit usercmd : usercmd( R ) ;
+  		//Manage the virtual robot 		
+ 		onEvent inputcmd : usercmd(executeInput(move(D,S,T,A))) ->  
+			actorOp moveVirtualActor( D,S,T,A ) 
+/*R2.2 */		react event sonarDetect -> handleobstacle  
+					  or event  alarm   -> handleAlarm  
+					  or event inputcmd -> handleAnotherCommand
+					  or event usercmd  -> handleAnotherCommand
+	/*
+	 * BUTTON (Forward, Backward, etc) 
+	 */
+	Plan execRobotCommand resumeLastPlan    
+		[ ?? no_usercontrol ] emit alarm : alarm(user)	; //terminate the proactive part
+		//printCurrentEvent ;	
+		memoCurrentEvent    ;	    
+		//the event is perceived also by the standalone  Robot
+		[ !? cmdToMove( move( D,S,T,A) ) ]
+			actorOp moveVirtualActor(  D,S,T,A  ) 
+/*R2.2 */		react event sonarDetect -> handleobstacle  
+					  or event alarm    -> handleAlarm 	
+					  or event inputcmd -> handleAnotherCommand
+					  or event usercmd  -> handleAnotherCommand
+	 
+	Plan handleAnotherCommand resumeLastPlan
+ 		actorOp moveVirtualActor(   "H", 10, 1, 0  )  //stop
+	/*
+	 * The virtual sonar has emitted sonarDetect
+	 */
+	Plan handleobstacle resumeLastPlan  
+		println("Alert received from sonar! Sending back robot");
+		//we do not react to sonar again, but we react to alarms
+ 		sound time(2000) file("./audio/computer_process_info4.wav") answerEv endPlay  ;  
+		actorOp moveVirtualActor( "S", 30, 1, 0 ) react event  alarm ->  handleAlarm  //back
+ 	/*
+ 	 * The user has pressed the ALARM button
+ 	 */   
+	Plan handleAlarm resumeLastPlan
+		println("ALARM");
+ 		sound time(2000) file("./audio/illogical_most2.wav") answerEv endPlay  ; // 
+		actorOp moveVirtualActor(   "H", 30, 1, 0  )  //stop 
+  		
+} 	

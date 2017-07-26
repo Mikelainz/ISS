@@ -1,0 +1,19 @@
+RobotBase initio   
+//BASIC               
+motorleft = Motor  [ gpiomotor  pincw 2 pinccw 3 ]  position: LEFT
+motorright = Motor  [ gpiomotor pincw 0 pinccw 4  ]  position: RIGHT
+      
+l1Initio = Line   [ gpioswitch pin 15 activelow ]  position: BOTTOM           
+distanceRadar = Distance  [ sonarhcsr04 pintrig 14 pinecho 13]  position: FRONT_TOP   
+d1Initio = Distance  [ process "/configuration/initio/hc-sr04"]  position: FRONT 
+mgn1 = Magnetometer  [ magneto5883l x -68 y 117 z 0 ] private position: FRONT       
+      
+//servoRadar =  Servo  [ servoblaster pin 1 pos180 0.24  pos0 0.055 ]  position: FRONT   
+
+//COMPOSED
+motors = Actuators [ motorleft , motorright  ] private position: BOTTOM
+rot = Rotation [ mgn1  ] private position: FRONT
+//radar = Radar [ servoRadar , distanceRadar  ] private position: FRONT 
+//ROBOT
+Mainrobot initio [ motors , rot] pid ( 10,3000,1)  
+;   

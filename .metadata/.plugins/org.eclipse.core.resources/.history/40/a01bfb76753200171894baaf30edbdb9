@@ -1,7 +1,0 @@
-plan(1,init, sentence(true,move(print,"	controller017 STARTS"),'','' ))
-plan(2,init, sentence(true,move( switchplan(control) ),'','' ))
-plan(3,init, sentence(true,move(print,"	controller017 ENDS"),'','' ))
-plan(1,control, sentence(true,senseEvent(2000,"click","continue"),'','' ))
-plan(2,control, sentence(-  tout( senseevent,V) ,endplan('	tout controller017'),'','' ))
-plan(3,control, sentence(true,eventswitch(click, »click( V), forward(led017, turnLed,turnLed( V)) ),'','' ))
-plan(4,control, sentence(true,repeatplan(it.unibo.xtext.qactor.impl.VarOrIntImpl@70bce488 (const: 2)) ,'','' ))

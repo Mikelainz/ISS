@@ -65,15 +65,23 @@ public abstract class AbstractQacontrol extends QActor {
 	    	nPlanIter++;
 	    		temporaryStr = "qacontrol(starts)";
 	    		println( temporaryStr );  
-	    		parg = "actorOp(createAButtonWithGui)";
-	    		aar = solveGoalReactive(parg,3600000,"","");
+	    		//parg = "actorOp(createAButtonWithGui)"; //JUNE2017
+	    		parg = "createAButtonWithGui";
+	    		//ex solveGoalReactive JUNE2017
+	    		aar = actorOpExecuteReactive(parg,3600000,"","");
 	    		//println(getName() + " plan " + curPlanInExec  +  " interrupted=" + aar.getInterrupted() + " action goon="+aar.getGoon());
 	    		if( aar.getInterrupted() ){
 	    			curPlanInExec   = "init";
 	    			if( aar.getTimeRemained() <= 0 ) addRule("tout(actorOp,"+getName()+")");
 	    			if( ! aar.getGoon() ) break;
 	    		} 			
-	    		//QActorUtils.solveGoal(parg,pengine );
+	    		else{
+	    		//Store actorOpDone with the result
+	    		 	String gg = "storeActorOpResult( X, Y )".replace("X", parg).replace("Y",aar.getResult() );
+	    		 	//System.out.println("actorOpExecute gg=" + gg );
+	    			 	 	pengine.solve(gg+".");			
+	    		}
+	    		
 	    		if( ! planUtils.switchToPlan("work").getGoon() ) break;
 	    		temporaryStr = "qacontrol(ends)";
 	    		println( temporaryStr );  

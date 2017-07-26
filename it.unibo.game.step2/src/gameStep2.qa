@@ -9,20 +9,20 @@ Dispatch ledMessage:ledMessage(X)
 Context ctxButton ip [host="localhost" port=8010]  -g  cyan
 Context ctxControl ip [host="localhost" port=8020] -g green
 Context ctxLed ip [host="localhost" port=8030] -g yellow
-
+ 
 QActor mycontrol context ctxControl {
 	
 	Rules{
 		match(button0,0).
 		match(button1,1).
 		match(button2,2).
-		testOk(B,L):-match(B,L), retract(buttonPressed(B)), retract(ledOn(L)). 
+		testOk(B,L):- retract(ledOn(L)), retract(buttonPressed(B)), match(B,L). 
 	}
 	
 	Plan init normal
 		println (mycontrol(starts));
 		switchToPlan work
-		
+		 
 	Plan work
  		sense time(60000) buttonEvent -> continue;
  		printCurrentEvent;
@@ -43,7 +43,7 @@ QActor mycontrol context ctxControl {
  		
  	Plan game
  		println("game");
- 		receiveMsg time(100);
+ 		receiveMsg time(2000);
  		printCurrentMessage;
  		onMsg ledMessage:ledMessage(CurrentOn) -> addRule ledOn(CurrentOn);
  		actorOp saveStartTime;
@@ -170,23 +170,25 @@ QActor myled context ctxLed {
  		
  	Plan pattern
  		actorOp changeLedOn;
+// 		actorOp getCurrentOn;
+// 		[ ?? actorOpDone(OP, CurrentOn) ] println (CurrentOn);
  		receiveMsg time(500); //potenziometro
  		onMsg controlMessage : controlMessage("stopPattern") -> switchToPlan game;
  		onMsg controlMessage : controlMessage("gameOver") -> switchToPlan gameOver;
  		repeatPlan
  		
- 	Plan game //added a mini blink to let player understand is time to press
+ 	Plan game //added a mini blink to let player understand it's time to press
+ 		actorOp getCurrentOn;
+ 		[ ?? actorOpDone(OP, CurrentOn) ] forward mycontrol -m ledMessage:ledMessage(CurrentOn);
  		actorOp turnOffCurrentLed;
  		delay time(100);
  		actorOp turnOnCurrentLed;
- 		actorOp getCurrentOn;
- 		[ ?? actorOpDone(OP, CurrentOn) ] forward mycontrol -m ledMessage:ledMessage(CurrentOn);
  		switchToPlan work
  		
  	Plan gameOver
  		actorOp turnOffAll;
  		println(qaled(ends));
- 		delay time(5000);
+ 		delay time(10000);
  		switchToPlan work
  		
 }

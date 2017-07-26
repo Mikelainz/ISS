@@ -65,15 +65,23 @@ public abstract class AbstractIotled extends QActor {
 	    	nPlanIter++;
 	    		temporaryStr = "iotled(starts)";
 	    		println( temporaryStr );  
-	    		parg = "actorOp(subscribeOnMQTTServer)";
-	    		aar = solveGoalReactive(parg,3600000,"","");
+	    		//parg = "actorOp(subscribeOnMQTTServer)"; //JUNE2017
+	    		parg = "subscribeOnMQTTServer";
+	    		//ex solveGoalReactive JUNE2017
+	    		aar = actorOpExecuteReactive(parg,3600000,"","");
 	    		//println(getName() + " plan " + curPlanInExec  +  " interrupted=" + aar.getInterrupted() + " action goon="+aar.getGoon());
 	    		if( aar.getInterrupted() ){
 	    			curPlanInExec   = "init";
 	    			if( aar.getTimeRemained() <= 0 ) addRule("tout(actorOp,"+getName()+")");
 	    			if( ! aar.getGoon() ) break;
 	    		} 			
-	    		//QActorUtils.solveGoal(parg,pengine );
+	    		else{
+	    		//Store actorOpDone with the result
+	    		 	String gg = "storeActorOpResult( X, Y )".replace("X", parg).replace("Y",aar.getResult() );
+	    		 	//System.out.println("actorOpExecute gg=" + gg );
+	    			 	 	pengine.solve(gg+".");			
+	    		}
+	    		
 	    		if( ! planUtils.switchToPlan("work").getGoon() ) break;
 	    		//delay
 	    		aar = delayReactive(60000,"" , "");
@@ -98,15 +106,23 @@ public abstract class AbstractIotled extends QActor {
 	    while(true){
 	    	curPlanInExec =  "work";	//within while since it can be lost by switchlan
 	    	nPlanIter++;
-	    		parg = "actorOp(receiveMessageFromMQTTServer)";
-	    		aar = solveGoalReactive(parg,3600000,"","");
+	    		//parg = "actorOp(receiveMessageFromMQTTServer)"; //JUNE2017
+	    		parg = "receiveMessageFromMQTTServer";
+	    		//ex solveGoalReactive JUNE2017
+	    		aar = actorOpExecuteReactive(parg,3600000,"","");
 	    		//println(getName() + " plan " + curPlanInExec  +  " interrupted=" + aar.getInterrupted() + " action goon="+aar.getGoon());
 	    		if( aar.getInterrupted() ){
 	    			curPlanInExec   = "work";
 	    			if( aar.getTimeRemained() <= 0 ) addRule("tout(actorOp,"+getName()+")");
 	    			if( ! aar.getGoon() ) break;
 	    		} 			
-	    		//QActorUtils.solveGoal(parg,pengine );
+	    		else{
+	    		//Store actorOpDone with the result
+	    		 	String gg = "storeActorOpResult( X, Y )".replace("X", parg).replace("Y",aar.getResult() );
+	    		 	//System.out.println("actorOpExecute gg=" + gg );
+	    			 	 	pengine.solve(gg+".");			
+	    		}
+	    		
 	    break;
 	    }//while
 	    return returnValue;

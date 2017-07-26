@@ -1,0 +1,9 @@
+ 
+plan(0,init, sentence(true,move(print,"qatester STARTS"),'','' )).
+plan(1,init, sentence(true,move(solve,consult( "./robotTalikingTheory.pl"), 0,''),'','' )).
+plan(2,init, sentence(true,move(solve,welcome, 0,''),'','' )).
+plan(3,init, sentence(true,move(solve,consult( "p0.txt"), 0,''),'','' )).
+plan(4,init, sentence(true,runPlan(dynamic),'','' )).
+plan(5,init, sentence( not  (- v( X)  ) ,move(print,qatester( empty)),'','' )).
+plan(6,init, sentence(true,move(print,"qatester ENDS"),'','' )).
+  

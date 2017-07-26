@@ -1,0 +1,63 @@
+System testPlans  
+Event alarm : alarm(X)
+Event stop  : stop
+Dispatch info : info(X)
+
+Context  ctxTestPlans  ip [ host="localhost"  port=8037 ]   
+
+QActor   evsource context ctxTestPlans     {
+	 Plan main normal     
+ 		println("evsource STARTS "   )  ; 
+//   		delay time(500) ;
+//  		println("evsource EMITS stop ----------------------- "   )  ; 
+// 		emit  stop : stop ;
+ 		delay time(1000) ;
+ 		println("evsource EMITS alarm ----------------------- "   )  ; 
+ 		emit  alarm : alarm(fire) ;
+ 		delay time(2000) ;
+ 		println("evsource EMITS stop ----------------------- "   )  ; 
+ 		emit  stop : stop ;
+  		println("evsource RECEIVE ----------------------- "   )  ; 
+ 		receiveMsg time(30000 ) ;
+ 		printCurrentMessage ; 
+ 		println("		evsource ENDS "   )  
+}
+
+QActor qatestplans context ctxTestPlans   -g cyan  {    
+
+  	Plan main normal     
+ 		println("qatestplans STARTS "   )  ;  
+// 		solve  fibo(28,V) time(19000) react event stop -> handleStop ;  
+// 		[ ?? goalResult(R)] println( goalResult(R) ) ;
+  		switchToPlan workWithPlan ;   
+  		delay time(10000) ; //to see the result
+ 		println("		qatestplans ENDS "   )       
+ 	Plan workWithPlan resumeLastPlan
+  		loadPlan "./srcMore/it/unibo/qa0/plans.txt" ;
+ 		println("workWithPlan loaded "   )  ;
+//		actorOp testReflectString("10") ;  
+//		[ ?? actorOpDone(OP,RES)] println( actorOpDone(OP,RES) ) ;		
+//		actorOp testReflectInt(100) ;
+//		[ ?? actorOpDone(OP,RES)] println( actorOpDone(OP,RES) ) ;	
+		//runPlan can be reactive but perhaps its better to make the plan itself as reactive	
+		//in this case we assume that plan.txt contains actions (senseEvent) reactive to alarm
+ 		runPlan main time(900000) //react event stop -> handleStop 
+// 		[ ?? result( A ) ] println( result( A ) )
+ 	Plan handleAlarm resumeLastPlan
+		println("qatestplans handleAlarm "   ) ;
+  		solve  fibo(28,V) time(19000) react event stop -> handleStop ;   
+// 		demo fibo(28,V);  
+ 		[ ?? goalResult(R)] println( goalResult(R) ) ;
+		println("qatestplans handleAlarm sends "   ) ;
+		actorOp sendMsg("info", "evsource", "dispatch", "ok") ;
+		[ ?? actorOpDone(OP,RES)] println( actorOpDone(OP,RES) )		
+//		actorOp testReflectString("10") ;
+//		[ ?? actorOpDone(OP,RES)] println( actorOpDone(OP,RES) )  		
+  	Plan prologFailure resumeLastPlan   
+		println("failure in solving a Prolog goal" )   
+ 	Plan handleStop  resumeLastPlan
+		println(" !!!!!!!!!!! qatestplans handleStop "   ) 
+
+}      
+ 
+ 

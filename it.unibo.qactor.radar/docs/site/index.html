@@ -1,0 +1,156 @@
+<!doctype html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Material Design Lite</title>
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="./images/android-desktop.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <link rel="apple-touch-icon-precomposed" href="./images/ios-desktop.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="./images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <link rel="shortcut icon" href="./images/favicon.png">
+
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-light_blue.min.css">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+      
+<!-- 
+HEADER (in alto)
+ --> 
+     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+     <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600"> <!-- SCRITTA-->
+            <h3>Radar System</h3>
+         </header>
+ <!--  
+HEADER sinistra alto See http://blog.jonathanargentiero.com/material-design-lite-color-classes-list/
+ --> 
+         
+      <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-50 mdl-color-text--light-blue-200">
+        <header class="demo-drawer-header">
+            
+          <img src="./images/RadarSet14.jpg" width="217" height="162">
+  
+        </header>
+<!--
+NAVIGATION sinistra item list
+-->
+          
+        <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-200">
+          <a class="mdl-navigation__link" href="#welcome">
+          <i class="mdl-color-text--light-green-A100 material-icons" role="presentation">home</i>Home</a>
+          
+          <a class="mdl-navigation__link" href="radarDisplay.html">
+          <i class="mdl-color-text--light-green-A100 material-icons" role="presentation">inbox</i>
+          Radar Display</a>
+        </nav>
+      </div>
+         
+<!--
+MAIN PAGE center
+-->
+      <main class="mdl-layout__content mdl-color--grey-100">
+        <div class="mdl-grid demo-content" id="welcome">
+<!--
+ZONA 1
+--> 
+          <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid" >
+<div class="mdl-card__supporting-text mdl-color-text--light-blue-900">        
+Our company has built a hardware/software product to be used in experimental low-cost IOT applications.
+The product is named <tt>SonarStepperRadar</tt> and is composed of the following hardware devices :
+<ul>
+<li>A <a href="../../../it.unibo.iss2015intro/docs/Devices/HC-SR04.html" target="radarcode">sonar HC-SR04</a></li>
+<li>A  <a href="../../../it.unibo.iss2015intro/docs/Devices/28BYJ-48StepperMotor.html" target="radarcode">stepper motor 28BYJ-48</a>
+    (alternatively, a <a href="../../../it.unibo.iss2015intro/docs/Devices/SS099.html" target="radarcode">Micro Servo SS099</a>)</li>
+    <li>A <a href="../../../it.unibo.iss2015intro/docs/Devices/LN98N.html" target="radarcode">Motor Driver Board L298N</a>  </li>
+    <li>A <a href="../../../it.unibo.iss2015intro/docs/Raspberry/raspberryEntry.html" target="radarcode">RaspberryPi</a>  </li>
+</ul>   
+    The company has already built a <a class="mdl-navigation__link" href="radarDisplay.html"><i class="mdl-color-text--light-green-A100 material-icons" role="presentation">inbox</i>Radar Display</a>
+<br/><br/>
+                  <img src="./images/RadarSet14.jpg" width="808" height="612">
+
+              </div> 
+          </div>
+ <!-- 
+ZONA 2
+ 
+          <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col">
+            <svg fill="currentColor" viewBox="0 0 500 250" class="demo-graph">
+              <use xlink:href="#chart" />
+            </svg>
+            <svg fill="currentColor" viewBox="0 0 500 250" class="demo-graph">
+              <use xlink:href="#chart" />
+            </svg>
+          </div>
+ 
+ZONA3 centro destra
+ 
+          <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-grid mdl-grid--no-spacing">
+            <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
+              <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
+                <h2 class="mdl-card__title-text">Updates</h2>
+              </div>
+              <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+                aaa
+              </div>
+            </div>
+ 
+ZONA VIEW
+ 
+            <div class="demo-separator mdl-cell--1-col"></div>
+            <div class="demo-options mdl-card mdl-color--deep-purple-500 mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--12-col-desktop">
+
+               
+                
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+      
+
+ 
+<!--  
+VIEW DOURCE
+
+      <a href="https://github.com/google/material-design-lite/blob/mdl-1.x/templates/dashboard/" target="_blank" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">View Source</a>
+ -->     
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  </body>
+</html>
